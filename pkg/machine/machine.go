@@ -1,0 +1,372 @@
+package machine
+
+import (
+	"encoding/json"
+	"fmt"
+	"io/ioutil"
+	"os"
+	"path"
+	"path/filepath"
+	"strings"
+	"sync"
+	"time"
+
+	"github.com/Arvinderpal/embd-project/common"
+	"github.com/Arvinderpal/embd-project/common/driverapi"
+	"github.com/Arvinderpal/embd-project/common/types"
+	"github.com/Arvinderpal/embd-project/pkg/drivers"
+	"github.com/Arvinderpal/embd-project/pkg/option"
+
+	"github.com/op/go-logging"
+)
+
+var (
+	logger = logging.MustGetLogger("segue-machine")
+)
+
+const (
+	maxLogs = 16
+)
+
+// Machine contains all the details for a particular machine.
+type Machine struct {
+	mutex     sync.RWMutex
+	MachineID string              `json:"machine-id"` // Machine ID.
+	Drivers   []*DriverWrapper    `json:"drivers"`    // Drivers that part of this machine.
+	Opts      *option.BoolOptions `json:"options"`    // Machine options.
+	Status    *MachineStatus      `json:"status,omitempty"`
+}
+
+type statusLog struct {
+	Status    Status    `json:"status"`
+	Timestamp time.Time `json:"timestamp"`
+}
+
+type MachineStatus struct {
+	Log     []*statusLog `json:"log,omitempty"`
+	Index   int          `json:"index"`
+	indexMU sync.RWMutex
+}
+
+func (e *MachineStatus) lastIndex() int {
+	lastIndex := e.Index - 1
+	if lastIndex < 0 {
+		return maxLogs - 1
+	}
+	return lastIndex
+}
+
+func (e *MachineStatus) getAndIncIdx() int {
+	idx := e.Index
+	e.Index++
+	if e.Index >= maxLogs {
+		e.Index = 0
+	}
+	return idx
+}
+
+func (e *MachineStatus) addStatusLog(s *statusLog) {
+	idx := e.getAndIncIdx()
+	if len(e.Log) < maxLogs {
+		e.Log = append(e.Log, s)
+	} else {
+		e.Log[idx] = s
+	}
+}
+
+func (e *MachineStatus) String() string {
+	e.indexMU.RLock()
+	defer e.indexMU.RUnlock()
+	if len(e.Log) > 0 {
+		lastLog := e.Log[e.lastIndex()]
+		if lastLog != nil {
+			return fmt.Sprintf("%s", lastLog.Status.Code)
+		}
+	}
+	return OK.String()
+}
+
+func (e *MachineStatus) DumpLog() string {
+	e.indexMU.RLock()
+	defer e.indexMU.RUnlock()
+	logs := []string{}
+	for i := e.lastIndex(); ; i-- {
+		if i < 0 {
+			i = maxLogs - 1
+		}
+		if i < len(e.Log) && e.Log[i] != nil {
+			logs = append(logs, fmt.Sprintf("%s - %s",
+				e.Log[i].Timestamp.Format(time.RFC3339), e.Log[i].Status))
+		}
+		if i == e.Index {
+			break
+		}
+	}
+	if len(logs) == 0 {
+		return OK.String()
+	}
+	return strings.Join(logs, "\n")
+}
+
+func (es *MachineStatus) DeepCopy() *MachineStatus {
+	cpy := &MachineStatus{}
+	es.indexMU.RLock()
+	defer es.indexMU.RUnlock()
+	cpy.Index = es.Index
+	cpy.Log = []*statusLog{}
+	for _, v := range es.Log {
+		cpy.Log = append(cpy.Log, v)
+	}
+	return cpy
+}
+
+func (e Machine) Validate() error {
+	return nil
+}
+
+func (mh *Machine) DeepCopy() *Machine {
+
+	cpy := &Machine{
+		MachineID: mh.MachineID,
+	}
+	if mh.Opts != nil {
+		cpy.Opts = mh.Opts.DeepCopy()
+	}
+	if mh.Status != nil {
+		cpy.Status = mh.Status.DeepCopy()
+	}
+	for _, d := range mh.Drivers {
+		dCpy := d.Driver.Copy()
+		cpy.Drivers = append(cpy.Drivers, &DriverWrapper{dCpy})
+	}
+	return cpy
+}
+
+// Snapshot will write the snapshot json in the mh's directory
+func (mh *Machine) Snapshot() error {
+	mh.mutex.RLock()
+	defer mh.mutex.RUnlock()
+	return mh.snapshot()
+}
+
+// snapshot will write the snapshot json in the mh's directory
+func (mh *Machine) snapshot() error {
+
+	bytes, err := json.MarshalIndent(mh, "", " ")
+	if err != nil {
+		return err
+	}
+	tmpSnap := filepath.Join(".", mh.MachineID, common.SnapshotFileName+".tmp")
+	err = ioutil.WriteFile(tmpSnap, bytes, os.FileMode(0644))
+	// Defer a cleanup routine if there is an error somepoint later.
+	defer func() {
+		if err != nil {
+			newErr := os.Remove(tmpSnap)
+			if newErr != nil {
+				logger.Warningf("Warning: error while removing %s: %s", common.SnapshotFileName+".tmp", newErr)
+			}
+		}
+	}()
+	if err != nil {
+		return err
+	}
+	// Atomically swap temporary file out with the newly written file.
+	oldSnap := path.Join(".", mh.MachineID, common.SnapshotFileName)
+	err = os.Rename(tmpSnap, oldSnap)
+	return err
+}
+
+func (mh *Machine) PrettyPrint() string {
+	b, err := json.MarshalIndent(mh, "", "  ")
+	if err != nil {
+		fmt.Println("error:", err)
+	}
+	return fmt.Sprintf(string(b))
+}
+
+func OptionChanged(key string, value bool, data interface{}) {
+}
+
+func (mh *Machine) ApplyOpts(opts option.OptionMap) bool {
+	return mh.Opts.Apply(opts, OptionChanged, mh) > 0
+}
+
+func (mh *Machine) SetDefaultOpts(opts *option.BoolOptions) {
+}
+
+func (mh *Machine) LogStatus(code StatusCode, msg string) {
+	mh.Status.indexMU.Lock()
+	defer mh.Status.indexMU.Unlock()
+	sts := &statusLog{
+		Status: Status{
+			Code: code,
+			Msg:  msg,
+		},
+		Timestamp: time.Now(),
+	}
+	mh.Status.addStatusLog(sts)
+}
+
+func (mh *Machine) LogStatusOK(msg string) {
+	mh.Status.indexMU.Lock()
+	defer mh.Status.indexMU.Unlock()
+	sts := &statusLog{
+		Status:    NewStatusOK(msg),
+		Timestamp: time.Now(),
+	}
+	mh.Status.addStatusLog(sts)
+}
+
+// LookupDriver returns matching driverType
+// IMPORTANT: if mutex lock is already held by calling func, use lookupDriver
+// instead of this LookupHook
+func (mh *Machine) LookupDriver(driverType string) driverapi.Driver {
+	mh.mutex.RLock()
+	defer mh.mutex.RUnlock()
+	return mh.lookupDriver(driverType)
+}
+
+// lookupDriver returns matching driverType
+// IMPORTANT: aquire a mutex lock before calling this func
+func (mh *Machine) lookupDriver(driverType string) driverapi.Driver {
+	for _, h := range mh.Drivers {
+		if h.GetConf().GetType() == driverType {
+			return h
+		}
+	}
+	return nil
+}
+
+// removeDriver will remove the driver from driver slice
+func (mh *Machine) removeDriver(driverType string) error {
+	for i, h := range mh.Drivers {
+		if h.GetConf().GetType() == driverType {
+			mh.Drivers = append(mh.Drivers[:i], mh.Drivers[i+1:]...)
+			mh.LogStatusOK(fmt.Sprintf("driver %s removed", driverType))
+			return nil
+		}
+	}
+	return types.ErrDriverNotFound
+}
+
+func (mh *Machine) StartDrivers(confs []driverapi.DriverConf) error {
+	mh.mutex.Lock()
+	defer mh.mutex.Unlock()
+	err := mh.startDrivers(confs)
+	err2 := mh.snapshot() // NOTE: we snapshot even if error occured during start
+	if err != nil || err2 != nil {
+		return fmt.Errorf("Error(s): %s, %s", err, err2)
+	}
+	return nil
+}
+
+func (mh *Machine) startDrivers(confs []driverapi.DriverConf) error {
+	if len(confs) <= 0 {
+		return fmt.Errorf("No driver(s) specified")
+	}
+
+	for _, conf := range confs {
+		driverType := conf.GetType()
+		drv := mh.lookupDriver(driverType)
+		if drv != nil {
+			return fmt.Errorf("driver %s already running on machine %s", driverType, mh.MachineID)
+		}
+		drv, err := driverapi.NewDriver(conf)
+		if err != nil {
+			return err
+		}
+		mh.Drivers = append(mh.Drivers, &DriverWrapper{drv})
+		err = drv.Start()
+		if err != nil {
+			mh.LogStatus(Failure, fmt.Sprintf("Could not start driver: %s", err))
+			return err
+		}
+	}
+
+	mh.LogStatusOK(fmt.Sprintf("Sucessfully started drivers on machine %s", mh.MachineID))
+	return nil
+}
+
+func (mh *Machine) StopDriver(driverType, driverID string) error {
+	mh.mutex.Lock()
+	defer mh.mutex.Unlock()
+	err := mh.stopDriver(driverType, driverID)
+	err2 := mh.snapshot()
+	if err != nil || err2 != nil {
+		return fmt.Errorf("Error(s): %s, %s", err, err2)
+	}
+	return nil
+}
+
+func (mh *Machine) stopDriver(driverType, driverID string) error {
+
+	for i, drv := range mh.Drivers {
+		if drv.GetConf().GetType() == driverType && drv.GetConf().GetID() == driverID {
+			err := drv.Stop()
+			if err != nil {
+				mh.LogStatus(Failure, fmt.Sprintf("Could not stop driver: %s", err))
+				return err
+			}
+			mh.Drivers = append(mh.Drivers[:i], mh.Drivers[i+1:]...)
+			mh.LogStatusOK(fmt.Sprintf("Stopped driver %s (id:%s) on machine %s ", driverType, driverID, mh.MachineID))
+			return nil
+		}
+	}
+	return fmt.Errorf("driver %s (id:%s) not found on machine %s", driverType, driverID, mh.MachineID)
+}
+
+// DriverWrapper is a helper type used handle the driver type
+// based serialization of its configuration.
+type DriverWrapper struct {
+	driverapi.Driver
+}
+
+type driverUnmarshal struct {
+	Driver interface{}
+}
+
+// UnmarshalJSON creates the driver type specified in the JSON.
+func (wrap *DriverWrapper) UnmarshalJSON(data []byte) error {
+
+	driverType, err := getDriverType(data)
+	if err != nil {
+		return err
+	}
+
+	var rawJson json.RawMessage
+	env := driverUnmarshal{
+		Driver: &rawJson,
+	}
+	if err := json.Unmarshal(data, &env); err != nil {
+		return err
+	}
+	// logger.Infof("rawJson: %+v\n", string(rawJson)) // REMOVE
+	drv, err := drivers.NewDriver(driverType)
+	if err != nil {
+		return err
+	}
+	if err := json.Unmarshal(rawJson, &drv); err != nil {
+		return err
+	}
+	wrap.Driver = drv
+	return nil
+}
+
+// getDriverType will extract the driver type from []byte
+func getDriverType(data []byte) (string, error) {
+	tmp := driverUnmarshal{}
+	if err := json.Unmarshal(data, &tmp); err != nil {
+		return "", err
+	}
+	driverMap := tmp.Driver.(map[string]interface{})
+	confMap := driverMap["conf"].(map[string]interface{})
+	driverType, ok := confMap["driver-type"]
+	if !ok {
+		return "", fmt.Errorf("no driver type found")
+	}
+	return driverType.(string), nil
+}
+
+func (wrap *DriverWrapper) String() string {
+	return fmt.Sprintf("%#v", wrap.Driver)
+}
