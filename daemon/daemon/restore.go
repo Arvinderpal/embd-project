@@ -9,6 +9,7 @@ import (
 	"path/filepath"
 
 	"github.com/Arvinderpal/embd-project/common"
+	"github.com/Arvinderpal/embd-project/common/adaptorapi"
 	"github.com/Arvinderpal/embd-project/common/driverapi"
 	"github.com/Arvinderpal/embd-project/pkg/machine"
 )
@@ -89,7 +90,27 @@ func (d *Daemon) restoreMachine(stateFile string) (*machine.Machine, error) {
 
 	mh.LogStatus(machine.Info, "Restoring machine...")
 
-	// attach and start drivers
+	// attach adaptors
+	eAdpts := adaptorapi.AdaptorsConfEnvelope{
+		MachineID: tMh.MachineID,
+	}
+	for _, adpt := range tMh.Adaptors {
+		eAdpt := adaptorapi.AdaptorConfEnvelope{
+			Type: adpt.GetConf().GetType(),
+			Conf: adpt.GetConf(),
+		}
+		eAdpts.Confs = append(eAdpts.Confs, eAdpt)
+	}
+	confb, err := json.Marshal(eAdpts)
+	if err != nil {
+		return mh, err
+	}
+	err = d.AttachAdaptors(confb)
+	if err != nil {
+		return mh, err
+	}
+
+	// start drivers
 	eDrvs := driverapi.DriversConfEnvelope{
 		MachineID: tMh.MachineID,
 	}
@@ -100,7 +121,7 @@ func (d *Daemon) restoreMachine(stateFile string) (*machine.Machine, error) {
 		}
 		eDrvs.Confs = append(eDrvs.Confs, eDrv)
 	}
-	confb, err := json.Marshal(eDrvs)
+	confb, err = json.Marshal(eDrvs)
 	if err != nil {
 		return mh, err
 	}

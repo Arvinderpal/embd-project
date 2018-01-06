@@ -1,14 +1,17 @@
 package driverapi
 
+import "github.com/Arvinderpal/embd-project/common/adaptorapi"
+
 type DriverConf interface {
-	NewDriver() (Driver, error)
+	NewDriver(adaptorapi.Adaptor) (Driver, error)
 	ValidateConf() error
 	GetType() string
 	GetID() string
+	GetAdaptorID() string
 }
 
-func NewDriver(config DriverConf) (Driver, error) {
-	return config.NewDriver()
+func NewDriver(config DriverConf, apiAdpt adaptorapi.Adaptor) (Driver, error) {
+	return config.NewDriver(apiAdpt)
 }
 
 type Driver interface {
@@ -22,9 +25,10 @@ type Driver interface {
 // DriverConfEnvelope is used primarly for easy marshalling/unmarshalling
 // of various DriverConf.
 type DriverConfEnvelope struct {
-	Type string      `json:"type"`
-	ID   string      `json:"id"`
-	Conf interface{} `json:"conf"`
+	Type      string      `json:"type"`
+	ID        string      `json:"id"`
+	AdaptorID string      `json:"adaptor-id"`
+	Conf      interface{} `json:"conf"`
 }
 
 // DriversConfEnvelope is used primarly for easy marshalling/unmarshalling

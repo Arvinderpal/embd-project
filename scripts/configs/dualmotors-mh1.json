@@ -1,0 +1,24 @@
+{
+	"machine-id": "mh1",
+	"confs": 
+	[
+		{
+			"type": "driver_dualmotors",
+			"id": "dualmotors-1",
+			"adaptor-id": "ttyACM0",
+			"conf": {
+			    "log-file-path-name": "/var/run/segue/mh1/eventlogs.s",
+			    "right-motor": {
+			    	"forward-pin": "9",
+			    	"backward-pin": "11",
+			    	"speed-pin": "6"
+			    },
+			    "left-motor": {
+			    	"forward-pin": "7",
+			    	"backward-pin": "8",
+			    	"speed-pin": "5"
+			    }
+			}
+		}
+	]
+}

@@ -36,6 +36,14 @@ func (r *Router) initBackendRoutes() {
 		route{
 			"Update", "POST", "/update", r.update,
 		},
+		// adaptor handlers:
+		route{
+			"AdaptorAttach", "POST", "/adaptor", r.adaptorAttach,
+		},
+		route{
+			"AdaptorDetach", "DELETE", "/adaptor/{machineID}/{adaptorType}/{adaptorID}", r.adaptorDetach,
+		},
+		// driver handlers:
 		route{
 			"DriverStart", "POST", "/driver", r.driverStart,
 		},

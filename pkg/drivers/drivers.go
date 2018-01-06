@@ -17,7 +17,7 @@ const (
 // NewConf is a util method used to get driver conf of a particular type.
 // The idea is to localize driver creation code to this package, so that each
 // time a new driver is added, the below code can be updated.
-func NewDriverConf(machineID, driverType, driverID string) (driverapi.DriverConf, error) {
+func NewDriverConf(driverType, driverID, machineID, adaptorID string) (driverapi.DriverConf, error) {
 	switch driverType {
 	// case Driver_UnitTest:
 	// 	return &UnitTestDriverConf{
@@ -31,6 +31,7 @@ func NewDriverConf(machineID, driverType, driverID string) (driverapi.DriverConf
 			MachineID:  machineID,
 			DriverType: driverType,
 			ID:         driverID,
+			AdaptorID:  adaptorID,
 		}, nil
 	default:
 		return nil, types.ErrUnknownDriverType
@@ -38,8 +39,7 @@ func NewDriverConf(machineID, driverType, driverID string) (driverapi.DriverConf
 	}
 }
 
-// NewDriver is a util method used by pipeline package (among others).
-// It returns an emtpty Driver object of the desired type.
+// NewDriver returns an emtpty Driver object of the desired type.
 func NewDriver(t string) (driverapi.Driver, error) {
 	switch t {
 	// case Driver_UnitTest:
@@ -48,7 +48,6 @@ func NewDriver(t string) (driverapi.Driver, error) {
 		return &DualMotors{}, nil
 	default:
 		return nil, types.ErrUnknownDriverType
-
 	}
 }
 
@@ -73,7 +72,7 @@ func NewDriverConfs(env driverapi.DriversConfEnvelope) ([]driverapi.DriverConf, 
 			return nil, fmt.Errorf("Unmarshal of driver conf %d (raw) failed: %s", i, err)
 		}
 
-		dConf, err := NewDriverConf(dEnv.Type, dEnv.ID, env.MachineID)
+		dConf, err := NewDriverConf(dEnv.Type, dEnv.ID, env.MachineID, dEnv.AdaptorID)
 		if err != nil {
 			return nil, err
 		}

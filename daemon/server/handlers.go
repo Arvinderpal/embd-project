@@ -55,6 +55,48 @@ func (router *Router) driverStop(w http.ResponseWriter, r *http.Request) {
 
 }
 
+func (router *Router) adaptorAttach(w http.ResponseWriter, r *http.Request) {
+	logger.Debugf("starting adaptor(s)\n") // REMOVE
+	confB, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		processServerError(w, r, err)
+		return
+	}
+
+	if err := router.daemon.AttachAdaptors(confB); err != nil {
+		processServerError(w, r, err)
+		return
+	}
+	w.WriteHeader(http.StatusAccepted)
+}
+
+func (router *Router) adaptorDetach(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	machineID, exists := vars["machineID"]
+	if !exists {
+		processServerError(w, r, errors.New("server received empty machine id"))
+		return
+	}
+	adaptorType, exists := vars["adaptorType"]
+	if !exists {
+		processServerError(w, r, errors.New("server received empty adaptor type"))
+		return
+	}
+	adaptorID, exists := vars["adaptorID"]
+	if !exists {
+		processServerError(w, r, errors.New("server received empty adaptor id"))
+		return
+	}
+	logger.Debugf("Recieved %s (id: %s) adaptor stop request on machine %s", adaptorType, adaptorID, machineID)
+
+	if err := router.daemon.DetachAdaptor(machineID, adaptorType, adaptorID); err != nil {
+		processServerError(w, r, err)
+		return
+	}
+	w.WriteHeader(http.StatusAccepted)
+
+}
+
 func (router *Router) machineCreate(w http.ResponseWriter, r *http.Request) {
 
 	d := json.NewDecoder(r.Body)

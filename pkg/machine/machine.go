@@ -12,8 +12,9 @@ import (
 	"time"
 
 	"github.com/Arvinderpal/embd-project/common"
+	"github.com/Arvinderpal/embd-project/common/adaptorapi"
 	"github.com/Arvinderpal/embd-project/common/driverapi"
-	"github.com/Arvinderpal/embd-project/common/types"
+	"github.com/Arvinderpal/embd-project/pkg/adaptors"
 	"github.com/Arvinderpal/embd-project/pkg/drivers"
 	"github.com/Arvinderpal/embd-project/pkg/option"
 
@@ -32,6 +33,7 @@ const (
 type Machine struct {
 	mutex     sync.RWMutex
 	MachineID string              `json:"machine-id"` // Machine ID.
+	Adaptors  []*AdaptorWrapper   `json:"adaptors`    // Machine adaptor for communicating with hardware.
 	Drivers   []*DriverWrapper    `json:"drivers"`    // Drivers that part of this machine.
 	Opts      *option.BoolOptions `json:"options"`    // Machine options.
 	Status    *MachineStatus      `json:"status,omitempty"`
@@ -136,8 +138,12 @@ func (mh *Machine) DeepCopy() *Machine {
 		cpy.Status = mh.Status.DeepCopy()
 	}
 	for _, d := range mh.Drivers {
-		dCpy := d.Driver.Copy()
+		dCpy := d.Copy()
 		cpy.Drivers = append(cpy.Drivers, &DriverWrapper{dCpy})
+	}
+	for _, a := range mh.Adaptors {
+		aCpy := a.Copy()
+		cpy.Adaptors = append(cpy.Adaptors, &AdaptorWrapper{aCpy})
 	}
 	return cpy
 }
@@ -237,18 +243,6 @@ func (mh *Machine) lookupDriver(driverType string) driverapi.Driver {
 	return nil
 }
 
-// removeDriver will remove the driver from driver slice
-func (mh *Machine) removeDriver(driverType string) error {
-	for i, h := range mh.Drivers {
-		if h.GetConf().GetType() == driverType {
-			mh.Drivers = append(mh.Drivers[:i], mh.Drivers[i+1:]...)
-			mh.LogStatusOK(fmt.Sprintf("driver %s removed", driverType))
-			return nil
-		}
-	}
-	return types.ErrDriverNotFound
-}
-
 func (mh *Machine) StartDrivers(confs []driverapi.DriverConf) error {
 	mh.mutex.Lock()
 	defer mh.mutex.Unlock()
@@ -271,7 +265,12 @@ func (mh *Machine) startDrivers(confs []driverapi.DriverConf) error {
 		if drv != nil {
 			return fmt.Errorf("driver %s already running on machine %s", driverType, mh.MachineID)
 		}
-		drv, err := driverapi.NewDriver(conf)
+		adptID := conf.GetAdaptorID()
+		adpt := mh.lookupAdaptor(adptID)
+		if adpt == nil {
+			return fmt.Errorf("no adapter with id %s found on machine %s", adptID, mh.MachineID)
+		}
+		drv, err := driverapi.NewDriver(conf, adpt)
 		if err != nil {
 			return err
 		}
@@ -313,6 +312,86 @@ func (mh *Machine) stopDriver(driverType, driverID string) error {
 		}
 	}
 	return fmt.Errorf("driver %s (id:%s) not found on machine %s", driverType, driverID, mh.MachineID)
+}
+
+// LookupAdaptor returns matching adaptorID
+// IMPORTANT: if mutex lock is already held by calling func, use lookupAdaptor
+// instead of this LookupHook
+func (mh *Machine) LookupAdaptor(adaptorID string) adaptorapi.Adaptor {
+	mh.mutex.RLock()
+	defer mh.mutex.RUnlock()
+	return mh.lookupAdaptor(adaptorID)
+}
+
+// lookupAdaptor returns matching adaptorID
+// IMPORTANT: aquire a mutex lock before calling this func
+func (mh *Machine) lookupAdaptor(adaptorID string) adaptorapi.Adaptor {
+	for _, h := range mh.Adaptors {
+		if h.GetConf().GetID() == adaptorID {
+			return h
+		}
+	}
+	return nil
+}
+
+func (mh *Machine) AttachAdaptors(confs []adaptorapi.AdaptorConf) error {
+	mh.mutex.Lock()
+	defer mh.mutex.Unlock()
+	err := mh.attachAdaptors(confs)
+	err2 := mh.snapshot() // NOTE: we snapshot even if error occured during attach
+	if err != nil || err2 != nil {
+		return fmt.Errorf("Error(s): %s, %s", err, err2)
+	}
+	return nil
+}
+
+func (mh *Machine) attachAdaptors(confs []adaptorapi.AdaptorConf) error {
+	if len(confs) <= 0 {
+		return fmt.Errorf("No adaptor(s) specified")
+	}
+	for _, conf := range confs {
+		adpt, err := adaptorapi.NewAdaptor(conf)
+		if err != nil {
+			return err
+		}
+		mh.Adaptors = append(mh.Adaptors, &AdaptorWrapper{adpt})
+		err = adpt.Attach()
+		if err != nil {
+			mh.LogStatus(Failure, fmt.Sprintf("Could not attach adaptor: %s", err))
+			return err
+		}
+	}
+
+	mh.LogStatusOK(fmt.Sprintf("Sucessfully attached adaptor(s) on machine %s", mh.MachineID))
+	return nil
+}
+
+func (mh *Machine) DetachAdaptor(adaptorType, adaptorID string) error {
+	mh.mutex.Lock()
+	defer mh.mutex.Unlock()
+	err := mh.detachAdaptor(adaptorType, adaptorID)
+	err2 := mh.snapshot()
+	if err != nil || err2 != nil {
+		return fmt.Errorf("Error(s): %s, %s", err, err2)
+	}
+	return nil
+}
+
+func (mh *Machine) detachAdaptor(adaptorType, adaptorID string) error {
+
+	for i, drv := range mh.Adaptors {
+		if drv.GetConf().GetType() == adaptorType && drv.GetConf().GetID() == adaptorID {
+			err := drv.Detach()
+			if err != nil {
+				mh.LogStatus(Failure, fmt.Sprintf("Could not detach adaptor: %s", err))
+				return err
+			}
+			mh.Adaptors = append(mh.Adaptors[:i], mh.Adaptors[i+1:]...)
+			mh.LogStatusOK(fmt.Sprintf("Detached adaptor %s (id:%s) on machine %s ", adaptorType, adaptorID, mh.MachineID))
+			return nil
+		}
+	}
+	return fmt.Errorf("adaptor %s (id:%s) not found on machine %s", adaptorType, adaptorID, mh.MachineID)
 }
 
 // DriverWrapper is a helper type used handle the driver type
@@ -369,4 +448,59 @@ func getDriverType(data []byte) (string, error) {
 
 func (wrap *DriverWrapper) String() string {
 	return fmt.Sprintf("%#v", wrap.Driver)
+}
+
+// AdaptorWrapper is a helper type used handle the adaptor type
+// based serialization of its configuration.
+type AdaptorWrapper struct {
+	adaptorapi.Adaptor
+}
+
+type adaptorUnmarshal struct {
+	Adaptor interface{}
+}
+
+// UnmarshalJSON creates the adaptor type specified in the JSON.
+func (wrap *AdaptorWrapper) UnmarshalJSON(data []byte) error {
+
+	adaptorType, err := getAdaptorType(data)
+	if err != nil {
+		return err
+	}
+
+	var rawJson json.RawMessage
+	env := adaptorUnmarshal{
+		Adaptor: &rawJson,
+	}
+	if err := json.Unmarshal(data, &env); err != nil {
+		return err
+	}
+	adpt, err := adaptors.NewAdaptor(adaptorType)
+	if err != nil {
+		return err
+	}
+	if err := json.Unmarshal(rawJson, &adpt); err != nil {
+		return err
+	}
+	wrap.Adaptor = adpt
+	return nil
+}
+
+// getAdaptorType will extract the adaptor type from []byte
+func getAdaptorType(data []byte) (string, error) {
+	tmp := adaptorUnmarshal{}
+	if err := json.Unmarshal(data, &tmp); err != nil {
+		return "", err
+	}
+	adaptorMap := tmp.Adaptor.(map[string]interface{})
+	confMap := adaptorMap["conf"].(map[string]interface{})
+	adaptorType, ok := confMap["adaptor-type"]
+	if !ok {
+		return "", fmt.Errorf("no adaptor type found")
+	}
+	return adaptorType.(string), nil
+}
+
+func (wrap *AdaptorWrapper) String() string {
+	return fmt.Sprintf("%#v", wrap.Adaptor)
 }

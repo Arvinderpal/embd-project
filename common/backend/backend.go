@@ -19,6 +19,11 @@ type driversBackend interface {
 	StopDriver(machineID, driverType, driverID string) error
 }
 
+type adaptorsBackend interface {
+	AttachAdaptors(conf []byte) error
+	DetachAdaptor(machineID, adaptorType, adaptorID string) error
+}
+
 type control interface {
 	Ping() (*types.PingResponse, error)
 	Update(opts option.OptionMap) error
@@ -29,6 +34,7 @@ type control interface {
 type SegueBackend interface {
 	machineBackend
 	driversBackend
+	adaptorsBackend
 	control
 }
 

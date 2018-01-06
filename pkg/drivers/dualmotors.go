@@ -6,11 +6,11 @@ import (
 	"sync"
 	"time"
 
+	"github.com/Arvinderpal/embd-project/common/adaptorapi"
 	"github.com/Arvinderpal/embd-project/common/driverapi"
 
 	"gobot.io/x/gobot"
 	"gobot.io/x/gobot/drivers/gpio"
-	"gobot.io/x/gobot/platforms/firmata"
 )
 
 type MotorConf struct {
@@ -25,13 +25,13 @@ type DualMotorsConf struct {
 	// All driver confs should define the following fields. //
 	//////////////////////////////////////////////////////
 	MachineID  string `json:"machine-id"`
+	ID         string `json:"id"`
 	DriverType string `json:"driver-type"`
-	ID         string `json:"id"` // unique
+	AdaptorID  string `json:"adaptor-id"`
 
 	////////////////////////////////////////////
 	// The fields below are driver specific. //
 	////////////////////////////////////////////
-	firmataAdaptor *firmata.Adaptor
 
 	RightMotor MotorConf `json:"right-motor"`
 	LeftMotor  MotorConf `json:"left-motor"`
@@ -60,27 +60,34 @@ func (c DualMotorsConf) GetID() string {
 	return c.ID
 }
 
-func (c DualMotorsConf) NewDriver() (driverapi.Driver, error) {
+func (c DualMotorsConf) GetAdaptorID() string {
+	return c.AdaptorID
+}
 
-	rightmotor := gpio.NewMotorDriver(c.firmataAdaptor, c.RightMotor.SpeedPin)
+func (c DualMotorsConf) NewDriver(apiAdpt adaptorapi.Adaptor) (driverapi.Driver, error) {
+
+	adptDWr, err := apiAdpt.GetDigitalWriter()
+	if err != nil {
+		return nil, err
+	}
+	rightmotor := gpio.NewMotorDriver(adptDWr, c.RightMotor.SpeedPin)
 	rightmotor.ForwardPin = c.RightMotor.ForwardPin
 	rightmotor.BackwardPin = c.RightMotor.BackwardPin
 
-	leftmotor := gpio.NewMotorDriver(c.firmataAdaptor, c.LeftMotor.SpeedPin)
+	leftmotor := gpio.NewMotorDriver(adptDWr, c.LeftMotor.SpeedPin)
 	leftmotor.ForwardPin = c.LeftMotor.ForwardPin
 	leftmotor.BackwardPin = c.LeftMotor.BackwardPin
 
 	drv := DualMotors{
 		State: &dualMotorsInternal{
 			Conf:       c,
-			Adaptor:    c.firmataAdaptor, // firmata.NewAdaptor("/dev/ttyACM0"), // TODO: move out
 			rightMotor: rightmotor,
 			leftMotor:  leftmotor,
 		},
 	}
 
 	drv.State.robot = gobot.NewRobot(c.ID,
-		[]gobot.Connection{c.firmataAdaptor},
+		[]gobot.Connection{apiAdpt.GetGobotAdaptor()},
 		[]gobot.Device{rightmotor, leftmotor},
 		drv.work,
 	)
@@ -96,7 +103,6 @@ type DualMotors struct {
 
 type dualMotorsInternal struct {
 	Conf       DualMotorsConf    `json:"conf"`
-	Adaptor    *firmata.Adaptor  `json:"adaptor"`
 	rightMotor *gpio.MotorDriver `json:"right-motor"`
 	leftMotor  *gpio.MotorDriver `json:"left-motor"`
 	robot      *gobot.Robot      `json:"robot"`

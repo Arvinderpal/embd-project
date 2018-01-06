@@ -95,6 +95,12 @@ func init() {
 				ArgsUsage: "<join JSON-file>/<leave/get machine-id>/<get-all>",
 			},
 			{
+				Name:      "adaptor",
+				Usage:     "Attach and Detach Adaptor",
+				Action:    adaptorUpdate,
+				ArgsUsage: "<attach JSON file>/<detach machine-id adaptor-type adaptor-id>",
+			},
+			{
 				Name:      "driver",
 				Usage:     "Start and Stop Driver",
 				Action:    driverUpdate,
@@ -342,6 +348,63 @@ func driverUpdate(ctx *cli.Context) {
 		err = client.StopDriver(machineID, driverType, driverID)
 		if err != nil {
 			log.Errorf("Unable to %s driver %s on machine %s: %s.\n", operation, driverID, machineID, err)
+			return
+		}
+	default:
+		log.Errorf("Unknown Operation %s", operation)
+		return
+	}
+}
+
+func adaptorUpdate(ctx *cli.Context) {
+
+	var (
+		client *mclient.Client
+		err    error
+	)
+
+	if host := ctx.GlobalString("host"); host == "" {
+		client, err = mclient.NewDefaultClient()
+	} else {
+		client, err = mclient.NewClient(host, nil)
+	}
+
+	if err != nil {
+		log.Errorf("Error while creating segue-client: %s\n", err)
+		return
+	}
+
+	args := ctx.Args()
+	operation := ctx.Args().Get(0)
+
+	switch strings.ToLower(operation) {
+	case "attach":
+		if len(args) < 2 {
+			log.Errorf("Insufficient arguments provided\n")
+			return
+		}
+		confPath := ctx.Args().Get(1)
+		bytes, err := ioutil.ReadFile(confPath)
+		if err != nil {
+			log.Errorf("Error reading adaptor file: %s", err.Error())
+			return
+		}
+		err = client.AttachAdaptors(bytes)
+		if err != nil {
+			log.Errorf("Unable to %s adaptor(s) on machine: %s.\n", operation, err)
+			return
+		}
+	case "detach":
+		if len(args) < 4 {
+			log.Errorf("Insufficient arguments provided\n")
+			return
+		}
+		machineID := ctx.Args().Get(1)
+		adaptorType := ctx.Args().Get(2)
+		adaptorID := ctx.Args().Get(3)
+		err = client.DetachAdaptor(machineID, adaptorType, adaptorID)
+		if err != nil {
+			log.Errorf("Unable to %s adaptor %s on machine %s: %s.\n", operation, adaptorID, machineID, err)
 			return
 		}
 	default:
