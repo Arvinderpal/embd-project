@@ -81,8 +81,8 @@ func (c DualMotorsConf) NewDriver(apiAdpt adaptorapi.Adaptor) (driverapi.Driver,
 	drv := DualMotors{
 		State: &dualMotorsInternal{
 			Conf:       c,
-			rightMotor: rightmotor,
-			leftMotor:  leftmotor,
+			RightMotor: rightmotor,
+			LeftMotor:  leftmotor,
 		},
 	}
 
@@ -103,19 +103,31 @@ type DualMotors struct {
 
 type dualMotorsInternal struct {
 	Conf       DualMotorsConf    `json:"conf"`
-	rightMotor *gpio.MotorDriver `json:"right-motor"`
-	leftMotor  *gpio.MotorDriver `json:"left-motor"`
-	robot      *gobot.Robot      `json:"robot"`
+	RightMotor *gpio.MotorDriver `json:"right-motor"`
+	LeftMotor  *gpio.MotorDriver `json:"left-motor"`
+	robot      *gobot.Robot
+	Running    bool `json:"running"`
 }
 
 // Start: starts the driver logic.
 func (d *DualMotors) Start() error {
-	return d.State.robot.Start()
+	d.mu.Lock()
+	defer d.mu.Unlock()
+	go d.State.robot.Start()
+	d.State.Running = true
+	return nil
 }
 
 // Stop: stops the driver logic.
 func (d *DualMotors) Stop() error {
-	return d.State.robot.Stop()
+	d.mu.Lock()
+	defer d.mu.Unlock()
+	err := d.State.robot.Stop()
+	if err != nil {
+		return err
+	}
+	d.State.Running = false
+	return nil
 }
 
 // ProcessMessage: processes messages (i.e. commands such as move forward, backwards...)
@@ -130,11 +142,15 @@ func (d *DualMotors) work() {
 	fadeAmount := byte(15)
 
 	d.mu.Lock()
-	d.State.rightMotor.Forward(speed)
+	d.State.RightMotor.Forward(speed)
 	d.mu.Unlock()
 	gobot.Every(500*time.Millisecond, func() {
 		d.mu.Lock()
-		d.State.rightMotor.Speed(speed)
+		if !d.State.Running {
+			// TODO: we sould really use a killchan!
+			return
+		}
+		d.State.RightMotor.Speed(speed)
 		speed = speed + fadeAmount
 		if speed == 0 || speed == 255 {
 			fadeAmount = -fadeAmount
@@ -159,7 +175,9 @@ func (d *DualMotors) Copy() driverapi.Driver {
 	defer d.mu.RUnlock()
 	cpy := &DualMotors{
 		State: &dualMotorsInternal{
-			Conf: d.State.Conf,
+			Conf:       d.State.Conf,
+			RightMotor: d.State.RightMotor,
+			LeftMotor:  d.State.LeftMotor,
 			// Data: p.State.Data,
 		},
 	}

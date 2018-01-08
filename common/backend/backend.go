@@ -8,9 +8,9 @@ import (
 
 type machineBackend interface {
 	MachineJoin(mh machine.Machine) error
-	MachineLeave(containerID string) error
-	MachineGet(containerID string) (*machine.Machine, error)
-	MachineUpdate(containerID string, opts option.OptionMap) error
+	MachineLeave(machineID string) error
+	MachineGet(machineID string) (*machine.Machine, error)
+	MachineUpdate(machineID string, opts option.OptionMap) error
 	MachinesGet() ([]machine.Machine, error)
 }
 

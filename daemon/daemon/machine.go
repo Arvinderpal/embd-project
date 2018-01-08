@@ -105,6 +105,14 @@ func (d *Daemon) MachineLeave(machineID string) error {
 		return fmt.Errorf("machine %s not found", machineID)
 	}
 
+	for _, drv := range mh.Drivers {
+		err := mh.StopDriver(drv.GetConf().GetType(), drv.GetConf().GetID())
+		if err != nil {
+			return err
+		}
+		logger.Infof("Successfully removed driver %s on machine %s", drv.GetConf().GetType(), machineID)
+	}
+
 	delete(d.machines, machineID)
 
 	// TODO: remove the snapshot json file (or remove the directory all together?)

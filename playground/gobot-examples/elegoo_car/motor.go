@@ -29,13 +29,11 @@ func main() {
 	enb := gpio.NewDirectPinDriver(firmataAdaptor, ENB)
 	in3 := gpio.NewDirectPinDriver(firmataAdaptor, IN3)
 	in4 := gpio.NewDirectPinDriver(firmataAdaptor, IN4)
-	led := gpio.NewLedDriver(firmataAdaptor, "13")
 
 	run := true
-	work := func() {
+	work_motor := func() {
 		enb.DigitalWrite(byte(1))
 		gobot.Every(1*time.Second, func() {
-			led.Toggle()
 			if run {
 				in3.Off()
 				in4.On() // Right wheel turning forwards.
@@ -47,13 +45,29 @@ func main() {
 		})
 	}
 
-	robot := gobot.NewRobot("bot",
+	robot := gobot.NewRobot("motor",
 		[]gobot.Connection{firmataAdaptor},
-		[]gobot.Device{enb, in3, in4, led},
-		work,
+		[]gobot.Device{enb, in3, in4},
+		work_motor,
 	)
 
 	master.AddRobot(robot)
+
+	led := gpio.NewLedDriver(firmataAdaptor, LED)
+
+	work_led := func() {
+		gobot.Every(2*time.Second, func() {
+			led.Toggle()
+		})
+	}
+
+	robot_led := gobot.NewRobot("led",
+		[]gobot.Connection{firmataAdaptor},
+		[]gobot.Device{led},
+		work_led,
+	)
+
+	master.AddRobot(robot_led)
 
 	master.Start()
 }
