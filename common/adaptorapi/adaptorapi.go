@@ -1,10 +1,5 @@
 package adaptorapi
 
-import (
-	"gobot.io/x/gobot"
-	"gobot.io/x/gobot/drivers/gpio"
-)
-
 type AdaptorConf interface {
 	NewAdaptor() (Adaptor, error)
 	ValidateConf() error
@@ -19,8 +14,10 @@ func NewAdaptor(config AdaptorConf) (Adaptor, error) {
 type Adaptor interface {
 	Attach() error
 	Detach() error
-	GetGobotAdaptor() gobot.Adaptor
-	GetDigitalWriter() (gpio.DigitalWriter, error)
+	DigitalWrite(pin string, level byte) (err error)
+	PwmWrite(string, byte) (err error)
+	ServoWrite(string, byte) (err error)
+	DigitalRead(string) (val int, err error)
 	GetConf() AdaptorConf
 	Copy() Adaptor
 	String() string

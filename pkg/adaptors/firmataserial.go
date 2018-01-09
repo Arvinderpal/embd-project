@@ -7,8 +7,6 @@ import (
 
 	"github.com/Arvinderpal/embd-project/common/adaptorapi"
 
-	"gobot.io/x/gobot"
-	"gobot.io/x/gobot/drivers/gpio"
 	"gobot.io/x/gobot/platforms/firmata"
 )
 
@@ -73,20 +71,49 @@ type firmataInternal struct {
 
 // Attach: attaches the adaptor.
 func (d *FirmataSerial) Attach() error {
-	return nil
+	d.mu.Lock()
+	defer d.mu.Unlock()
+	return d.State.adaptor.Connect()
 }
 
 // Detach: detaches the adaptor.
 func (d *FirmataSerial) Detach() error {
+	d.mu.Lock()
+	defer d.mu.Unlock()
 	return d.State.adaptor.Finalize()
 }
 
-func (d *FirmataSerial) GetGobotAdaptor() gobot.Adaptor {
-	return d.State.adaptor
+func (d *FirmataSerial) DigitalWrite(pin string, level byte) (err error) {
+	d.mu.Lock()
+	defer d.mu.Unlock()
+	// fmt.Printf("DigitalWrite on pin: %s", pin)
+	return d.State.adaptor.DigitalWrite(pin, level)
 }
 
-func (d *FirmataSerial) GetDigitalWriter() (gpio.DigitalWriter, error) {
-	return d.State.adaptor, nil
+func (d *FirmataSerial) PwmWrite(pin string, level byte) (err error) {
+	d.mu.Lock()
+	defer d.mu.Unlock()
+	// fmt.Printf("PwmWrite on pin: %s", pin)
+	err = d.State.adaptor.PwmWrite(pin, level)
+	return err
+}
+
+func (d *FirmataSerial) DigitalRead(pin string) (val int, err error) {
+	d.mu.Lock()
+	defer d.mu.Unlock()
+	return d.State.adaptor.DigitalRead(pin)
+}
+
+func (d *FirmataSerial) ServoWrite(pin string, angle byte) (err error) {
+	d.mu.Lock()
+	defer d.mu.Unlock()
+	return d.State.adaptor.ServoWrite(pin, angle)
+}
+
+func (d *FirmataSerial) AnalogRead(pin string) (val int, err error) {
+	d.mu.Lock()
+	defer d.mu.Unlock()
+	return d.State.adaptor.AnalogRead(pin)
 }
 
 func (d *FirmataSerial) GetConf() adaptorapi.AdaptorConf {
