@@ -113,6 +113,14 @@ func (d *Daemon) MachineLeave(machineID string) error {
 		logger.Infof("Successfully removed driver %s on machine %s", drv.GetConf().GetType(), machineID)
 	}
 
+	for _, adpt := range mh.Adaptors {
+		err := mh.DetachAdaptor(adpt.GetConf().GetType(), adpt.GetConf().GetID())
+		if err != nil {
+			return err
+		}
+		logger.Infof("Successfully removed adaptor %s on machine %s", adpt.GetConf().GetType(), machineID)
+	}
+
 	delete(d.machines, machineID)
 
 	// TODO: remove the snapshot json file (or remove the directory all together?)

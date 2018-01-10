@@ -1,0 +1,15 @@
+{
+	"machine-id": "mh1",
+	"confs": 
+	[
+		{
+			"type": "driver_ultrasonic",
+			"id": "ultrasonic-1",
+			"adaptor-id": "ttyACM0",
+			"conf": {
+			    "trig-pin": "13",
+			    "echo-pin": "4"
+			}
+		}
+	]
+}

@@ -18,6 +18,7 @@ type Adaptor interface {
 	PwmWrite(string, byte) (err error)
 	ServoWrite(string, byte) (err error)
 	DigitalRead(string) (val int, err error)
+	AnalogRead(string) (val int, err error)
 	GetConf() AdaptorConf
 	Copy() Adaptor
 	String() string
