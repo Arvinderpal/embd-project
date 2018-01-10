@@ -12,6 +12,8 @@ import (
 const (
 	Driver_UnitTest   = "driver_unittest"
 	Driver_DualMotors = "driver_dualmotors"
+	Driver_LED        = "driver_led"
+	Driver_UltraSonic = "driver_ultrasonic"
 )
 
 // NewConf is a util method used to get driver conf of a particular type.
@@ -33,6 +35,20 @@ func NewDriverConf(driverType, driverID, machineID, adaptorID string) (driverapi
 			ID:         driverID,
 			AdaptorID:  adaptorID,
 		}, nil
+	case Driver_LED:
+		return &LEDConf{
+			MachineID:  machineID,
+			DriverType: driverType,
+			ID:         driverID,
+			AdaptorID:  adaptorID,
+		}, nil
+	case Driver_UltraSonic:
+		return &UltraSonicConf{
+			MachineID:  machineID,
+			DriverType: driverType,
+			ID:         driverID,
+			AdaptorID:  adaptorID,
+		}, nil
 	default:
 		return nil, types.ErrUnknownDriverType
 
@@ -46,6 +62,10 @@ func NewDriver(t string) (driverapi.Driver, error) {
 	// 	return &UnitTestDriver{}, nil
 	case Driver_DualMotors:
 		return &DualMotors{}, nil
+	case Driver_LED:
+		return &LED{}, nil
+	case Driver_UltraSonic:
+		return &UltraSonic{}, nil
 	default:
 		return nil, types.ErrUnknownDriverType
 	}

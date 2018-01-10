@@ -66,15 +66,15 @@ func (c DualMotorsConf) GetAdaptorID() string {
 
 func (c DualMotorsConf) NewDriver(apiAdpt adaptorapi.Adaptor) (driverapi.Driver, error) {
 
-	adptDWr, err := apiAdpt.GetDigitalWriter()
-	if err != nil {
-		return nil, err
-	}
-	rightmotor := gpio.NewMotorDriver(adptDWr, c.RightMotor.SpeedPin)
+	// writer, ok := apiAdpt.(gpio.DigitalWriter)
+	// if !ok {
+	// 	return nil, fmt.Errorf("adaptor does not implement DigitalWriter interface required by driver")
+	// }
+	rightmotor := gpio.NewMotorDriver(apiAdpt, c.RightMotor.SpeedPin)
 	rightmotor.ForwardPin = c.RightMotor.ForwardPin
 	rightmotor.BackwardPin = c.RightMotor.BackwardPin
 
-	leftmotor := gpio.NewMotorDriver(adptDWr, c.LeftMotor.SpeedPin)
+	leftmotor := gpio.NewMotorDriver(apiAdpt, c.LeftMotor.SpeedPin)
 	leftmotor.ForwardPin = c.LeftMotor.ForwardPin
 	leftmotor.BackwardPin = c.LeftMotor.BackwardPin
 
@@ -86,8 +86,7 @@ func (c DualMotorsConf) NewDriver(apiAdpt adaptorapi.Adaptor) (driverapi.Driver,
 		},
 	}
 
-	drv.State.robot = gobot.NewRobot(c.ID,
-		[]gobot.Connection{apiAdpt.GetGobotAdaptor()},
+	drv.State.robot = driverapi.NewRobot(c.ID,
 		[]gobot.Device{rightmotor, leftmotor},
 		drv.work,
 	)
@@ -105,7 +104,7 @@ type dualMotorsInternal struct {
 	Conf       DualMotorsConf    `json:"conf"`
 	RightMotor *gpio.MotorDriver `json:"right-motor"`
 	LeftMotor  *gpio.MotorDriver `json:"left-motor"`
-	robot      *gobot.Robot
+	robot      *driverapi.Robot
 	Running    bool `json:"running"`
 }
 
@@ -147,6 +146,7 @@ func (d *DualMotors) work() {
 	gobot.Every(500*time.Millisecond, func() {
 		d.mu.Lock()
 		if !d.State.Running {
+			d.mu.Unlock()
 			// TODO: we sould really use a killchan!
 			return
 		}
