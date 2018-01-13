@@ -8,6 +8,7 @@ import (
 
 	"github.com/Arvinderpal/embd-project/common/adaptorapi"
 	"github.com/Arvinderpal/embd-project/common/driverapi"
+	"github.com/Arvinderpal/embd-project/common/message"
 
 	"gobot.io/x/gobot"
 	"gobot.io/x/gobot/drivers/aio"
@@ -19,10 +20,11 @@ type UltraSonicConf struct {
 	//////////////////////////////////////////////////////
 	// All driver confs should define the following fields. //
 	//////////////////////////////////////////////////////
-	MachineID  string `json:"machine-id"`
-	ID         string `json:"id"`
-	DriverType string `json:"driver-type"`
-	AdaptorID  string `json:"adaptor-id"`
+	MachineID     string   `json:"machine-id"`
+	ID            string   `json:"id"`
+	DriverType    string   `json:"driver-type"`
+	AdaptorID     string   `json:"adaptor-id"`
+	Subscriptions []string `json:"subscriptions"` // Message Type Subscriptions.
 
 	////////////////////////////////////////////
 	// The fields below are driver specific. //
@@ -56,7 +58,11 @@ func (c UltraSonicConf) GetAdaptorID() string {
 	return c.AdaptorID
 }
 
-func (c UltraSonicConf) NewDriver(apiAdpt adaptorapi.Adaptor) (driverapi.Driver, error) {
+func (c UltraSonicConf) GetSubscriptions() []string {
+	return c.Subscriptions
+}
+
+func (c UltraSonicConf) NewDriver(apiAdpt adaptorapi.Adaptor, rcvQ *message.Queue, sndQ *message.Queue) (driverapi.Driver, error) {
 
 	// writer, ok := apiAdpt.(gpio.DigitalWriter)
 	// if !ok {
@@ -74,6 +80,8 @@ func (c UltraSonicConf) NewDriver(apiAdpt adaptorapi.Adaptor) (driverapi.Driver,
 			echo:     echo,
 			Running:  false,
 			killChan: make(chan struct{}),
+			rcvQ:     rcvQ,
+			sndQ:     sndQ,
 		},
 	}
 
@@ -99,6 +107,8 @@ type ultraSonicInternal struct {
 	robot    *driverapi.Robot
 	Running  bool `json:"running"`
 	killChan chan struct{}
+	rcvQ     *message.Queue
+	sndQ     *message.Queue
 }
 
 // Start: starts the driver logic.

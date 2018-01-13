@@ -19,7 +19,7 @@ const (
 // NewConf is a util method used to get driver conf of a particular type.
 // The idea is to localize driver creation code to this package, so that each
 // time a new driver is added, the below code can be updated.
-func NewDriverConf(driverType, driverID, machineID, adaptorID string) (driverapi.DriverConf, error) {
+func NewDriverConf(driverType, driverID, machineID, adaptorID string, subs []string) (driverapi.DriverConf, error) {
 	switch driverType {
 	// case Driver_UnitTest:
 	// 	return &UnitTestDriverConf{
@@ -30,24 +30,27 @@ func NewDriverConf(driverType, driverID, machineID, adaptorID string) (driverapi
 	// 	}, nil
 	case Driver_DualMotors:
 		return &DualMotorsConf{
-			MachineID:  machineID,
-			DriverType: driverType,
-			ID:         driverID,
-			AdaptorID:  adaptorID,
+			MachineID:     machineID,
+			DriverType:    driverType,
+			ID:            driverID,
+			AdaptorID:     adaptorID,
+			Subscriptions: subs,
 		}, nil
 	case Driver_LED:
 		return &LEDConf{
-			MachineID:  machineID,
-			DriverType: driverType,
-			ID:         driverID,
-			AdaptorID:  adaptorID,
+			MachineID:     machineID,
+			DriverType:    driverType,
+			ID:            driverID,
+			AdaptorID:     adaptorID,
+			Subscriptions: subs,
 		}, nil
 	case Driver_UltraSonic:
 		return &UltraSonicConf{
-			MachineID:  machineID,
-			DriverType: driverType,
-			ID:         driverID,
-			AdaptorID:  adaptorID,
+			MachineID:     machineID,
+			DriverType:    driverType,
+			ID:            driverID,
+			AdaptorID:     adaptorID,
+			Subscriptions: subs,
 		}, nil
 	default:
 		return nil, types.ErrUnknownDriverType
@@ -92,7 +95,7 @@ func NewDriverConfs(env driverapi.DriversConfEnvelope) ([]driverapi.DriverConf, 
 			return nil, fmt.Errorf("Unmarshal of driver conf %d (raw) failed: %s", i, err)
 		}
 
-		dConf, err := NewDriverConf(dEnv.Type, dEnv.ID, env.MachineID, dEnv.AdaptorID)
+		dConf, err := NewDriverConf(dEnv.Type, dEnv.ID, env.MachineID, dEnv.AdaptorID, dEnv.Subscriptions)
 		if err != nil {
 			return nil, err
 		}

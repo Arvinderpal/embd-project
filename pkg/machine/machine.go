@@ -14,6 +14,7 @@ import (
 	"github.com/Arvinderpal/embd-project/common"
 	"github.com/Arvinderpal/embd-project/common/adaptorapi"
 	"github.com/Arvinderpal/embd-project/common/driverapi"
+	"github.com/Arvinderpal/embd-project/common/message"
 	"github.com/Arvinderpal/embd-project/pkg/adaptors"
 	"github.com/Arvinderpal/embd-project/pkg/drivers"
 	"github.com/Arvinderpal/embd-project/pkg/option"
@@ -32,11 +33,12 @@ const (
 // Machine contains all the details for a particular machine.
 type Machine struct {
 	mutex     sync.RWMutex
-	MachineID string              `json:"machine-id"` // Machine ID.
-	Adaptors  []*AdaptorWrapper   `json:"adaptors`    // Machine adaptor for communicating with hardware.
-	Drivers   []*DriverWrapper    `json:"drivers"`    // Drivers that part of this machine.
-	Opts      *option.BoolOptions `json:"options"`    // Machine options.
-	Status    *MachineStatus      `json:"status,omitempty"`
+	MachineID string                 `json:"machine-id"`    // Machine ID.
+	Adaptors  []*AdaptorWrapper      `json:"adaptors`       // Machine adaptor for communicating with hardware.
+	Drivers   []*DriverWrapper       `json:"drivers"`       // Drivers that part of this machine.
+	MsgRouter *message.MessageRouter `json:"message-router` // Route messages between drivers/controllers.
+	Opts      *option.BoolOptions    `json:"options"`       // Machine options.
+	Status    *MachineStatus         `json:"status,omitempty"`
 }
 
 type statusLog struct {
@@ -128,6 +130,9 @@ func (e Machine) Validate() error {
 
 func (mh *Machine) DeepCopy() *Machine {
 
+	mh.mutex.RLock()
+	defer mh.mutex.RUnlock()
+
 	cpy := &Machine{
 		MachineID: mh.MachineID,
 	}
@@ -144,6 +149,14 @@ func (mh *Machine) DeepCopy() *Machine {
 	for _, a := range mh.Adaptors {
 		aCpy := a.Copy()
 		cpy.Adaptors = append(cpy.Adaptors, &AdaptorWrapper{aCpy})
+	}
+	cpy.MsgRouter = message.NewMessageRouter()
+	for msgTyp, set := range mh.MsgRouter.RouteMap {
+		var cpySet []*message.Queue
+		for _, q := range set {
+			cpySet = append(cpySet, &message.Queue{QId: q.ID()})
+		}
+		cpy.MsgRouter.RouteMap[msgTyp] = cpySet
 	}
 	return cpy
 }
@@ -270,11 +283,24 @@ func (mh *Machine) startDrivers(confs []driverapi.DriverConf) error {
 		if adpt == nil {
 			return fmt.Errorf("no adapter with id %s found on machine %s", adptID, mh.MachineID)
 		}
-		drv, err := driverapi.NewDriver(conf, adpt)
+		// Note: queue id = driver id. we use it to remove entries from the route map when a driver is stopped.
+		drvRcvQ := message.NewQueue(conf.GetID())
+		drvSndQ := message.NewQueue(conf.GetID())
+		drv, err := driverapi.NewDriver(conf, adpt, drvRcvQ, drvSndQ)
 		if err != nil {
 			return err
 		}
 		mh.Drivers = append(mh.Drivers, &DriverWrapper{drv})
+		// Add subscriptions for desired message types
+		subsMsgTypes := conf.GetSubscriptions()
+		logger.Infof("Adding subscription: %s", subsMsgTypes)
+		for _, sMsgT := range subsMsgTypes {
+			err := mh.MsgRouter.AddSubscriber(sMsgT, drvRcvQ)
+			if err != nil {
+				return err
+			}
+		}
+
 		err = drv.Start()
 		if err != nil {
 			mh.LogStatus(Failure, fmt.Sprintf("Could not start driver: %s", err))
@@ -306,6 +332,16 @@ func (mh *Machine) stopDriver(driverType, driverID string) error {
 				mh.LogStatus(Failure, fmt.Sprintf("Could not stop driver: %s", err))
 				return err
 			}
+
+			subsMsgTypes := drv.GetConf().GetSubscriptions()
+			for _, sMsgT := range subsMsgTypes {
+				err := mh.MsgRouter.RemoveSubscriber(sMsgT, drv.GetConf().GetID())
+				if err != nil {
+					mh.LogStatus(Failure, fmt.Sprintf("could not remove queue subscription on message type %s: %s", sMsgT, err))
+					return err
+				}
+			}
+
 			mh.Drivers = append(mh.Drivers[:i], mh.Drivers[i+1:]...)
 			mh.LogStatusOK(fmt.Sprintf("Stopped driver %s (id:%s) on machine %s ", driverType, driverID, mh.MachineID))
 			return nil

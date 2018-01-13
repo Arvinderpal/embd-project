@@ -8,6 +8,7 @@ import (
 
 	"github.com/Arvinderpal/embd-project/common/adaptorapi"
 	"github.com/Arvinderpal/embd-project/common/driverapi"
+	"github.com/Arvinderpal/embd-project/common/message"
 
 	"gobot.io/x/gobot"
 	"gobot.io/x/gobot/drivers/gpio"
@@ -24,11 +25,11 @@ type DualMotorsConf struct {
 	//////////////////////////////////////////////////////
 	// All driver confs should define the following fields. //
 	//////////////////////////////////////////////////////
-	MachineID  string `json:"machine-id"`
-	ID         string `json:"id"`
-	DriverType string `json:"driver-type"`
-	AdaptorID  string `json:"adaptor-id"`
-
+	MachineID     string   `json:"machine-id"`
+	ID            string   `json:"id"`
+	DriverType    string   `json:"driver-type"`
+	AdaptorID     string   `json:"adaptor-id"`
+	Subscriptions []string `json:"subscriptions"` // Message Type Subscriptions.
 	////////////////////////////////////////////
 	// The fields below are driver specific. //
 	////////////////////////////////////////////
@@ -64,7 +65,11 @@ func (c DualMotorsConf) GetAdaptorID() string {
 	return c.AdaptorID
 }
 
-func (c DualMotorsConf) NewDriver(apiAdpt adaptorapi.Adaptor) (driverapi.Driver, error) {
+func (c DualMotorsConf) GetSubscriptions() []string {
+	return c.Subscriptions
+}
+
+func (c DualMotorsConf) NewDriver(apiAdpt adaptorapi.Adaptor, rcvQ *message.Queue, sndQ *message.Queue) (driverapi.Driver, error) {
 
 	// writer, ok := apiAdpt.(gpio.DigitalWriter)
 	// if !ok {
@@ -83,6 +88,8 @@ func (c DualMotorsConf) NewDriver(apiAdpt adaptorapi.Adaptor) (driverapi.Driver,
 			Conf:       c,
 			RightMotor: rightmotor,
 			LeftMotor:  leftmotor,
+			rcvQ:       rcvQ,
+			sndQ:       sndQ,
 		},
 	}
 
@@ -106,6 +113,8 @@ type dualMotorsInternal struct {
 	LeftMotor  *gpio.MotorDriver `json:"left-motor"`
 	robot      *driverapi.Robot
 	Running    bool `json:"running"`
+	rcvQ       *message.Queue
+	sndQ       *message.Queue
 }
 
 // Start: starts the driver logic.
@@ -178,7 +187,6 @@ func (d *DualMotors) Copy() driverapi.Driver {
 			Conf:       d.State.Conf,
 			RightMotor: d.State.RightMotor,
 			LeftMotor:  d.State.LeftMotor,
-			// Data: p.State.Data,
 		},
 	}
 	return cpy

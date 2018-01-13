@@ -8,6 +8,7 @@ import (
 
 	"github.com/Arvinderpal/embd-project/common/adaptorapi"
 	"github.com/Arvinderpal/embd-project/common/driverapi"
+	"github.com/Arvinderpal/embd-project/common/message"
 
 	"gobot.io/x/gobot"
 	"gobot.io/x/gobot/drivers/gpio"
@@ -18,10 +19,11 @@ type LEDConf struct {
 	//////////////////////////////////////////////////////
 	// All driver confs should define the following fields. //
 	//////////////////////////////////////////////////////
-	MachineID  string `json:"machine-id"`
-	ID         string `json:"id"`
-	DriverType string `json:"driver-type"`
-	AdaptorID  string `json:"adaptor-id"`
+	MachineID     string   `json:"machine-id"`
+	ID            string   `json:"id"`
+	DriverType    string   `json:"driver-type"`
+	AdaptorID     string   `json:"adaptor-id"`
+	Subscriptions []string `json:"subscriptions"` // Message Type Subscriptions.
 
 	////////////////////////////////////////////
 	// The fields below are driver specific. //
@@ -54,7 +56,11 @@ func (c LEDConf) GetAdaptorID() string {
 	return c.AdaptorID
 }
 
-func (c LEDConf) NewDriver(apiAdpt adaptorapi.Adaptor) (driverapi.Driver, error) {
+func (c LEDConf) GetSubscriptions() []string {
+	return c.Subscriptions
+}
+
+func (c LEDConf) NewDriver(apiAdpt adaptorapi.Adaptor, rcvQ *message.Queue, sndQ *message.Queue) (driverapi.Driver, error) {
 
 	led := gpio.NewLedDriver(apiAdpt, c.LEDPin)
 
@@ -62,6 +68,8 @@ func (c LEDConf) NewDriver(apiAdpt adaptorapi.Adaptor) (driverapi.Driver, error)
 		State: &ledInternal{
 			Conf: c,
 			led:  led,
+			rcvQ: rcvQ,
+			sndQ: sndQ,
 		},
 	}
 
@@ -83,6 +91,8 @@ type ledInternal struct {
 	Conf    LEDConf         `json:"conf"`
 	led     *gpio.LedDriver `json:"led"`
 	robot   *driverapi.Robot
+	rcvQ    *message.Queue
+	sndQ    *message.Queue
 	Running bool `json:"running"`
 }
 
