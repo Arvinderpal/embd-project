@@ -31,3 +31,7 @@ const (
 const (
 	LED = "13"
 )
+
+const (
+	Message_UltraSonic = "ultrasonic"
+)

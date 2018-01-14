@@ -138,12 +138,6 @@ func (d *DualMotors) Stop() error {
 	return nil
 }
 
-// ProcessMessage: processes messages (i.e. commands such as move forward, backwards...)
-func (d *DualMotors) ProcessMessage() {
-	d.mu.Lock()
-	defer d.mu.Unlock()
-}
-
 // work: Runs periodically and generates messages/events.
 func (d *DualMotors) work() {
 	speed := byte(0)

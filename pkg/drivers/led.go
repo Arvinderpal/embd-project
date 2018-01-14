@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"sync"
-	"time"
 
 	"github.com/Arvinderpal/embd-project/common/adaptorapi"
 	"github.com/Arvinderpal/embd-project/common/driverapi"
@@ -66,10 +65,11 @@ func (c LEDConf) NewDriver(apiAdpt adaptorapi.Adaptor, rcvQ *message.Queue, sndQ
 
 	drv := LED{
 		State: &ledInternal{
-			Conf: c,
-			led:  led,
-			rcvQ: rcvQ,
-			sndQ: sndQ,
+			Conf:     c,
+			led:      led,
+			rcvQ:     rcvQ,
+			sndQ:     sndQ,
+			killChan: make(chan struct{}),
 		},
 	}
 
@@ -88,12 +88,12 @@ type LED struct {
 }
 
 type ledInternal struct {
-	Conf    LEDConf         `json:"conf"`
-	led     *gpio.LedDriver `json:"led"`
-	robot   *driverapi.Robot
-	rcvQ    *message.Queue
-	sndQ    *message.Queue
-	Running bool `json:"running"`
+	Conf     LEDConf         `json:"conf"`
+	led      *gpio.LedDriver `json:"led"`
+	robot    *driverapi.Robot
+	rcvQ     *message.Queue
+	sndQ     *message.Queue
+	killChan chan struct{}
 }
 
 // Start: starts the driver logic.
@@ -101,7 +101,6 @@ func (d *LED) Start() error {
 	d.mu.Lock()
 	defer d.mu.Unlock()
 	go d.State.robot.Start()
-	d.State.Running = true
 	return nil
 }
 
@@ -113,28 +112,41 @@ func (d *LED) Stop() error {
 	if err != nil {
 		return err
 	}
-	d.State.Running = false
-	return nil
-}
 
-// ProcessMessage: processes messages (i.e. commands such as move forward, backwards...)
-func (d *LED) ProcessMessage() {
-	d.mu.Lock()
-	defer d.mu.Unlock()
+	d.State.killChan <- struct{}{}
+	return nil
 }
 
 // work: Runs periodically and generates messages/events.
 func (d *LED) work() {
-	gobot.Every(2*time.Second, func() {
-		d.mu.Lock()
-		if !d.State.Running {
-			d.mu.Unlock()
-			// TODO: we sould really use a killchan!
+
+	for {
+		select {
+		case <-d.State.killChan:
 			return
+		default:
+			// NOTE: Get will block this routine until either the driver is stopeed or a message arrives.
+			msg, shutdown := d.State.rcvQ.Get()
+			if shutdown {
+				return
+			}
+			fmt.Printf("led-driver received msg: %q", msg)
+			d.mu.Lock()
+			d.State.led.Toggle()
+			d.mu.Unlock()
 		}
-		d.State.led.Toggle()
-		d.mu.Unlock()
-	})
+	}
+
+	// gobot.Every(2*time.Second, func() {
+	// 	d.mu.Lock()
+	// 	if !d.State.Running {
+	// 		d.mu.Unlock()
+	// 		// TODO: we sould really use a killchan!
+	// 		return
+	// 	}
+	// 	d.State.led.Toggle()
+	// 	d.mu.Unlock()
+	// })
 }
 
 func (d *LED) GetConf() driverapi.DriverConf {

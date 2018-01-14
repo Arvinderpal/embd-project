@@ -11,8 +11,8 @@
 			},
 			"subscriptions":
 			[
-				"motor-control",
-				"ultra-sonic",
+				"motor control",
+				"ultrasonic",
 				"c",
 				"d"
 			]

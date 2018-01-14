@@ -6,6 +6,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/Arvinderpal/embd-project/common"
 	"github.com/Arvinderpal/embd-project/common/adaptorapi"
 	"github.com/Arvinderpal/embd-project/common/driverapi"
 	"github.com/Arvinderpal/embd-project/common/message"
@@ -133,17 +134,21 @@ func (d *UltraSonic) Stop() error {
 	return nil
 }
 
-// ProcessMessage: processes messages (i.e. commands such as move forward, backwards...)
-func (d *UltraSonic) ProcessMessage() {
-	d.mu.Lock()
-	defer d.mu.Unlock()
-}
-
 // work: Runs periodically and generates messages/events.
 func (d *UltraSonic) work() {
-
+	ver := 0
 	d.State.echo.On(aio.Data, func(data interface{}) {
 		fmt.Println("ulatra-sonic reading:", data)
+		msg := message.Message{
+			ID: message.MessageID{
+				Type:    common.Message_UltraSonic,
+				SubType: "raw data",
+				Version: ver,
+			},
+			Data: data,
+		}
+		d.State.sndQ.Add(msg)
+		ver += 1
 	})
 
 	fmt.Println("Starting Triag...")

@@ -7,7 +7,7 @@
 			"id": "ultrasonic-1",
 			"adaptor-id": "ttyACM0",
 			"conf": {
-			    "trig-pin": "13",
+			    "trig-pin": "12",
 			    "echo-pin": "4"
 			}
 		}
