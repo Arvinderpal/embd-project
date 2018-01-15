@@ -18,7 +18,14 @@
 			    	"backward-pin": "8",
 			    	"speed-pin": "5"
 			    }
-			}
+			},
+			"subscriptions":
+			[
+				"motor-control",
+				"ultra-sonic",
+				"c",
+				"d"
+			]
 		}
 	]
 }

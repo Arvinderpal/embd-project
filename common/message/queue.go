@@ -9,7 +9,9 @@
 //  * Shutdown notifications.
 package message
 
-import "sync"
+import (
+	"sync"
+)
 
 type Interface interface {
 	Add(item Message)
@@ -23,6 +25,7 @@ type Interface interface {
 type set map[MessageID]struct{}
 
 type Queue struct {
+	QId          string // Queue ID (same as driver/controler id)
 	queue        []Message
 	dirty        set
 	processing   set
@@ -30,8 +33,9 @@ type Queue struct {
 	shuttingdown bool
 }
 
-func New() *Queue {
+func NewQueue(id string) *Queue {
 	return &Queue{
+		QId:        id,
 		dirty:      set{},
 		processing: set{},
 		condition:  sync.NewCond(&sync.Mutex{}),
@@ -107,4 +111,10 @@ func (q *Queue) Len() int {
 	q.condition.L.Lock()
 	defer q.condition.L.Unlock()
 	return len(q.queue)
+}
+
+func (q *Queue) ID() string {
+	q.condition.L.Lock()
+	defer q.condition.L.Unlock()
+	return q.QId
 }

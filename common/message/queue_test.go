@@ -8,7 +8,7 @@ import (
 
 func TestBasic(t *testing.T) {
 
-	q := New()
+	q := NewQueue("test")
 	// create 50 producers and 10 consumers
 	var wgProd sync.WaitGroup
 	producers := 50
@@ -63,7 +63,7 @@ func TestBasic(t *testing.T) {
 }
 
 func TestAddWhileProcessing(t *testing.T) {
-	q := New()
+	q := NewQueue("test")
 
 	// Start producers
 	const producers = 50

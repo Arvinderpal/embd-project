@@ -6,8 +6,10 @@ import (
 	"sync"
 	"time"
 
+	"github.com/Arvinderpal/embd-project/common"
 	"github.com/Arvinderpal/embd-project/common/adaptorapi"
 	"github.com/Arvinderpal/embd-project/common/driverapi"
+	"github.com/Arvinderpal/embd-project/common/message"
 
 	"gobot.io/x/gobot"
 	"gobot.io/x/gobot/drivers/aio"
@@ -19,10 +21,11 @@ type UltraSonicConf struct {
 	//////////////////////////////////////////////////////
 	// All driver confs should define the following fields. //
 	//////////////////////////////////////////////////////
-	MachineID  string `json:"machine-id"`
-	ID         string `json:"id"`
-	DriverType string `json:"driver-type"`
-	AdaptorID  string `json:"adaptor-id"`
+	MachineID     string   `json:"machine-id"`
+	ID            string   `json:"id"`
+	DriverType    string   `json:"driver-type"`
+	AdaptorID     string   `json:"adaptor-id"`
+	Subscriptions []string `json:"subscriptions"` // Message Type Subscriptions.
 
 	////////////////////////////////////////////
 	// The fields below are driver specific. //
@@ -56,7 +59,11 @@ func (c UltraSonicConf) GetAdaptorID() string {
 	return c.AdaptorID
 }
 
-func (c UltraSonicConf) NewDriver(apiAdpt adaptorapi.Adaptor) (driverapi.Driver, error) {
+func (c UltraSonicConf) GetSubscriptions() []string {
+	return c.Subscriptions
+}
+
+func (c UltraSonicConf) NewDriver(apiAdpt adaptorapi.Adaptor, rcvQ *message.Queue, sndQ *message.Queue) (driverapi.Driver, error) {
 
 	// writer, ok := apiAdpt.(gpio.DigitalWriter)
 	// if !ok {
@@ -74,6 +81,8 @@ func (c UltraSonicConf) NewDriver(apiAdpt adaptorapi.Adaptor) (driverapi.Driver,
 			echo:     echo,
 			Running:  false,
 			killChan: make(chan struct{}),
+			rcvQ:     rcvQ,
+			sndQ:     sndQ,
 		},
 	}
 
@@ -99,6 +108,8 @@ type ultraSonicInternal struct {
 	robot    *driverapi.Robot
 	Running  bool `json:"running"`
 	killChan chan struct{}
+	rcvQ     *message.Queue
+	sndQ     *message.Queue
 }
 
 // Start: starts the driver logic.
@@ -119,45 +130,50 @@ func (d *UltraSonic) Stop() error {
 		return err
 	}
 	d.State.Running = false
-	d.State.killChan <- struct{}{}
+	d.State.rcvQ.ShutDown()
+	d.State.sndQ.ShutDown()
+	close(d.State.killChan) // broadcast
 	return nil
-}
-
-// ProcessMessage: processes messages (i.e. commands such as move forward, backwards...)
-func (d *UltraSonic) ProcessMessage() {
-	d.mu.Lock()
-	defer d.mu.Unlock()
 }
 
 // work: Runs periodically and generates messages/events.
 func (d *UltraSonic) work() {
-
+	ver := 0
 	d.State.echo.On(aio.Data, func(data interface{}) {
-		fmt.Println("ulatra-sonic reading:", data)
+		logger.Infof("ulatra-sonic reading:", data)
+		msg := message.Message{
+			ID: message.MessageID{
+				Type:    common.Message_UltraSonic,
+				SubType: "raw data",
+				Version: ver,
+			},
+			Data: data,
+		}
+		d.State.sndQ.Add(msg)
+		ver += 1
 	})
 
-	fmt.Println("Starting Triag...")
+	logger.Debugf("Starting Triag...")
 	// Assert Trig Pin
 	for {
 		select {
 		case <-d.State.killChan:
+			logger.Debugf("stopping worker on driver %s", d.State.Conf.GetID())
 			return
 		default:
 			// fmt.Printf("OFF-")
 			if err := d.State.trig.Off(); err != nil {
-				fmt.Println("ultrasonic worker: error: %s", err)
-				return
+				logger.Errorf("ultrasonic worker: error: %s", err)
 			}
 			time.Sleep(time.Duration(2) * time.Microsecond)
 			// fmt.Printf("ON-")
 			if err := d.State.trig.On(); err != nil {
-				fmt.Println("ultrasonic worker: error: %s", err)
-				return
+				logger.Errorf("ultrasonic worker: error: %s", err)
 			}
 			time.Sleep(time.Duration(20) * time.Microsecond)
 		}
 	}
-	fmt.Printf("Exiting UltraSonic worker")
+
 }
 
 func (d *UltraSonic) GetConf() driverapi.DriverConf {

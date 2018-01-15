@@ -8,7 +8,14 @@
 			"adaptor-id": "ttyACM0",
 			"conf": {
 			    "led-pin": "13"
-			}
+			},
+			"subscriptions":
+			[
+				"motor control",
+				"ultrasonic",
+				"c",
+				"d"
+			]
 		}
 	]
 }

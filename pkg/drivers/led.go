@@ -4,10 +4,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"sync"
-	"time"
 
 	"github.com/Arvinderpal/embd-project/common/adaptorapi"
 	"github.com/Arvinderpal/embd-project/common/driverapi"
+	"github.com/Arvinderpal/embd-project/common/message"
 
 	"gobot.io/x/gobot"
 	"gobot.io/x/gobot/drivers/gpio"
@@ -18,10 +18,11 @@ type LEDConf struct {
 	//////////////////////////////////////////////////////
 	// All driver confs should define the following fields. //
 	//////////////////////////////////////////////////////
-	MachineID  string `json:"machine-id"`
-	ID         string `json:"id"`
-	DriverType string `json:"driver-type"`
-	AdaptorID  string `json:"adaptor-id"`
+	MachineID     string   `json:"machine-id"`
+	ID            string   `json:"id"`
+	DriverType    string   `json:"driver-type"`
+	AdaptorID     string   `json:"adaptor-id"`
+	Subscriptions []string `json:"subscriptions"` // Message Type Subscriptions.
 
 	////////////////////////////////////////////
 	// The fields below are driver specific. //
@@ -54,14 +55,21 @@ func (c LEDConf) GetAdaptorID() string {
 	return c.AdaptorID
 }
 
-func (c LEDConf) NewDriver(apiAdpt adaptorapi.Adaptor) (driverapi.Driver, error) {
+func (c LEDConf) GetSubscriptions() []string {
+	return c.Subscriptions
+}
+
+func (c LEDConf) NewDriver(apiAdpt adaptorapi.Adaptor, rcvQ *message.Queue, sndQ *message.Queue) (driverapi.Driver, error) {
 
 	led := gpio.NewLedDriver(apiAdpt, c.LEDPin)
 
 	drv := LED{
 		State: &ledInternal{
-			Conf: c,
-			led:  led,
+			Conf:     c,
+			led:      led,
+			rcvQ:     rcvQ,
+			sndQ:     sndQ,
+			killChan: make(chan struct{}),
 		},
 	}
 
@@ -80,10 +88,12 @@ type LED struct {
 }
 
 type ledInternal struct {
-	Conf    LEDConf         `json:"conf"`
-	led     *gpio.LedDriver `json:"led"`
-	robot   *driverapi.Robot
-	Running bool `json:"running"`
+	Conf     LEDConf         `json:"conf"`
+	led      *gpio.LedDriver `json:"led"`
+	robot    *driverapi.Robot
+	rcvQ     *message.Queue
+	sndQ     *message.Queue
+	killChan chan struct{}
 }
 
 // Start: starts the driver logic.
@@ -91,7 +101,6 @@ func (d *LED) Start() error {
 	d.mu.Lock()
 	defer d.mu.Unlock()
 	go d.State.robot.Start()
-	d.State.Running = true
 	return nil
 }
 
@@ -103,28 +112,45 @@ func (d *LED) Stop() error {
 	if err != nil {
 		return err
 	}
-	d.State.Running = false
+	d.State.rcvQ.ShutDown()
+	d.State.sndQ.ShutDown()
+	close(d.State.killChan)
 	return nil
-}
-
-// ProcessMessage: processes messages (i.e. commands such as move forward, backwards...)
-func (d *LED) ProcessMessage() {
-	d.mu.Lock()
-	defer d.mu.Unlock()
 }
 
 // work: Runs periodically and generates messages/events.
 func (d *LED) work() {
-	gobot.Every(2*time.Second, func() {
-		d.mu.Lock()
-		if !d.State.Running {
-			d.mu.Unlock()
-			// TODO: we sould really use a killchan!
+
+	for {
+		select {
+		case <-d.State.killChan:
 			return
+		default:
+			// NOTE: Get will block this routine until either the driver is stopeed or a message arrives.
+			msg, shutdown := d.State.rcvQ.Get()
+			if shutdown {
+				logger.Debugf("stopping worker on driver %s", d.State.Conf.GetID())
+				return
+			}
+			d.State.rcvQ.Done(msg)
+			logger.Debugf("led-driver received msg: %q", msg)
+			d.mu.Lock()
+			d.State.led.Toggle()
+			d.mu.Unlock()
+
 		}
-		d.State.led.Toggle()
-		d.mu.Unlock()
-	})
+	}
+
+	// gobot.Every(2*time.Second, func() {
+	// 	d.mu.Lock()
+	// 	if !d.State.Running {
+	// 		d.mu.Unlock()
+	// 		// TODO: we sould really use a killchan!
+	// 		return
+	// 	}
+	// 	d.State.led.Toggle()
+	// 	d.mu.Unlock()
+	// })
 }
 
 func (d *LED) GetConf() driverapi.DriverConf {

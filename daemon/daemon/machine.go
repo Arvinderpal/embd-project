@@ -5,6 +5,7 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/Arvinderpal/embd-project/common/message"
 	"github.com/Arvinderpal/embd-project/pkg/machine"
 	"github.com/Arvinderpal/embd-project/pkg/option"
 )
@@ -53,9 +54,9 @@ func (d *Daemon) getMachineAndUpdateIDs(machineID string) *machine.Machine {
 }
 
 // Public API to insert an machine
-func (d *Daemon) InsertMachine(ep *machine.Machine) {
+func (d *Daemon) InsertMachine(mh *machine.Machine) {
 	d.machinesMU.Lock()
-	d.insertMachine(ep)
+	d.insertMachine(mh)
 	d.machinesMU.Unlock()
 }
 
@@ -64,6 +65,8 @@ func (d *Daemon) insertMachine(mh *machine.Machine) {
 	if mh.Status == nil {
 		mh.Status = &machine.MachineStatus{}
 	}
+
+	mh.MsgRouter = message.NewMessageRouter()
 
 	if mh.MachineID != "" {
 		d.machines[mh.MachineID] = mh

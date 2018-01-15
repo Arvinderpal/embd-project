@@ -8,6 +8,7 @@ import (
 
 	"github.com/Arvinderpal/embd-project/common/adaptorapi"
 	"github.com/Arvinderpal/embd-project/common/driverapi"
+	"github.com/Arvinderpal/embd-project/common/message"
 
 	"gobot.io/x/gobot"
 	"gobot.io/x/gobot/drivers/gpio"
@@ -24,11 +25,11 @@ type DualMotorsConf struct {
 	//////////////////////////////////////////////////////
 	// All driver confs should define the following fields. //
 	//////////////////////////////////////////////////////
-	MachineID  string `json:"machine-id"`
-	ID         string `json:"id"`
-	DriverType string `json:"driver-type"`
-	AdaptorID  string `json:"adaptor-id"`
-
+	MachineID     string   `json:"machine-id"`
+	ID            string   `json:"id"`
+	DriverType    string   `json:"driver-type"`
+	AdaptorID     string   `json:"adaptor-id"`
+	Subscriptions []string `json:"subscriptions"` // Message Type Subscriptions.
 	////////////////////////////////////////////
 	// The fields below are driver specific. //
 	////////////////////////////////////////////
@@ -64,7 +65,11 @@ func (c DualMotorsConf) GetAdaptorID() string {
 	return c.AdaptorID
 }
 
-func (c DualMotorsConf) NewDriver(apiAdpt adaptorapi.Adaptor) (driverapi.Driver, error) {
+func (c DualMotorsConf) GetSubscriptions() []string {
+	return c.Subscriptions
+}
+
+func (c DualMotorsConf) NewDriver(apiAdpt adaptorapi.Adaptor, rcvQ *message.Queue, sndQ *message.Queue) (driverapi.Driver, error) {
 
 	// writer, ok := apiAdpt.(gpio.DigitalWriter)
 	// if !ok {
@@ -83,6 +88,9 @@ func (c DualMotorsConf) NewDriver(apiAdpt adaptorapi.Adaptor) (driverapi.Driver,
 			Conf:       c,
 			RightMotor: rightmotor,
 			LeftMotor:  leftmotor,
+			killChan:   make(chan struct{}),
+			rcvQ:       rcvQ,
+			sndQ:       sndQ,
 		},
 	}
 
@@ -106,6 +114,9 @@ type dualMotorsInternal struct {
 	LeftMotor  *gpio.MotorDriver `json:"left-motor"`
 	robot      *driverapi.Robot
 	Running    bool `json:"running"`
+	killChan   chan struct{}
+	rcvQ       *message.Queue
+	sndQ       *message.Queue
 }
 
 // Start: starts the driver logic.
@@ -126,13 +137,8 @@ func (d *DualMotors) Stop() error {
 		return err
 	}
 	d.State.Running = false
+	close(d.State.killChan) // broadcast
 	return nil
-}
-
-// ProcessMessage: processes messages (i.e. commands such as move forward, backwards...)
-func (d *DualMotors) ProcessMessage() {
-	d.mu.Lock()
-	defer d.mu.Unlock()
 }
 
 // work: Runs periodically and generates messages/events.
@@ -156,7 +162,7 @@ func (d *DualMotors) work() {
 			fadeAmount = -fadeAmount
 		}
 		d.mu.Unlock()
-		fmt.Printf("%d, ", speed) // TODO: move logs to the logfile.
+		logger.Infof("%d, ", speed) // TODO: move logs to the logfile.
 	})
 }
 
@@ -178,7 +184,6 @@ func (d *DualMotors) Copy() driverapi.Driver {
 			Conf:       d.State.Conf,
 			RightMotor: d.State.RightMotor,
 			LeftMotor:  d.State.LeftMotor,
-			// Data: p.State.Data,
 		},
 	}
 	return cpy
