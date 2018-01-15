@@ -112,8 +112,9 @@ func (d *LED) Stop() error {
 	if err != nil {
 		return err
 	}
-
-	d.State.killChan <- struct{}{}
+	d.State.rcvQ.ShutDown()
+	d.State.sndQ.ShutDown()
+	close(d.State.killChan)
 	return nil
 }
 
@@ -128,12 +129,15 @@ func (d *LED) work() {
 			// NOTE: Get will block this routine until either the driver is stopeed or a message arrives.
 			msg, shutdown := d.State.rcvQ.Get()
 			if shutdown {
+				logger.Debugf("stopping worker on driver %s", d.State.Conf.GetID())
 				return
 			}
-			fmt.Printf("led-driver received msg: %q", msg)
+			d.State.rcvQ.Done(msg)
+			logger.Debugf("led-driver received msg: %q", msg)
 			d.mu.Lock()
 			d.State.led.Toggle()
 			d.mu.Unlock()
+
 		}
 	}
 

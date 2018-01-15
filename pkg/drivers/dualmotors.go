@@ -88,6 +88,7 @@ func (c DualMotorsConf) NewDriver(apiAdpt adaptorapi.Adaptor, rcvQ *message.Queu
 			Conf:       c,
 			RightMotor: rightmotor,
 			LeftMotor:  leftmotor,
+			killChan:   make(chan struct{}),
 			rcvQ:       rcvQ,
 			sndQ:       sndQ,
 		},
@@ -113,6 +114,7 @@ type dualMotorsInternal struct {
 	LeftMotor  *gpio.MotorDriver `json:"left-motor"`
 	robot      *driverapi.Robot
 	Running    bool `json:"running"`
+	killChan   chan struct{}
 	rcvQ       *message.Queue
 	sndQ       *message.Queue
 }
@@ -135,6 +137,7 @@ func (d *DualMotors) Stop() error {
 		return err
 	}
 	d.State.Running = false
+	close(d.State.killChan) // broadcast
 	return nil
 }
 
@@ -159,7 +162,7 @@ func (d *DualMotors) work() {
 			fadeAmount = -fadeAmount
 		}
 		d.mu.Unlock()
-		fmt.Printf("%d, ", speed) // TODO: move logs to the logfile.
+		logger.Infof("%d, ", speed) // TODO: move logs to the logfile.
 	})
 }
 

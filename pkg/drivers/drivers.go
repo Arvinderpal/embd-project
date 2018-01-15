@@ -6,6 +6,11 @@ import (
 
 	"github.com/Arvinderpal/embd-project/common/driverapi"
 	"github.com/Arvinderpal/embd-project/common/types"
+	logging "github.com/op/go-logging"
+)
+
+var (
+	logger = logging.MustGetLogger("segue-drivers")
 )
 
 // List of all drivers

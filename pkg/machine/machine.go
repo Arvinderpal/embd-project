@@ -295,11 +295,12 @@ func (mh *Machine) startDrivers(confs []driverapi.DriverConf) error {
 		subsMsgTypes := conf.GetSubscriptions()
 		logger.Infof("Adding subscription: %s", subsMsgTypes)
 		for _, sMsgT := range subsMsgTypes {
-			err := mh.MsgRouter.AddSubscriber(sMsgT, drvRcvQ)
+			err := mh.MsgRouter.AddSubscriberQueue(sMsgT, drvRcvQ)
 			if err != nil {
 				return err
 			}
 		}
+		mh.MsgRouter.AddListener(drvSndQ)
 
 		err = drv.Start()
 		if err != nil {
@@ -335,7 +336,7 @@ func (mh *Machine) stopDriver(driverType, driverID string) error {
 
 			subsMsgTypes := drv.GetConf().GetSubscriptions()
 			for _, sMsgT := range subsMsgTypes {
-				err := mh.MsgRouter.RemoveSubscriber(sMsgT, drv.GetConf().GetID())
+				err := mh.MsgRouter.RemoveSubscriberQueue(sMsgT, drv.GetConf().GetID())
 				if err != nil {
 					mh.LogStatus(Failure, fmt.Sprintf("could not remove queue subscription on message type %s: %s", sMsgT, err))
 					return err

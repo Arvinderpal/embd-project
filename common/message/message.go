@@ -1,6 +1,15 @@
 package message
 
-import "fmt"
+import (
+	"fmt"
+	"sync"
+
+	logging "github.com/op/go-logging"
+)
+
+var (
+	logger = logging.MustGetLogger("segue-message")
+)
 
 type MessageID struct {
 	Type    string
@@ -16,6 +25,7 @@ type Message struct {
 }
 
 type MessageRouter struct {
+	mu       sync.RWMutex
 	RouteMap map[string][]*Queue
 }
 
@@ -25,8 +35,31 @@ func NewMessageRouter() *MessageRouter {
 	}
 }
 
-// AddSubscriver: adds the subscriber queue for the message type specified
-func (m *MessageRouter) AddSubscriber(msgTye string, queue *Queue) error {
+// AddListener: adds a listner on queue that will be used by the drivers/controllers to send messages (i.e. SndQ)
+func (m *MessageRouter) AddListener(queue *Queue) {
+
+	go func() {
+		for {
+			msg, shutdown := queue.Get()
+			if shutdown {
+				logger.Debugf("stopping listener on queue %s", queue.ID())
+				return
+			}
+			// Forward message to all subscriber queues
+			m.mu.RLock()
+			set := m.RouteMap[msg.ID.Type]
+			for _, q := range set {
+				q.Add(msg)
+			}
+			m.mu.RUnlock()
+		}
+	}()
+	return
+}
+
+// AddSubscriberQueue: adds the subscriber queue for the message type specified
+// This is typically the RcvQ for drivers/controllers
+func (m *MessageRouter) AddSubscriberQueue(msgTye string, queue *Queue) error {
 	set := m.RouteMap[msgTye]
 	if queue.IsShuttingDown() {
 		return fmt.Errorf("cannot add subscriber (%s) on message type %s, queue must not be shutting down", queue.ID(), msgTye)
@@ -46,9 +79,9 @@ func (m *MessageRouter) AddSubscriber(msgTye string, queue *Queue) error {
 	return nil
 }
 
-// RemoveSubscriber: removes the subscriber with queue ID for message type specified
+// RemoveSubscriberQueue: removes the subscriber queue for message type specified
 // IMPORTANT: user must ensure that the queue has been shutdown and all the messages drained before calling this func.
-func (m *MessageRouter) RemoveSubscriber(msgTye, subID string) error {
+func (m *MessageRouter) RemoveSubscriberQueue(msgTye, subID string) error {
 	set := m.RouteMap[msgTye]
 	for i, q := range set {
 		if subID == q.ID() {
@@ -57,6 +90,7 @@ func (m *MessageRouter) RemoveSubscriber(msgTye, subID string) error {
 			}
 			set = append(set[:i], set[i+1:]...)
 			m.RouteMap[msgTye] = set
+			// TODO: if map entry is empty for a particular message type, then we can delete that entry entirely.
 			return nil
 		}
 	}

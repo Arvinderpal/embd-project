@@ -130,7 +130,9 @@ func (d *UltraSonic) Stop() error {
 		return err
 	}
 	d.State.Running = false
-	d.State.killChan <- struct{}{}
+	d.State.rcvQ.ShutDown()
+	d.State.sndQ.ShutDown()
+	close(d.State.killChan) // broadcast
 	return nil
 }
 
@@ -138,7 +140,7 @@ func (d *UltraSonic) Stop() error {
 func (d *UltraSonic) work() {
 	ver := 0
 	d.State.echo.On(aio.Data, func(data interface{}) {
-		fmt.Println("ulatra-sonic reading:", data)
+		logger.Infof("ulatra-sonic reading:", data)
 		msg := message.Message{
 			ID: message.MessageID{
 				Type:    common.Message_UltraSonic,
@@ -151,28 +153,27 @@ func (d *UltraSonic) work() {
 		ver += 1
 	})
 
-	fmt.Println("Starting Triag...")
+	logger.Debugf("Starting Triag...")
 	// Assert Trig Pin
 	for {
 		select {
 		case <-d.State.killChan:
+			logger.Debugf("stopping worker on driver %s", d.State.Conf.GetID())
 			return
 		default:
 			// fmt.Printf("OFF-")
 			if err := d.State.trig.Off(); err != nil {
-				fmt.Println("ultrasonic worker: error: %s", err)
-				return
+				logger.Errorf("ultrasonic worker: error: %s", err)
 			}
 			time.Sleep(time.Duration(2) * time.Microsecond)
 			// fmt.Printf("ON-")
 			if err := d.State.trig.On(); err != nil {
-				fmt.Println("ultrasonic worker: error: %s", err)
-				return
+				logger.Errorf("ultrasonic worker: error: %s", err)
 			}
 			time.Sleep(time.Duration(20) * time.Microsecond)
 		}
 	}
-	fmt.Printf("Exiting UltraSonic worker")
+
 }
 
 func (d *UltraSonic) GetConf() driverapi.DriverConf {

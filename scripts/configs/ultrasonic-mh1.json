@@ -9,7 +9,12 @@
 			"conf": {
 			    "trig-pin": "12",
 			    "echo-pin": "4"
-			}
+			},
+			"subscriptions":
+			[
+				"c",
+				"d"
+			]
 		}
 	]
 }
