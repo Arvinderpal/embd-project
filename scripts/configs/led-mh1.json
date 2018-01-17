@@ -11,8 +11,8 @@
 			},
 			"subscriptions":
 			[
-				"motor control",
-				"ultrasonic",
+				"cmd-drive",
+				"sensor-ultrasonic",
 				"c",
 				"d"
 			]

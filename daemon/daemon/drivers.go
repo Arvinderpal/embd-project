@@ -34,7 +34,7 @@ func (d *Daemon) StartDrivers(confB []byte) error {
 		return err
 	}
 
-	logger.Infof("Attach drivers successful on machine: %s", env.MachineID)
+	logger.Infof("Start drivers successful on machine: %s", env.MachineID)
 	return nil
 }
 
@@ -49,6 +49,6 @@ func (d *Daemon) StopDriver(machineID, driverType, driverID string) error {
 		return err
 	}
 
-	logger.Infof("Detach driver successful on machine: %s", machineID)
+	logger.Infof("Stop driver successful on machine: %s", machineID)
 	return nil
 }

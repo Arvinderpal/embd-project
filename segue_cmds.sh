@@ -1,5 +1,5 @@
-./segue daemon machine join ../scripts/configs/mh-1.json
-./segue daemon adaptor attach ../scripts/configs/adaptor-serial-dev-ttyACM0.json
+
+./segue daemon machine join ../scripts/configs/mh-1.json ;./segue daemon adaptor attach ../scripts/configs/adaptor-serial-dev-ttyACM0.json
 ./segue daemon driver start ../scripts/configs/dualmotors-mh1.json
 ./segue daemon machine get mh1
 

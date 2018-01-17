@@ -1,0 +1,17 @@
+{
+	"machine-id": "mh1",
+	"confs": 
+	[
+		{
+			"type": "autonomous-drive",
+			"id": "autonomous-drive-1",
+			"conf": {
+			    "log-file-path-name": "/tmp/autonomous-drive-1.log"
+			},
+			"subscriptions":
+			[
+				"sensor-ultrasonic"
+			]
+		}
+	]
+}

@@ -14,7 +14,6 @@ import (
 )
 
 func (router *Router) driverStart(w http.ResponseWriter, r *http.Request) {
-	logger.Debugf("starting driver(s)\n") // REMOVE
 	confB, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		processServerError(w, r, err)
@@ -52,11 +51,45 @@ func (router *Router) driverStop(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	w.WriteHeader(http.StatusAccepted)
+}
+
+func (router *Router) controllerStart(w http.ResponseWriter, r *http.Request) {
+	confB, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		processServerError(w, r, err)
+		return
+	}
+
+	if err := router.daemon.StartControllers(confB); err != nil {
+		processServerError(w, r, err)
+		return
+	}
+	w.WriteHeader(http.StatusAccepted)
+}
+
+func (router *Router) controllerStop(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	machineID, exists := vars["machineID"]
+	if !exists {
+		processServerError(w, r, errors.New("server received empty machine id"))
+		return
+	}
+	controllerID, exists := vars["controllerID"]
+	if !exists {
+		processServerError(w, r, errors.New("server received empty controller id"))
+		return
+	}
+	logger.Debugf("Recieved %s (id: %s) controller stop request on machine %s", controllerID, machineID)
+
+	if err := router.daemon.StopController(machineID, controllerID); err != nil {
+		processServerError(w, r, err)
+		return
+	}
+	w.WriteHeader(http.StatusAccepted)
 
 }
 
 func (router *Router) adaptorAttach(w http.ResponseWriter, r *http.Request) {
-	logger.Debugf("starting adaptor(s)\n") // REMOVE
 	confB, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		processServerError(w, r, err)
