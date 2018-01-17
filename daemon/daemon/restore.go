@@ -10,6 +10,7 @@ import (
 
 	"github.com/Arvinderpal/embd-project/common"
 	"github.com/Arvinderpal/embd-project/common/adaptorapi"
+	"github.com/Arvinderpal/embd-project/common/controllerapi"
 	"github.com/Arvinderpal/embd-project/common/driverapi"
 	"github.com/Arvinderpal/embd-project/pkg/machine"
 )
@@ -84,8 +85,10 @@ func (d *Daemon) restoreMachine(stateFile string) (*machine.Machine, error) {
 
 	// The mh object created from the JSON file provides us with the list of drivers that were running when the snapshot was taken. We will create a new mh object to which we will attach and start those drivers.
 
-	mh := tMh.DeepCopy()
+	mh := tMh.DeepCopy(true)
 	mh.Drivers = nil // These will be populated as we attach drivers below
+	mh.Controllers = nil
+	mh.Adaptors = nil
 	d.InsertMachine(mh)
 
 	mh.LogStatus(machine.Info, "Restoring machine...")
@@ -110,14 +113,36 @@ func (d *Daemon) restoreMachine(stateFile string) (*machine.Machine, error) {
 		return mh, err
 	}
 
+	// start controllers
+	eCtls := controllerapi.ControllersConfEnvelope{
+		MachineID: tMh.MachineID,
+	}
+	for _, ctl := range tMh.Drivers {
+		eCtl := controllerapi.ControllerConfEnvelope{
+			Type:          ctl.GetConf().GetType(),
+			Conf:          ctl.GetConf(),
+			Subscriptions: ctl.GetConf().GetSubscriptions(),
+		}
+		eCtls.Confs = append(eCtls.Confs, eCtl)
+	}
+	confb, err = json.Marshal(eCtls)
+	if err != nil {
+		return mh, err
+	}
+	err = d.StartControllers(confb)
+	if err != nil {
+		return mh, err
+	}
+
 	// start drivers
 	eDrvs := driverapi.DriversConfEnvelope{
 		MachineID: tMh.MachineID,
 	}
 	for _, drv := range tMh.Drivers {
 		eDrv := driverapi.DriverConfEnvelope{
-			Type: drv.GetConf().GetType(),
-			Conf: drv.GetConf(),
+			Type:          drv.GetConf().GetType(),
+			Conf:          drv.GetConf(),
+			Subscriptions: drv.GetConf().GetSubscriptions(),
 		}
 		eDrvs.Confs = append(eDrvs.Confs, eDrv)
 	}

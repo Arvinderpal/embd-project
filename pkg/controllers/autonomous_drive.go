@@ -190,7 +190,7 @@ func (s *autonomousDriveInternal) commandIssuer() {
 		}
 
 		if len(s.ultrasonicDataReadings) <= 1 {
-			speed = 0
+			speed = stopSpeedValue
 			logger.Infof("stopping!")
 		} else if len(s.ultrasonicDataReadings) > 5 {
 			if speed < maxSpeedValue {

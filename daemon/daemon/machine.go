@@ -108,6 +108,14 @@ func (d *Daemon) MachineLeave(machineID string) error {
 		return fmt.Errorf("machine %s not found", machineID)
 	}
 
+	for _, ctl := range mh.Controllers {
+		err := mh.StopController(ctl.GetConf().GetID())
+		if err != nil {
+			return err
+		}
+		logger.Infof("Successfully removed controller %s on machine %s", ctl.GetConf().GetID(), machineID)
+	}
+
 	for _, drv := range mh.Drivers {
 		err := mh.StopDriver(drv.GetConf().GetType(), drv.GetConf().GetID())
 		if err != nil {

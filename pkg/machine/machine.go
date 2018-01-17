@@ -131,7 +131,7 @@ func (e Machine) Validate() error {
 	return nil
 }
 
-func (mh *Machine) DeepCopy() *Machine {
+func (mh *Machine) DeepCopy(fromFile ...bool) *Machine {
 
 	mh.mutex.RLock()
 	defer mh.mutex.RUnlock()
@@ -161,7 +161,12 @@ func (mh *Machine) DeepCopy() *Machine {
 	for msgTyp, set := range mh.MsgRouter.RouteMap {
 		var cpySet []*message.Queue
 		for _, q := range set {
-			cpySet = append(cpySet, &message.Queue{QId: q.ID()})
+			// NOTE: this is a bit hacky but during restore from file, the Queue object is created from the JSOn in the file and therefore calling q.ID() will cause panic since the conditional mutex will not have been allocated. To handle this, we pass an optional parameter to the DeepCopy() method that distinguishes this special case.
+			if len(fromFile) > 0 && fromFile[0] {
+				cpySet = append(cpySet, &message.Queue{QId: q.QId})
+			} else {
+				cpySet = append(cpySet, &message.Queue{QId: q.ID()})
+			}
 		}
 		cpy.MsgRouter.RouteMap[msgTyp] = cpySet
 	}
