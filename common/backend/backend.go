@@ -19,6 +19,11 @@ type driversBackend interface {
 	StopDriver(machineID, driverType, driverID string) error
 }
 
+type controllersBackend interface {
+	StartControllers(conf []byte) error
+	StopController(machineID, controllerID string) error
+}
+
 type adaptorsBackend interface {
 	AttachAdaptors(conf []byte) error
 	DetachAdaptor(machineID, adaptorType, adaptorID string) error
@@ -35,6 +40,7 @@ type SegueBackend interface {
 	machineBackend
 	driversBackend
 	adaptorsBackend
+	controllersBackend
 	control
 }
 

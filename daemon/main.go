@@ -106,6 +106,12 @@ func init() {
 				Action:    driverUpdate,
 				ArgsUsage: "<start JSON file>/<stop machine-id driver-type driver-id>",
 			},
+			{
+				Name:      "controller",
+				Usage:     "Start and Stop Controller",
+				Action:    controllerUpdate,
+				ArgsUsage: "<start JSON file>/<stop machine-id controller-id>",
+			},
 		},
 	}
 }
@@ -348,6 +354,62 @@ func driverUpdate(ctx *cli.Context) {
 		err = client.StopDriver(machineID, driverType, driverID)
 		if err != nil {
 			log.Errorf("Unable to %s driver %s on machine %s: %s.\n", operation, driverID, machineID, err)
+			return
+		}
+	default:
+		log.Errorf("Unknown Operation %s", operation)
+		return
+	}
+}
+
+func controllerUpdate(ctx *cli.Context) {
+
+	var (
+		client *mclient.Client
+		err    error
+	)
+
+	if host := ctx.GlobalString("host"); host == "" {
+		client, err = mclient.NewDefaultClient()
+	} else {
+		client, err = mclient.NewClient(host, nil)
+	}
+
+	if err != nil {
+		log.Errorf("Error while creating segue-client: %s\n", err)
+		return
+	}
+
+	args := ctx.Args()
+	operation := ctx.Args().Get(0)
+
+	switch strings.ToLower(operation) {
+	case "start":
+		if len(args) < 2 {
+			log.Errorf("Insufficient arguments provided\n")
+			return
+		}
+		confPath := ctx.Args().Get(1)
+		bytes, err := ioutil.ReadFile(confPath)
+		if err != nil {
+			log.Errorf("Error reading controller file: %s", err.Error())
+			return
+		}
+		err = client.StartControllers(bytes)
+		if err != nil {
+			log.Errorf("Unable to %s controller(s) on machine: %s.\n", operation, err)
+			return
+		}
+	case "stop":
+		if len(args) < 3 {
+			log.Errorf("Insufficient arguments provided\n")
+			return
+		}
+		machineID := ctx.Args().Get(1)
+		controllerID := ctx.Args().Get(2)
+		err = client.StopController(machineID, controllerID)
+		if err != nil {
+			log.Errorf("Unable to %s controller %s on machine %s: %s.\n", operation, controllerID, machineID, err)
 			return
 		}
 	default:

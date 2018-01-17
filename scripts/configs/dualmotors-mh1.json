@@ -21,10 +21,7 @@
 			},
 			"subscriptions":
 			[
-				"motor-control",
-				"ultra-sonic",
-				"c",
-				"d"
+				"cmd-drive"
 			]
 		}
 	]

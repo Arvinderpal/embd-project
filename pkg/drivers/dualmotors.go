@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"sync"
-	"time"
 
+	"github.com/Arvinderpal/embd-project/common"
 	"github.com/Arvinderpal/embd-project/common/adaptorapi"
 	"github.com/Arvinderpal/embd-project/common/driverapi"
 	"github.com/Arvinderpal/embd-project/common/message"
@@ -136,34 +136,37 @@ func (d *DualMotors) Stop() error {
 	if err != nil {
 		return err
 	}
+	d.State.rcvQ.ShutDown()
+	d.State.sndQ.ShutDown()
 	d.State.Running = false
 	close(d.State.killChan) // broadcast
 	return nil
 }
 
-// work: Runs periodically and generates messages/events.
+// work: processes motor commands from controllers.
 func (d *DualMotors) work() {
-	speed := byte(0)
-	fadeAmount := byte(15)
-
-	d.mu.Lock()
-	d.State.RightMotor.Forward(speed)
-	d.mu.Unlock()
-	gobot.Every(500*time.Millisecond, func() {
-		d.mu.Lock()
-		if !d.State.Running {
-			d.mu.Unlock()
-			// TODO: we sould really use a killchan!
+	for {
+		select {
+		case <-d.State.killChan:
 			return
+		default:
+			// NOTE: Get will block this routine until either the controller is stopped or a message arrives.
+			msg, shutdown := d.State.rcvQ.Get()
+			if shutdown {
+				logger.Debugf("stopping worker on driver %s", d.State.Conf.GetID())
+				return
+			}
+			logger.Debugf("dualmotors: received msg: %q", msg)
+			switch msg.ID.Type {
+			case common.Message_Cmd_Drive:
+				d.ProcessDriveCmd(msg)
+			default:
+				logger.Errorf("dualmotors: unknown message type %s", msg.ID.Type)
+			}
+
+			d.State.rcvQ.Done(msg)
 		}
-		d.State.RightMotor.Speed(speed)
-		speed = speed + fadeAmount
-		if speed == 0 || speed == 255 {
-			fadeAmount = -fadeAmount
-		}
-		d.mu.Unlock()
-		logger.Infof("%d, ", speed) // TODO: move logs to the logfile.
-	})
+	}
 }
 
 func (d *DualMotors) GetConf() driverapi.DriverConf {
@@ -200,3 +203,48 @@ func (d *DualMotors) UnmarshalJSON(data []byte) error {
 	err := json.Unmarshal(data, d.State)
 	return err
 }
+
+// ProcessDriveCmd: activates the motor according to message.
+func (d *DualMotors) ProcessDriveCmd(msg message.Message) {
+	d.mu.Lock()
+	defer d.mu.Unlock()
+	cmd := msg.ID.SubType
+	switch cmd {
+	case "forward":
+		speed := msg.Data.(byte)
+		d.State.RightMotor.Forward(speed)
+		d.State.LeftMotor.Forward(speed)
+	case "backward":
+		speed := msg.Data.(byte)
+		d.State.RightMotor.Backward(speed)
+		d.State.LeftMotor.Backward(speed)
+	default:
+		logger.Errorf("dual-motors: unknown message sub-type: %s", cmd)
+	}
+	return
+}
+
+// func (d *DualMotors) Forward(speed byte) {
+
+// 	speed := byte(0)
+// 	fadeAmount := byte(15)
+
+// 	d.mu.Lock()
+// 	d.State.RightMotor.Forward(speed)
+// 	d.mu.Unlock()
+// 	gobot.Every(500*time.Millisecond, func() {
+// 		d.mu.Lock()
+// 		if !d.State.Running {
+// 			d.mu.Unlock()
+// 			// TODO: we sould really use a killchan!
+// 			return
+// 		}
+// 		d.State.RightMotor.Speed(speed)
+// 		speed = speed + fadeAmount
+// 		if speed == 0 || speed == 255 {
+// 			fadeAmount = -fadeAmount
+// 		}
+// 		d.mu.Unlock()
+// 		logger.Infof("%d, ", speed) // TODO: move logs to the logfile.
+// 	})
+// }

@@ -33,5 +33,6 @@ const (
 )
 
 const (
-	Message_UltraSonic = "ultrasonic"
+	Message_Sensor_UltraSonic = "sensor-ultrasonic"
+	Message_Cmd_Drive         = "cmd-drive"
 )

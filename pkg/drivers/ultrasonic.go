@@ -140,11 +140,11 @@ func (d *UltraSonic) Stop() error {
 func (d *UltraSonic) work() {
 	ver := 0
 	d.State.echo.On(aio.Data, func(data interface{}) {
-		logger.Infof("ulatra-sonic reading:", data)
+		// logger.Infof("ultra-sonic reading:", data)
 		msg := message.Message{
 			ID: message.MessageID{
-				Type:    common.Message_UltraSonic,
-				SubType: "raw data",
+				Type:    common.Message_Sensor_UltraSonic,
+				SubType: "raw",
 				Version: ver,
 			},
 			Data: data,

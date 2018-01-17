@@ -13,9 +13,11 @@ import (
 
 	"github.com/Arvinderpal/embd-project/common"
 	"github.com/Arvinderpal/embd-project/common/adaptorapi"
+	"github.com/Arvinderpal/embd-project/common/controllerapi"
 	"github.com/Arvinderpal/embd-project/common/driverapi"
 	"github.com/Arvinderpal/embd-project/common/message"
 	"github.com/Arvinderpal/embd-project/pkg/adaptors"
+	"github.com/Arvinderpal/embd-project/pkg/controllers"
 	"github.com/Arvinderpal/embd-project/pkg/drivers"
 	"github.com/Arvinderpal/embd-project/pkg/option"
 
@@ -27,18 +29,19 @@ var (
 )
 
 const (
-	maxLogs = 16
+	maxLogs = 4
 )
 
 // Machine contains all the details for a particular machine.
 type Machine struct {
-	mutex     sync.RWMutex
-	MachineID string                 `json:"machine-id"`    // Machine ID.
-	Adaptors  []*AdaptorWrapper      `json:"adaptors`       // Machine adaptor for communicating with hardware.
-	Drivers   []*DriverWrapper       `json:"drivers"`       // Drivers that part of this machine.
-	MsgRouter *message.MessageRouter `json:"message-router` // Route messages between drivers/controllers.
-	Opts      *option.BoolOptions    `json:"options"`       // Machine options.
-	Status    *MachineStatus         `json:"status,omitempty"`
+	mutex       sync.RWMutex
+	MachineID   string                 `json:"machine-id"`    // Machine ID.
+	Adaptors    []*AdaptorWrapper      `json:"adaptors`       // Machine adaptor for communicating with hardware.
+	Drivers     []*DriverWrapper       `json:"drivers"`       // Drivers that are part of this machine.
+	Controllers []*ControllerWrapper   `json:"controllers"`   // Controllers that are part of this machine.
+	MsgRouter   *message.MessageRouter `json:"message-router` // Route messages between drivers/controllers.
+	Opts        *option.BoolOptions    `json:"options"`       // Machine options.
+	Status      *MachineStatus         `json:"status,omitempty"`
 }
 
 type statusLog struct {
@@ -145,6 +148,10 @@ func (mh *Machine) DeepCopy() *Machine {
 	for _, d := range mh.Drivers {
 		dCpy := d.Copy()
 		cpy.Drivers = append(cpy.Drivers, &DriverWrapper{dCpy})
+	}
+	for _, c := range mh.Controllers {
+		cCpy := c.Copy()
+		cpy.Controllers = append(cpy.Controllers, &ControllerWrapper{cCpy})
 	}
 	for _, a := range mh.Adaptors {
 		aCpy := a.Copy()
@@ -351,6 +358,116 @@ func (mh *Machine) stopDriver(driverType, driverID string) error {
 	return fmt.Errorf("driver %s (id:%s) not found on machine %s", driverType, driverID, mh.MachineID)
 }
 
+// LookupController returns matching controllerType
+// IMPORTANT: if mutex lock is already held by calling func, use lookupController
+// instead of this LookupHook
+func (mh *Machine) LookupController(controllerType string) controllerapi.Controller {
+	mh.mutex.RLock()
+	defer mh.mutex.RUnlock()
+	return mh.lookupController(controllerType)
+}
+
+// lookupController returns matching controllerType
+// IMPORTANT: aquire a mutex lock before calling this func
+func (mh *Machine) lookupController(controllerType string) controllerapi.Controller {
+	for _, h := range mh.Controllers {
+		if h.GetConf().GetType() == controllerType {
+			return h
+		}
+	}
+	return nil
+}
+
+func (mh *Machine) StartControllers(confs []controllerapi.ControllerConf) error {
+	mh.mutex.Lock()
+	defer mh.mutex.Unlock()
+	err := mh.startControllers(confs)
+	err2 := mh.snapshot() // NOTE: we snapshot even if error occured during start
+	if err != nil || err2 != nil {
+		return fmt.Errorf("Error(s): %s, %s", err, err2)
+	}
+	return nil
+}
+
+func (mh *Machine) startControllers(confs []controllerapi.ControllerConf) error {
+	if len(confs) <= 0 {
+		return fmt.Errorf("No controller(s) specified")
+	}
+
+	for _, conf := range confs {
+		controllerType := conf.GetType()
+		ctl := mh.lookupController(controllerType)
+		if ctl != nil {
+			return fmt.Errorf("controller %s already running on machine %s", controllerType, mh.MachineID)
+		}
+		// Note: queue id = controller id. we use it to remove entries from the route map when a controller is stopped.
+		ctlRcvQ := message.NewQueue(conf.GetID())
+		ctlSndQ := message.NewQueue(conf.GetID())
+		ctl, err := controllerapi.NewController(conf, ctlRcvQ, ctlSndQ)
+		if err != nil {
+			return err
+		}
+		mh.Controllers = append(mh.Controllers, &ControllerWrapper{ctl})
+		// Add subscriptions for desired message types
+		subsMsgTypes := conf.GetSubscriptions()
+		logger.Infof("Adding subscription for %s: %s", conf.GetID(), subsMsgTypes)
+		for _, sMsgT := range subsMsgTypes {
+			err := mh.MsgRouter.AddSubscriberQueue(sMsgT, ctlRcvQ)
+			if err != nil {
+				return err
+			}
+		}
+		mh.MsgRouter.AddListener(ctlSndQ)
+
+		err = ctl.Start()
+		if err != nil {
+			mh.LogStatus(Failure, fmt.Sprintf("Could not start controller: %s", err))
+			return err
+		}
+	}
+
+	mh.LogStatusOK(fmt.Sprintf("Sucessfully started controllers on machine %s", mh.MachineID))
+	return nil
+}
+
+func (mh *Machine) StopController(controllerID string) error {
+	mh.mutex.Lock()
+	defer mh.mutex.Unlock()
+	err := mh.stopController(controllerID)
+	err2 := mh.snapshot()
+	if err != nil || err2 != nil {
+		return fmt.Errorf("Error(s): %s, %s", err, err2)
+	}
+	return nil
+}
+
+func (mh *Machine) stopController(controllerID string) error {
+
+	for i, ctl := range mh.Controllers {
+		if ctl.GetConf().GetID() == controllerID {
+			err := ctl.Stop()
+			if err != nil {
+				mh.LogStatus(Failure, fmt.Sprintf("Could not stop controller: %s", err))
+				return err
+			}
+
+			subsMsgTypes := ctl.GetConf().GetSubscriptions()
+			for _, sMsgT := range subsMsgTypes {
+				err := mh.MsgRouter.RemoveSubscriberQueue(sMsgT, ctl.GetConf().GetID())
+				if err != nil {
+					mh.LogStatus(Failure, fmt.Sprintf("could not remove queue subscription on message type %s: %s", sMsgT, err))
+					return err
+				}
+			}
+
+			mh.Controllers = append(mh.Controllers[:i], mh.Controllers[i+1:]...)
+			mh.LogStatusOK(fmt.Sprintf("Stopped controller %s on machine %s ", controllerID, mh.MachineID))
+			return nil
+		}
+	}
+	return fmt.Errorf("controller %s not found on machine %s", controllerID, mh.MachineID)
+}
+
 // LookupAdaptor returns matching adaptorID
 // IMPORTANT: if mutex lock is already held by calling func, use lookupAdaptor
 // instead of this LookupHook
@@ -485,6 +602,62 @@ func getDriverType(data []byte) (string, error) {
 
 func (wrap *DriverWrapper) String() string {
 	return fmt.Sprintf("%#v", wrap.Driver)
+}
+
+// ControllerWrapper is a helper type used handle the controller type
+// based serialization of its configuration.
+type ControllerWrapper struct {
+	controllerapi.Controller
+}
+
+type controllerUnmarshal struct {
+	Controller interface{}
+}
+
+// UnmarshalJSON creates the controller type specified in the JSON.
+func (wrap *ControllerWrapper) UnmarshalJSON(data []byte) error {
+
+	controllerType, err := getControllerType(data)
+	if err != nil {
+		return err
+	}
+
+	var rawJson json.RawMessage
+	env := controllerUnmarshal{
+		Controller: &rawJson,
+	}
+	if err := json.Unmarshal(data, &env); err != nil {
+		return err
+	}
+	// logger.Infof("rawJson: %+v\n", string(rawJson)) // REMOVE
+	drv, err := controllers.NewController(controllerType)
+	if err != nil {
+		return err
+	}
+	if err := json.Unmarshal(rawJson, &drv); err != nil {
+		return err
+	}
+	wrap.Controller = drv
+	return nil
+}
+
+// getControllerType will extract the controller type from []byte
+func getControllerType(data []byte) (string, error) {
+	tmp := controllerUnmarshal{}
+	if err := json.Unmarshal(data, &tmp); err != nil {
+		return "", err
+	}
+	controllerMap := tmp.Controller.(map[string]interface{})
+	confMap := controllerMap["conf"].(map[string]interface{})
+	controllerType, ok := confMap["controller-type"]
+	if !ok {
+		return "", fmt.Errorf("no controller type found")
+	}
+	return controllerType.(string), nil
+}
+
+func (wrap *ControllerWrapper) String() string {
+	return fmt.Sprintf("%#v", wrap.Controller)
 }
 
 // AdaptorWrapper is a helper type used handle the adaptor type

@@ -50,6 +50,13 @@ func (r *Router) initBackendRoutes() {
 		route{
 			"DriverStop", "DELETE", "/driver/{machineID}/{driverType}/{driverID}", r.driverStop,
 		},
+		// controller handlers:
+		route{
+			"ControllerStart", "POST", "/controller", r.controllerStart,
+		},
+		route{
+			"ControllerStop", "DELETE", "/controller/{machineID}/{controllerID}", r.controllerStop,
+		},
 		// machine handlers:
 		route{
 			"MachineCreate", "POST", "/machine/{machineID}", r.machineCreate,
