@@ -6,10 +6,10 @@ import (
 	"sync"
 	"time"
 
-	"github.com/Arvinderpal/embd-project/common"
 	"github.com/Arvinderpal/embd-project/common/adaptorapi"
 	"github.com/Arvinderpal/embd-project/common/driverapi"
 	"github.com/Arvinderpal/embd-project/common/message"
+	"github.com/Arvinderpal/embd-project/common/seguepb"
 
 	"gobot.io/x/gobot"
 	"gobot.io/x/gobot/drivers/aio"
@@ -138,19 +138,19 @@ func (d *UltraSonic) Stop() error {
 
 // work: Runs periodically and generates messages/events.
 func (d *UltraSonic) work() {
-	ver := 0
+	var version uint64
 	d.State.echo.On(aio.Data, func(data interface{}) {
 		// logger.Infof("ultra-sonic reading:", data)
 		msg := message.Message{
-			ID: message.MessageID{
-				Type:    common.Message_Sensor_UltraSonic,
+			ID: seguepb.Message_MessageID{
+				Type:    seguepb.MessageType_SensorUltraSonic,
 				SubType: "raw",
-				Version: ver,
+				Version: version,
 			},
-			Data: data,
+			Data: seguepb.SensorUltraSonicData{EchoSample: int64(data.(int))},
 		}
 		d.State.sndQ.Add(msg)
-		ver += 1
+		version += 1
 	})
 
 	logger.Debugf("Starting Triag...")

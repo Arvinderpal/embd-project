@@ -14,14 +14,14 @@
 			    	"speed-pin": "6"
 			    },
 			    "left-motor": {
-			    	"forward-pin": "7",
-			    	"backward-pin": "8",
+			    	"forward-pin": "8",
+			    	"backward-pin": "7",
 			    	"speed-pin": "5"
 			    }
 			},
 			"subscriptions":
 			[
-				"cmd-drive"
+				"CmdDrive"
 			]
 		}
 	]

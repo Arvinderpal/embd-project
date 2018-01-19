@@ -11,6 +11,8 @@ package message
 
 import (
 	"sync"
+
+	"github.com/Arvinderpal/embd-project/common/seguepb"
 )
 
 type Interface interface {
@@ -22,7 +24,7 @@ type Interface interface {
 	IsShuttingDown() bool
 }
 
-type set map[MessageID]struct{}
+type set map[seguepb.Message_MessageID]struct{}
 
 type Queue struct {
 	QId          string // Queue ID (same as driver/controler id)

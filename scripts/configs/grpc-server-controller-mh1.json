@@ -1,0 +1,16 @@
+{
+	"machine-id": "mh1",
+	"confs": 
+	[
+		{
+			"type": "grpc-message-server",
+			"id": "grpc-message-server-1",
+			"conf": {
+			    "host-address": "localhost",
+			    "port": 10000,
+			    "tls-enabled": false,
+			    "log-file-path-name": "/tmp/autonomous-drive-1.log"
+			}
+		}
+	]
+}

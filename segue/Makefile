@@ -26,8 +26,8 @@ TEST_LIST := $(shell find ../daemon ../common ../pkg . -name '*_test.go')
 
 
 $(TARGET): $(SOURCES)
-	# protoc -I=../common/matrapb --go_out=../common/matrapb ../common/matrapb/*.proto
-	# protoc -I=../common/matrapb --gofast_out=../common/matrapb ../common/matrapb/*.proto
+	protoc -I=../common/seguepb --go_out=plugins=grpc:../common/seguepb ../common/seguepb/*.proto
+	# protoc -I=../common/seguepb --gofast_out=../common/seguepb ../common/seguepb/*.proto
 	
 	go build -race -ldflags "-X "github.com/Arvinderpal/common".Version=$(VERSION)" -o $(TARGET) ./main.go
 	@touch main.go

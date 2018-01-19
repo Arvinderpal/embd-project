@@ -11,11 +11,8 @@
 			},
 			"subscriptions":
 			[
-				"cmd-drive",
-				"sensor-ultrasonic",
-				"c",
-				"d"
-			]
+				"CmdDrive",
+				"SensorUltraSonic"			]
 		}
 	]
 }

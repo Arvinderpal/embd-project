@@ -1,0 +1,34 @@
+syntax = "proto3";
+package seguepb;
+
+
+message Message {
+	message MessageID {
+		MessageType Type				= 1;
+		string SubType 					= 2;
+		uint64 Version 					= 3;
+	}
+	MessageID 		ID        			= 1;
+	bytes      		Data  				= 2; 
+}
+
+enum MessageType {
+	UnitTest							= 0;
+	SensorUltraSonic					= 1;
+	CmdDrive							= 2;
+}
+
+message MessageEnvelope {
+	repeated Message    Messages     	= 1;
+}
+
+
+// Interface exported by the server.
+service Messenger {
+  // A Bidirectional streaming RPC.
+  //
+  // Accepts a stream of MessageEnvelope(s) and generates a stream of 
+  // MessageEnvelope(s). 
+  // Note that each Envelope can contain many individual messages.
+  rpc Messenger(stream MessageEnvelope) returns (stream MessageEnvelope) {}
+}

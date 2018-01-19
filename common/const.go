@@ -31,8 +31,3 @@ const (
 const (
 	LED = "13"
 )
-
-const (
-	Message_Sensor_UltraSonic = "sensor-ultrasonic"
-	Message_Cmd_Drive         = "cmd-drive"
-)

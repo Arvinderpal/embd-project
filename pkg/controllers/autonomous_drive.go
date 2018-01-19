@@ -8,9 +8,9 @@ import (
 
 	"gobot.io/x/gobot"
 
-	"github.com/Arvinderpal/embd-project/common"
 	"github.com/Arvinderpal/embd-project/common/controllerapi"
 	"github.com/Arvinderpal/embd-project/common/message"
+	"github.com/Arvinderpal/embd-project/common/seguepb"
 )
 
 // AutonomousDriveConf implements programapi.ProgramConf interface
@@ -82,7 +82,7 @@ type autonomousDriveInternal struct {
 	killChan chan struct{}
 
 	stateMU                sync.RWMutex
-	ultrasonicDataReadings []int
+	ultrasonicDataReadings []seguepb.SensorUltraSonicData
 }
 
 // Start: starts the controller logic.
@@ -163,8 +163,8 @@ func (s *autonomousDriveInternal) messageHandler(msg message.Message) {
 	s.stateMU.Lock()
 	defer s.stateMU.Unlock()
 	switch msg.ID.Type {
-	case common.Message_Sensor_UltraSonic:
-		s.ultrasonicDataReadings = append(s.ultrasonicDataReadings, msg.Data.(int))
+	case seguepb.MessageType_SensorUltraSonic:
+		s.ultrasonicDataReadings = append(s.ultrasonicDataReadings, msg.Data.(seguepb.SensorUltraSonicData))
 	default:
 		logger.Warningf("autonomous-drive unknown message type %s", msg.ID.Type)
 	}
@@ -178,9 +178,9 @@ const (
 )
 
 func (s *autonomousDriveInternal) commandIssuer() {
-	ver := 0
-	speed := byte(stopSpeedValue)
-	fadeAmount := byte(15)
+	var version uint64
+	speed := uint32(stopSpeedValue)
+	fadeAmount := uint32(15)
 
 	gobot.Every(1000*time.Millisecond, func() {
 		s.stateMU.Lock()
@@ -204,15 +204,15 @@ func (s *autonomousDriveInternal) commandIssuer() {
 			logger.Infof("slowing down %d", speed)
 		}
 		driveMsg := message.Message{
-			ID: message.MessageID{
-				Type:    common.Message_Cmd_Drive,
+			ID: seguepb.Message_MessageID{
+				Type:    seguepb.MessageType_CmdDrive,
 				SubType: "forward",
-				Version: ver,
+				Version: version,
 			},
-			Data: byte(speed),
+			Data: seguepb.CmdDriveData{Speed: speed},
 		}
 		s.sndQ.Add(driveMsg)
-		ver += 1
+		version += 1
 		s.ultrasonicDataReadings = nil
 		s.stateMU.Unlock()
 	})

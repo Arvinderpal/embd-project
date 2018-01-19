@@ -5,10 +5,10 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/Arvinderpal/embd-project/common"
 	"github.com/Arvinderpal/embd-project/common/adaptorapi"
 	"github.com/Arvinderpal/embd-project/common/driverapi"
 	"github.com/Arvinderpal/embd-project/common/message"
+	"github.com/Arvinderpal/embd-project/common/seguepb"
 
 	"gobot.io/x/gobot"
 	"gobot.io/x/gobot/drivers/gpio"
@@ -158,12 +158,11 @@ func (d *DualMotors) work() {
 			}
 			logger.Debugf("dualmotors: received msg: %q", msg)
 			switch msg.ID.Type {
-			case common.Message_Cmd_Drive:
+			case seguepb.MessageType_CmdDrive:
 				d.ProcessDriveCmd(msg)
 			default:
 				logger.Errorf("dualmotors: unknown message type %s", msg.ID.Type)
 			}
-
 			d.State.rcvQ.Done(msg)
 		}
 	}
@@ -211,13 +210,13 @@ func (d *DualMotors) ProcessDriveCmd(msg message.Message) {
 	cmd := msg.ID.SubType
 	switch cmd {
 	case "forward":
-		speed := msg.Data.(byte)
-		d.State.RightMotor.Forward(speed)
-		d.State.LeftMotor.Forward(speed)
+		speed := msg.Data.(seguepb.CmdDriveData).Speed
+		d.State.RightMotor.Forward(byte(speed))
+		d.State.LeftMotor.Forward(byte(speed))
 	case "backward":
-		speed := msg.Data.(byte)
-		d.State.RightMotor.Backward(speed)
-		d.State.LeftMotor.Backward(speed)
+		speed := msg.Data.(seguepb.CmdDriveData).Speed
+		d.State.RightMotor.Backward(byte(speed))
+		d.State.LeftMotor.Backward(byte(speed))
 	default:
 		logger.Errorf("dual-motors: unknown message sub-type: %s", cmd)
 	}
