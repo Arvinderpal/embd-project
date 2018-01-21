@@ -17,7 +17,17 @@ run:
 clean:
 	go clean
 	rm -f $(TARGET)
+	rm -f $(TARGET_ARM)
 	# rm -f ../common/matrapb/*.pb.go 
+
+testall:
+	$Q ../testing/unit/test_all.sh
+# go test ../pkg/...
+# go test ../daemon/...
+
+
+vendor: #$(info $(M) retrieving dependencies…)
+	$Q cd $(BASE) && $(GOVENDOR) add +external 
 
 
 SOURCES := $(shell find ../daemon ../common ../pkg . -name '*.go')
@@ -32,13 +42,10 @@ $(TARGET): $(SOURCES)
 	go build -race -ldflags "-X "github.com/Arvinderpal/common".Version=$(VERSION)" -o $(TARGET) ./main.go
 	@touch main.go
 
-testall:
-	$Q ../testing/unit/test_all.sh
-# go test ../pkg/...
-# go test ../daemon/...
 
-
-vendor: #$(info $(M) retrieving dependencies…)
-	$Q cd $(BASE) && $(GOVENDOR) add +external 
+arm: 
+	protoc -I=../common/seguepb --go_out=plugins=grpc:../common/seguepb ../common/seguepb/*.proto
+	GOARM=7 GOARCH=arm GOOS=linux go build -ldflags "-X "github.com/Arvinderpal/common".Version=$(VERSION)" -o $(TARGET) ./main.go
+	@touch main.go
 
 
