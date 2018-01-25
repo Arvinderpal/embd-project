@@ -19,3 +19,10 @@ sudo socat -d -d pty,link=/dev/ttyS0,raw,echo=0 pty,link=/dev/ttyACM0,raw,echo=0
 ./segue daemon machine join ../scripts/configs/mh-1.json ;./segue daemon adaptor attach ../scripts/configs/adaptor-serial-dev-ttyACM0.json
 
 ./segue daemon driver start ../scripts/configs/dualmotors-mh1.json; ./segue daemon driver start ../scripts/configs/ultrasonic-mh1.json; ./segue daemon controller start ../scripts/configs/autonomous-drive-controller-mh1.json
+
+
+# GORT
+gort scan serial
+gort arduino upload firmata /dev/ttyACM0
+# Setup: to install avrdude: 
+gort arduino install

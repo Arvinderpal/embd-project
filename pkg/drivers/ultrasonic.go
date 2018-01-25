@@ -65,11 +65,6 @@ func (c UltraSonicConf) GetSubscriptions() []string {
 
 func (c UltraSonicConf) NewDriver(apiAdpt adaptorapi.Adaptor, rcvQ *message.Queue, sndQ *message.Queue) (driverapi.Driver, error) {
 
-	// writer, ok := apiAdpt.(gpio.DigitalWriter)
-	// if !ok {
-	// 	return nil, fmt.Errorf("adaptor does not implement DigitalWriter interface required by driver")
-	// }
-
 	// trig := gpio.NewDirectPinDriver(apiAdpt, c.TrigPin)
 	trig := gpio.NewLedDriver(apiAdpt, c.TrigPin)
 	echo := aio.NewAnalogSensorDriver(apiAdpt, c.EchoPin)
