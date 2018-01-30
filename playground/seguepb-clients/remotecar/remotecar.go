@@ -1,21 +1,23 @@
 package main
 
 import (
+	"bufio"
 	"context"
 	"flag"
 	"fmt"
 	"io"
 	"io/ioutil"
-	"log"
 	"os"
 	"sync"
 	"time"
 
 	"golang.org/x/crypto/ssh/terminal"
 
+	"github.com/Arvinderpal/embd-project/common"
 	"github.com/Arvinderpal/embd-project/common/seguepb"
 	"github.com/gogo/protobuf/proto"
 	termbox "github.com/nsf/termbox-go"
+	logging "github.com/op/go-logging"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
@@ -23,10 +25,15 @@ import (
 )
 
 var (
+	log = logging.MustGetLogger("remotecar")
+)
+
+var (
 	tls                = flag.Bool("tls", false, "Connection uses TLS if true, else plain TCP")
 	caFile             = flag.String("ca_file", "", "The file containning the CA root cert file")
 	serverAddr         = flag.String("server_addr", "127.0.0.1:10000", "The server address in the format of host:port")
 	serverHostOverride = flag.String("server_host_override", "x.test.youtube.com", "The server name use to verify the hostname returned by TLS handshake")
+	logFilePath        = flag.String("log_file_path", "/tmp/remotecar.s", "All logs are written to this file. These logs include the messages received")
 )
 
 var flg = 0
@@ -150,7 +157,7 @@ func runCarControl(client seguepb.MessengerClient, keyCh chan termbox.Event, noI
 	}
 	stream, err := client.Messenger(context.Background())
 	if err != nil {
-		log.Fatalf("%v.Messenger(_) = _, %v", client, err)
+		panic(fmt.Sprintf("%v.Messenger(_) = _, %v", client, err))
 	}
 	waitc := make(chan struct{})
 	go func() {
@@ -162,9 +169,9 @@ func runCarControl(client seguepb.MessengerClient, keyCh chan termbox.Event, noI
 				return
 			}
 			if err != nil {
-				log.Fatalf("Failed to receive a message : %v", err)
+				panic(fmt.Sprintf("Failed to receive a message : %v", err))
 			}
-			log.Printf("Got %d messages", len(msgEnv.Messages))
+			log.Infof("Got %d messages", len(msgEnv.Messages))
 		}
 	}()
 
@@ -175,7 +182,7 @@ func runCarControl(client seguepb.MessengerClient, keyCh chan termbox.Event, noI
 			select {
 			case cmd = <-cmdCh:
 				if err := stream.Send(cmd); err != nil {
-					log.Fatalf("failed to send message: %v", err)
+					panic(fmt.Sprintf("failed to send message: %v", err))
 				}
 			}
 		}
@@ -194,19 +201,22 @@ func runCarControl(client seguepb.MessengerClient, keyCh chan termbox.Event, noI
 			case key.Key == termbox.KeyEsc || key.Key == termbox.KeyCtrlC: //exit
 				mu.Unlock()
 				return
-			case key.Key == termbox.KeyArrowLeft || key.Ch == 'h': //left
+			case key.Key == termbox.KeyArrowLeft || key.Ch == 's': //left
 				cmdCh <- leftCmd
-
 				break
-			case key.Key == termbox.KeyArrowRight || key.Ch == 'l': //right
+			case key.Key == termbox.KeyArrowRight || key.Ch == 'd': //right
 				cmdCh <- rightCmd
-
 				break
-			case key.Key == termbox.KeyArrowUp || key.Ch == 'k': //up
+			case key.Ch == 'a': // forward left
+				cmdCh <- forwardLeftCmd
+				break
+			case key.Ch == 'f': // forward right
+				cmdCh <- forwardRightCmd
+				break
+			case key.Key == termbox.KeyArrowUp || key.Ch == 'e': //up
 				cmdCh <- forwardCmd
-
 				break
-			case key.Key == termbox.KeyArrowDown || key.Ch == 'j': //down
+			case key.Key == termbox.KeyArrowDown || key.Ch == 'x': //down
 				cmdCh <- backwardCmd
 				break
 			default:
@@ -236,23 +246,42 @@ func main() {
 	flag.Parse()
 	var opts []grpc.DialOption
 
+	// Logger setup:
+	f, err := os.Create(*logFilePath)
+	if err != nil {
+		panic(err)
+	}
+	logWriter := bufio.NewWriter(f)
+	common.SetupLOG(log, "DEBUG", logWriter)
+	defer func() {
+		logWriter.Flush()
+		if err := f.Close(); err != nil {
+			panic(err)
+		}
+	}()
+
+	// Options:
 	if *tls {
 		if *caFile == "" {
 			*caFile = testdata.Path("ca.pem")
 		}
 		creds, err := credentials.NewClientTLSFromFile(*caFile, *serverHostOverride)
 		if err != nil {
-			log.Fatalf("Failed to create TLS credentials %v", err)
+			panic(fmt.Sprintf("Failed to create TLS credentials %v", err))
 		}
 		opts = append(opts, grpc.WithTransportCredentials(creds))
 	} else {
 		opts = append(opts, grpc.WithInsecure())
 	}
+
+	// Connect to remote peer
 	conn, err := grpc.Dial(*serverAddr, opts...)
 	if err != nil {
-		log.Fatalf("fail to dial: %v", err)
+		panic(fmt.Sprintf("fail to dial: %v", err))
 	}
 	defer conn.Close()
+
+	// Create a new client:
 	client := seguepb.NewMessengerClient(conn)
 
 	err = termbox.Init()

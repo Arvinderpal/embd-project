@@ -13,12 +13,22 @@ var (
 	logger = logging.MustGetLogger("segue-message")
 )
 
-// Important: this func must be updated manually evertime we introduce a new message type.
+// Important: this func must be updated manually every time we introduce a new message type.
 // The converter should take in an Message in pb format (Data is []byte)
 // and unmarshal it into the corresponding internal data format.
 func ConvertToInternalFormat(m *seguepb.Message) (Message, error) {
 
 	switch m.GetID().GetType() {
+	case seguepb.MessageType_UnitTest:
+		data := &seguepb.UnitTestData{}
+		err := proto.Unmarshal(m.GetData(), data)
+		if err != nil {
+			return Message{}, err
+		}
+		return Message{
+			ID:   *m.ID,
+			Data: data,
+		}, nil
 	case seguepb.MessageType_SensorUltraSonic:
 		data := &seguepb.SensorUltraSonicData{}
 		err := proto.Unmarshal(m.GetData(), data)
@@ -27,7 +37,7 @@ func ConvertToInternalFormat(m *seguepb.Message) (Message, error) {
 		}
 		return Message{
 			ID:   *m.ID,
-			Data: *data,
+			Data: data,
 		}, nil
 	case seguepb.MessageType_CmdDrive:
 		data := &seguepb.CmdDriveData{}
@@ -37,10 +47,49 @@ func ConvertToInternalFormat(m *seguepb.Message) (Message, error) {
 		}
 		return Message{
 			ID:   *m.ID,
-			Data: *data,
+			Data: data,
 		}, nil
 	default:
 		return Message{}, fmt.Errorf("converter error: unknown message type %s", m.GetID().GetType())
+	}
+
+}
+
+// Important: this func must be updated manually every time we introduce a new message type.
+// The converter should take in an Message (Data is interface{})
+// and marshal Data into []byte and return Message of seguepb format
+func ConvertToExternalFormat(iMsg Message) (*seguepb.Message, error) {
+
+	switch iMsg.ID.GetType() {
+	case seguepb.MessageType_UnitTest:
+		data, err := proto.Marshal(iMsg.Data.(*seguepb.UnitTestData))
+		if err != nil {
+			return nil, err
+		}
+		return &seguepb.Message{
+			ID:   &iMsg.ID,
+			Data: data,
+		}, nil
+	case seguepb.MessageType_SensorUltraSonic:
+		data, err := proto.Marshal(iMsg.Data.(*seguepb.SensorUltraSonicData))
+		if err != nil {
+			return nil, err
+		}
+		return &seguepb.Message{
+			ID:   &iMsg.ID,
+			Data: data,
+		}, nil
+	case seguepb.MessageType_CmdDrive:
+		data, err := proto.Marshal(iMsg.Data.(*seguepb.CmdDriveData))
+		if err != nil {
+			return nil, err
+		}
+		return &seguepb.Message{
+			ID:   &iMsg.ID,
+			Data: data,
+		}, nil
+	default:
+		return nil, fmt.Errorf("converter error: unknown message type %s", iMsg.ID.GetType())
 	}
 
 }

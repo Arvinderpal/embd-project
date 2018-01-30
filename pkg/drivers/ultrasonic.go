@@ -142,7 +142,7 @@ func (d *UltraSonic) work() {
 				SubType: "raw",
 				Version: version,
 			},
-			Data: seguepb.SensorUltraSonicData{EchoSample: int64(data.(int))},
+			Data: &seguepb.SensorUltraSonicData{EchoSample: int64(data.(int))},
 		}
 		d.State.sndQ.Add(msg)
 		version += 1

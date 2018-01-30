@@ -6,6 +6,7 @@ import (
 	"io"
 	"net"
 	"sync"
+	"time"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
@@ -100,6 +101,8 @@ type grpcMessageServerInternal struct {
 	killChan chan struct{}
 
 	grpcServer *grpc.Server
+	streamQs   []*message.Queue // per stream queue for outgoing messages
+	sQCount    int              // used to identify each stream queue
 }
 
 // Start: starts the controller logic.
@@ -126,6 +129,30 @@ func (d *GRPCMessageServer) Stop() error {
 // work: starts a grpc server and processes requests and responses.
 func (d *GRPCMessageServer) work() {
 
+	// Get internal messages from rcvQ and send them to all currently active streams.
+	go func() {
+		for {
+			select {
+			case <-d.State.killChan:
+				return
+			default:
+				msg, shutdown := d.State.rcvQ.Get()
+				if shutdown {
+					logger.Debugf("stopping send routine in worker on controller %s", d.State.Conf.GetID())
+					return
+				}
+
+				d.mu.RLock()
+				logger.Debugf("grpc: (internal) message received (# of receivers %d): %v", len(d.State.streamQs), msg)
+				for _, sq := range d.State.streamQs {
+					sq.Add(msg)
+				}
+				d.State.rcvQ.Done(msg)
+				d.mu.RUnlock()
+			}
+		}
+	}()
+
 	lis, err := net.Listen("tcp", fmt.Sprintf("%s:%d", d.State.Conf.HostAddress, d.State.Conf.Port))
 	if err != nil {
 		logger.Errorf("failed to listen (%s:%d): %v", d.State.Conf.HostAddress, d.State.Conf.Port, err)
@@ -133,7 +160,7 @@ func (d *GRPCMessageServer) work() {
 	}
 	var opts []grpc.ServerOption
 	if d.State.Conf.TLSEnabled {
-		logger.Infof("grpc-message-server: starting tls server")
+		logger.Infof("grpc: starting tls server")
 		creds, err := credentials.NewServerTLSFromFile(d.State.Conf.CertFile, d.State.Conf.KeyFile)
 		if err != nil {
 			logger.Errorf("Failed to generate credentials %v", err)
@@ -180,35 +207,100 @@ func (d *GRPCMessageServer) UnmarshalJSON(data []byte) error {
 }
 
 func (d *GRPCMessageServer) Messenger(stream seguepb.Messenger_MessengerServer) error {
-	logger.Debugf("grpc-message-server: messenger started")
-	for {
-		msgPBEnv, err := stream.Recv()
-		if err == io.EOF {
-			logger.Debugf("grpc-message-server: exiting Messanger() EOF recieved")
-			return nil
-		}
-		if err != nil {
-			logger.Errorf("grpc-message-server: error: %s", err)
-			return err
-		}
-		for _, msgPB := range msgPBEnv.Messages {
-			// We go through the messages in the envelope, converting them into
-			// the internal message format and sending them to the internal
-			// routing system.
-			msg, err := message.ConvertToInternalFormat(msgPB)
-			if err != nil {
-				logger.Errorf("messenger: messge convertion error: %s", err)
-				// continue
-			} else {
-				d.State.sndQ.Add(msg)
+	// Add a new queue on which we will receive messages from the work() func; these messages will be then be sent on the stream.
+	d.mu.Lock()
+	id := fmt.Sprintf("%d", d.State.sQCount)
+	d.State.sQCount += 1
+	sq := message.NewQueue(id)
+	d.State.streamQs = append(d.State.streamQs, sq)
+	d.mu.Unlock()
+	defer func() {
+		logger.Debugf("grpc: stoping messenger")
+		sq.ShutDown()
+		d.mu.Lock()
+		for i, q := range d.State.streamQs {
+			if q.ID() == id {
+				d.State.streamQs = append(d.State.streamQs[:i], d.State.streamQs[i+1:]...)
+				break
 			}
 		}
+		d.mu.Unlock()
+	}()
+	// Send routine
+	go func() {
+		defer func() {
+			logger.Debugf("grpc: stoping messenger-send routine")
+		}()
 
-		// TODO: if desired by the client, we should send messages that this controller has subscribed to.
-		// for _, note := range rn {
-		// 	if err := stream.Send(note); err != nil {
-		// 		return err
-		// 	}
-		// }
+		logger.Debugf("grpc: starting messenger-send routine")
+		// Read all the messages in the streams send queue every X
+		// milliseconds. All the messages will be put in the envelope.
+		// The idea being that we'll minimize network stack overhead.
+		// However, this approach introduces latency; alternatives include
+		// reducing the interval or just sending a message as soon as it arrives.
+		tickChan := time.NewTicker(time.Millisecond * 100).C
+		for {
+			select {
+			case <-d.State.killChan:
+				return
+			case <-tickChan:
+				if sq.IsShuttingDown() {
+					return
+				}
+				var eMsgs []*seguepb.Message
+				// NOTE: this assumes only a single consumer of the queue.
+				sqLen := sq.Len() // TODO: may want to cap this to say 25 msgs
+				logger.Debugf("grpc: sending %d messages", sqLen)
+				for i := 0; i < sqLen; i++ {
+					iMsg, shutdown := sq.Get()
+					if shutdown {
+						logger.Debugf("stopping sender routine for grpc-stream-send-queue-%s", id)
+						return
+					}
+					eMsg, err := message.ConvertToExternalFormat(iMsg)
+					if err != nil {
+						logger.Errorf(fmt.Sprintf("error marshaling data in routine for grpc-stream-send-queue-%s: %s", id, err))
+					} else {
+						eMsgs = append(eMsgs, eMsg)
+					}
+					sq.Done(iMsg)
+				}
+				msgEnv := &seguepb.MessageEnvelope{eMsgs}
+				if err := stream.Send(msgEnv); err != nil {
+					logger.Errorf("error while sending on grpc-stream-send-queue-%s (exiting send routine): %s", id, err)
+					return
+				}
+			}
+		}
+	}()
+	logger.Debugf("grpc: starting messenger-receive routine")
+	for {
+		select {
+		case <-d.State.killChan:
+			return nil
+		default:
+			msgPBEnv, err := stream.Recv()
+			if err == io.EOF {
+				logger.Debugf("grpc: exiting Messanger() EOF recieved")
+				return nil
+			}
+			if err != nil {
+				logger.Errorf("grpc: error: %s", err)
+				return err
+			}
+			for _, msgPB := range msgPBEnv.Messages {
+				// We go through the messages in the envelope, converting them into
+				// the internal message format and sending them to the internal
+				// routing system.
+				msg, err := message.ConvertToInternalFormat(msgPB)
+				if err != nil {
+					logger.Errorf("grpc: messge convertion error: %s", err)
+					// continue
+				} else {
+					logger.Debugf("grpc: received msg %v", msg)
+					d.State.sndQ.Add(msg)
+				}
+			}
+		}
 	}
 }

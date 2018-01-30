@@ -209,7 +209,7 @@ func (s *autonomousDriveInternal) commandIssuer() {
 				SubType: "forward",
 				Version: version,
 			},
-			Data: seguepb.CmdDriveData{Speed: speed},
+			Data: &seguepb.CmdDriveData{Speed: speed},
 		}
 		s.sndQ.Add(driveMsg)
 		version += 1

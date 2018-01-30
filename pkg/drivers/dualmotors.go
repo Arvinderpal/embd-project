@@ -210,22 +210,22 @@ func (d *DualMotors) ProcessDriveCmd(msg message.Message) {
 	cmd := msg.ID.SubType
 	switch cmd {
 	case "forward":
-		speed := msg.Data.(seguepb.CmdDriveData).Speed
+		speed := msg.Data.(*seguepb.CmdDriveData).Speed
 		d.State.RightMotor.Forward(byte(speed))
 		d.State.LeftMotor.Forward(byte(speed))
 	case "backward":
-		speed := msg.Data.(seguepb.CmdDriveData).Speed
+		speed := msg.Data.(*seguepb.CmdDriveData).Speed
 		d.State.RightMotor.Backward(byte(speed))
 		d.State.LeftMotor.Backward(byte(speed))
 	case "stop":
 		d.State.RightMotor.Forward(byte(0))
 		d.State.LeftMotor.Forward(byte(0))
 	case "left":
-		speed := msg.Data.(seguepb.CmdDriveData).Speed
+		speed := msg.Data.(*seguepb.CmdDriveData).Speed
 		d.State.RightMotor.Forward(byte(speed))
 		d.State.LeftMotor.Backward(byte(speed))
 	case "right":
-		speed := msg.Data.(seguepb.CmdDriveData).Speed
+		speed := msg.Data.(*seguepb.CmdDriveData).Speed
 		d.State.RightMotor.Backward(byte(speed))
 		d.State.LeftMotor.Forward(byte(speed))
 	default:

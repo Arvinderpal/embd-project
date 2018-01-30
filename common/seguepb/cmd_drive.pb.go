@@ -8,12 +8,14 @@ It is generated from these files:
 	cmd_drive.proto
 	segue.proto
 	sensor_ultrasonic.proto
+	unittest.proto
 
 It has these top-level messages:
 	CmdDriveData
 	Message
 	MessageEnvelope
 	SensorUltraSonicData
+	UnitTestData
 */
 package seguepb
 

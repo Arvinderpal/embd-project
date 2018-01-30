@@ -8,9 +8,13 @@
 			"conf": {
 			    "host-address": "localhost",
 			    "port": 10000,
-			    "tls-enabled": false,
-			    "log-file-path-name": "/tmp/autonomous-drive-1.log"
-			}
+			    "tls-enabled": false
+			},
+			"subscriptions":
+			[
+				"CmdDrive",
+				"UnitTest"
+			]
 		}
 	]
 }
