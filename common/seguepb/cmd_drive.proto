@@ -1,0 +1,6 @@
+syntax = "proto3";
+package seguepb;
+
+message CmdDriveData {
+	uint32 		speed 				= 1;
+}

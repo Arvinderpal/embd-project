@@ -8,7 +8,7 @@
 			"adaptor-id": "ttyACM0",
 			"conf": {
 			    "trig-pin": "12",
-			    "echo-pin": "4"
+			    "echo-pin": "3"
 			}
 		}
 	]

@@ -1,0 +1,18 @@
+{
+	"machine-id": "mh1",
+	"confs": 
+	[
+		{
+			"type": "driver_unittest",
+			"id": "unittest-1",
+			"adaptor-id": "unittest-adaptor-1",
+			"conf": {
+			    "message-send-interval": 100
+			},
+			"subscriptions":
+			[
+				"CmdDrive"
+			]
+		}
+	]
+}

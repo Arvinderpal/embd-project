@@ -6,6 +6,11 @@ import (
 
 	"github.com/Arvinderpal/embd-project/common/adaptorapi"
 	"github.com/Arvinderpal/embd-project/common/types"
+	logging "github.com/op/go-logging"
+)
+
+var (
+	logger = logging.MustGetLogger("segue-adaptors")
 )
 
 // List of all adaptors
@@ -21,13 +26,12 @@ const (
 // each time a new adaptor is added, the below code can be updated.
 func NewAdaptorConf(adaptorType, adaptorID, machineID string) (adaptorapi.AdaptorConf, error) {
 	switch adaptorType {
-	// case Adaptor_UnitTest:
-	// 	return &UnitTestAdaptorConf{
-	// 		ID:  adaptorID,
-	// 		HookType:    adaptorType,
-	// 		MachineID: machineID,
-	// 		AdaptorType: adaptorType,
-	// 	}, nil
+	case Adaptor_UnitTest:
+		return &UnitTestConf{
+			MachineID:   machineID,
+			AdaptorType: adaptorType,
+			ID:          adaptorID,
+		}, nil
 	case Adaptor_Firmata_Serial:
 		return &FirmataSerialConf{
 			MachineID:   machineID,
@@ -43,8 +47,8 @@ func NewAdaptorConf(adaptorType, adaptorID, machineID string) (adaptorapi.Adapto
 // NewAdaptor returns an emtpty Adaptor object of the desired type.
 func NewAdaptor(t string) (adaptorapi.Adaptor, error) {
 	switch t {
-	// case Adaptor_UnitTest:
-	// 	return &UnitTestAdaptor{}, nil
+	case Adaptor_UnitTest:
+		return &UnitTest{}, nil
 	case Adaptor_Firmata_Serial:
 		return &FirmataSerial{}, nil
 	default:

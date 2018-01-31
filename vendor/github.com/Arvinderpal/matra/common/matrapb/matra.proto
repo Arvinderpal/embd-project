@@ -1,0 +1,26 @@
+syntax = "proto3";
+package matrapb;
+
+enum EntryType {
+	EntryNormal     = 0;
+}
+
+message Entry {
+	EntryType  Type  = 1;
+	bytes      Data  = 2; 
+}
+
+enum MessageType {
+	MsgUnitTest					= 0;
+	MsgSample					= 1;
+	MsgTransporter				= 2;
+	MsgDNSRes					= 3;
+	MsgBPFSample				= 4;
+}
+
+message Message {
+	MessageType 		type        	= 1;
+	string 				containerID 	= 2;
+	repeated Entry      entries     	= 3;
+	bytes       		context     	= 4;
+}

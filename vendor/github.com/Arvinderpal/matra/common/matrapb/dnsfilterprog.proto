@@ -1,0 +1,6 @@
+syntax = "proto3";
+package matrapb;
+
+message DNSFilterProgramData {
+	map<string, int64> BlockedRequestsCount = 1;
+}

@@ -1,0 +1,7 @@
+syntax = "proto3";
+package matrapb;
+
+message BPFSampleProgramData {
+	uint64 		PacketCount 				= 1;
+	uint64 	    ByteCount     				= 2;
+}

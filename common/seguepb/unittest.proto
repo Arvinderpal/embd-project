@@ -1,0 +1,6 @@
+syntax = "proto3";
+package seguepb;
+
+message UnitTestData {
+	string 		testMessage 				= 1;
+}

@@ -1,0 +1,13 @@
+{
+	"machine-id": "mh1",
+	"confs": 
+	[
+		{
+			"type": "adaptor_unittest",
+			"id": "unittest-adaptor-1",
+			"conf": {
+			    
+			}
+		}
+	]
+}

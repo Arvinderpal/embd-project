@@ -15,8 +15,9 @@ var (
 
 // List of all controllers
 const (
-	Controller_UnitTest        = "unittest"
-	Controller_AutonomousDrive = "autonomous-drive"
+	Controller_UnitTest          = "unittest"
+	Controller_GRPCMessageServer = "grpc-message-server"
+	Controller_AutonomousDrive   = "autonomous-drive"
 )
 
 // NewConf is a util method used to get controller conf of a particular type.
@@ -38,6 +39,13 @@ func NewControllerConf(controllerType, controllerID, machineID string, subs []st
 			ID:             controllerID,
 			Subscriptions:  subs,
 		}, nil
+	case Controller_GRPCMessageServer:
+		return &GRPCMessageServerConf{
+			MachineID:      machineID,
+			ControllerType: controllerType,
+			ID:             controllerID,
+			Subscriptions:  subs,
+		}, nil
 	default:
 		return nil, types.ErrUnknownControllerType
 
@@ -51,6 +59,8 @@ func NewController(t string) (controllerapi.Controller, error) {
 	// 	return &UnitTestController{}, nil
 	case Controller_AutonomousDrive:
 		return &AutonomousDrive{}, nil
+	case Controller_GRPCMessageServer:
+		return &GRPCMessageServer{}, nil
 	default:
 		return nil, types.ErrUnknownControllerType
 	}

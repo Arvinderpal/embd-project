@@ -9,8 +9,8 @@
 			"conf": {
 			    "log-file-path-name": "/var/run/segue/mh1/eventlogs.s",
 			    "right-motor": {
-			    	"forward-pin": "9",
-			    	"backward-pin": "11",
+			    	"forward-pin": "11",
+			    	"backward-pin": "9",
 			    	"speed-pin": "6"
 			    },
 			    "left-motor": {
@@ -21,7 +21,7 @@
 			},
 			"subscriptions":
 			[
-				"cmd-drive"
+				"CmdDrive"
 			]
 		}
 	]
