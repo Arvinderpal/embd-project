@@ -1,11 +1,19 @@
+./segue --debug daemon run --n 192.168.80.201 -dr
 
 ./segue daemon machine join ../scripts/configs/mh-1.json ;./segue daemon adaptor attach ../scripts/configs/adaptor-serial-dev-ttyACM0.json
-./segue daemon driver start ../scripts/configs/dualmotors-mh1.json
 ./segue daemon machine get mh1
-./segue daemon controller start ../scripts/configs/
 
 ./segue daemon adaptor detach mh1 adaptor_firmata_serial ttyACM0
+
+
+# Drivers:
+./segue daemon driver start ../scripts/configs/unittest-mh1.json
+./segue daemon driver start ../scripts/configs/dualmotors-mh1.json
+
 ./segue daemon driver stop mh1 driver_dualmotors dualmotors-1
+
+#Controllers:
+./segue daemon controller start ../scripts/configs/
 
 
 

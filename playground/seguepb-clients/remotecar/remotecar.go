@@ -14,6 +14,7 @@ import (
 	"golang.org/x/crypto/ssh/terminal"
 
 	"github.com/Arvinderpal/embd-project/common"
+	"github.com/Arvinderpal/embd-project/common/message"
 	"github.com/Arvinderpal/embd-project/common/seguepb"
 	"github.com/gogo/protobuf/proto"
 	termbox "github.com/nsf/termbox-go"
@@ -71,6 +72,7 @@ func marshallData(msgIn *seguepb.CmdDriveData) []byte {
 // runCarControl sends CmdDrive message to remote segue instance.
 func runCarControl(client seguepb.MessengerClient, keyCh chan termbox.Event, noInputTimerCh chan bool) {
 	// We send a series of envelopes where each envelope contains a single message. Of course, we can add multiple messages to an envelope as well.
+	// NOTE: a better approach would have been to create Messages of with the internal format and then call ConvertToExternalFormat().
 	forwardCmd := &seguepb.MessageEnvelope{
 		Messages: []*seguepb.Message{
 			&seguepb.Message{
@@ -79,7 +81,7 @@ func runCarControl(client seguepb.MessengerClient, keyCh chan termbox.Event, noI
 					SubType: "forward",
 					Version: 1,
 				},
-				Data: marshallData(&seguepb.CmdDriveData{Speed: uint32(150)}),
+				Data: marshallData(&seguepb.CmdDriveData{Speed: uint32(200)}),
 			},
 		},
 	}
@@ -91,7 +93,7 @@ func runCarControl(client seguepb.MessengerClient, keyCh chan termbox.Event, noI
 					SubType: "backward",
 					Version: 1,
 				},
-				Data: marshallData(&seguepb.CmdDriveData{Speed: uint32(150)}),
+				Data: marshallData(&seguepb.CmdDriveData{Speed: uint32(200)}),
 			},
 		},
 	}
@@ -103,7 +105,7 @@ func runCarControl(client seguepb.MessengerClient, keyCh chan termbox.Event, noI
 					SubType: "left",
 					Version: 1,
 				},
-				Data: marshallData(&seguepb.CmdDriveData{Speed: uint32(100)}),
+				Data: marshallData(&seguepb.CmdDriveData{Speed: uint32(250)}),
 			},
 		},
 	}
@@ -115,7 +117,7 @@ func runCarControl(client seguepb.MessengerClient, keyCh chan termbox.Event, noI
 					SubType: "right",
 					Version: 1,
 				},
-				Data: marshallData(&seguepb.CmdDriveData{Speed: uint32(100)}),
+				Data: marshallData(&seguepb.CmdDriveData{Speed: uint32(250)}),
 			},
 		},
 	}
@@ -139,7 +141,7 @@ func runCarControl(client seguepb.MessengerClient, keyCh chan termbox.Event, noI
 					SubType: "forward-right",
 					Version: 1,
 				},
-				Data: marshallData(&seguepb.CmdDriveData{Speed: uint32(150)}),
+				Data: marshallData(&seguepb.CmdDriveData{Speed: uint32(200)}),
 			},
 		},
 	}
@@ -151,7 +153,7 @@ func runCarControl(client seguepb.MessengerClient, keyCh chan termbox.Event, noI
 					SubType: "forward-left",
 					Version: 1,
 				},
-				Data: marshallData(&seguepb.CmdDriveData{Speed: uint32(150)}),
+				Data: marshallData(&seguepb.CmdDriveData{Speed: uint32(200)}),
 			},
 		},
 	}
@@ -172,6 +174,13 @@ func runCarControl(client seguepb.MessengerClient, keyCh chan termbox.Event, noI
 				panic(fmt.Sprintf("Failed to receive a message : %v", err))
 			}
 			log.Infof("Got %d messages", len(msgEnv.Messages))
+			for i, eMsg := range msgEnv.Messages {
+				iMsg, err := message.ConvertToInternalFormat(eMsg)
+				if err != nil {
+					log.Errorf("grpc: messge convertion error: %s", err)
+				}
+				log.Infof("%d: %v", i+1, iMsg)
+			}
 		}
 	}()
 
@@ -216,7 +225,7 @@ func runCarControl(client seguepb.MessengerClient, keyCh chan termbox.Event, noI
 			case key.Key == termbox.KeyArrowUp || key.Ch == 'e': //up
 				cmdCh <- forwardCmd
 				break
-			case key.Key == termbox.KeyArrowDown || key.Ch == 'x': //down
+			case key.Key == termbox.KeyArrowDown || key.Ch == 'w': //down
 				cmdCh <- backwardCmd
 				break
 			default:

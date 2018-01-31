@@ -13,6 +13,8 @@ var (
 	logger = logging.MustGetLogger("segue-message")
 )
 
+// TODO: ConvertToInternalFormat and ConvertToExternalFormat should be auto generated. One approach is to write a scrip reads the pb definition file and creates these funcs, placing them either in this package or in the seguepb packge. We could run this script in our Makefile.
+
 // Important: this func must be updated manually every time we introduce a new message type.
 // The converter should take in an Message in pb format (Data is []byte)
 // and unmarshal it into the corresponding internal data format.

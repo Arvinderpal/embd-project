@@ -295,7 +295,6 @@ func (d *GRPCMessageServer) Messenger(stream seguepb.Messenger_MessengerServer) 
 				msg, err := message.ConvertToInternalFormat(msgPB)
 				if err != nil {
 					logger.Errorf("grpc: messge convertion error: %s", err)
-					// continue
 				} else {
 					logger.Debugf("grpc: received msg %v", msg)
 					d.State.sndQ.Add(msg)

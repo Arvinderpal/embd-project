@@ -228,6 +228,14 @@ func (d *DualMotors) ProcessDriveCmd(msg message.Message) {
 		speed := msg.Data.(*seguepb.CmdDriveData).Speed
 		d.State.RightMotor.Backward(byte(speed))
 		d.State.LeftMotor.Forward(byte(speed))
+	case "forward-right":
+		speed := msg.Data.(*seguepb.CmdDriveData).Speed
+		d.State.RightMotor.Forward(byte(speed - 50))
+		d.State.LeftMotor.Forward(byte(speed + 50))
+	case "forward-left":
+		speed := msg.Data.(*seguepb.CmdDriveData).Speed
+		d.State.RightMotor.Forward(byte(speed + 50))
+		d.State.LeftMotor.Forward(byte(speed - 50))
 	default:
 		logger.Errorf("dual-motors: unknown message sub-type: %s", cmd)
 	}
