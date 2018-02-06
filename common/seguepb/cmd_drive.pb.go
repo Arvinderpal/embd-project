@@ -6,12 +6,14 @@ Package seguepb is a generated protocol buffer package.
 
 It is generated from these files:
 	cmd_drive.proto
+	cmd_ledswitch.proto
 	segue.proto
 	sensor_ultrasonic.proto
 	unittest.proto
 
 It has these top-level messages:
 	CmdDriveData
+	LEDSwitchData
 	Message
 	MessageEnvelope
 	SensorUltraSonicData

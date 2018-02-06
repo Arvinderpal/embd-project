@@ -1,6 +1,13 @@
 syntax = "proto3";
 package seguepb;
 
+enum UltraSonicQualifiers {
+	FrontFacing								= 0;
+	RearFacing								= 1;	
+	LeftFacing								= 2;
+	RightFacing								= 3;
+}
+
 message SensorUltraSonicData {
 	int64 		echoSample 				= 1;
 }

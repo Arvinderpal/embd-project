@@ -8,6 +8,7 @@ import (
 	"github.com/Arvinderpal/embd-project/common/adaptorapi"
 	"github.com/Arvinderpal/embd-project/common/driverapi"
 	"github.com/Arvinderpal/embd-project/common/message"
+	"github.com/Arvinderpal/embd-project/common/seguepb"
 
 	"gobot.io/x/gobot"
 	"gobot.io/x/gobot/drivers/gpio"
@@ -22,6 +23,7 @@ type LEDConf struct {
 	ID            string   `json:"id"`
 	DriverType    string   `json:"driver-type"`
 	AdaptorID     string   `json:"adaptor-id"`
+	Qualifier     string   `json:"qualifier"`
 	Subscriptions []string `json:"subscriptions"` // Message Type Subscriptions.
 
 	////////////////////////////////////////////
@@ -38,7 +40,12 @@ func (c LEDConf) ValidateConf() error {
 		return fmt.Errorf("no name specified")
 	}
 	if c.DriverType != Driver_LED {
-		return fmt.Errorf("Invalid driver type specified. Expected %s, but got %s", Driver_LED, c.DriverType)
+		return fmt.Errorf("invalid driver type specified. Expected %s, but got %s", Driver_LED, c.DriverType)
+	}
+	if c.Qualifier != "" {
+		if _, ok := seguepb.LEDQualifiers_value[c.Qualifier]; !ok {
+			return fmt.Errorf("unknown qualifier specified: %s", c.Qualifier)
+		}
 	}
 	return nil
 }
@@ -53,6 +60,10 @@ func (c LEDConf) GetID() string {
 
 func (c LEDConf) GetAdaptorID() string {
 	return c.AdaptorID
+}
+
+func (c LEDConf) GetQualifier() string {
+	return c.Qualifier
 }
 
 func (c LEDConf) GetSubscriptions() []string {
@@ -132,12 +143,17 @@ func (d *LED) work() {
 				logger.Debugf("stopping worker on driver %s", d.State.Conf.GetID())
 				return
 			}
+			if msg.ID.Qualifier == d.State.Conf.Qualifier {
+				logger.Debugf("led-driver received msg: %q", msg)
+				d.mu.Lock()
+				if msg.Data.(*seguepb.LEDSwitchData).On {
+					d.State.led.On()
+				} else {
+					d.State.led.Off()
+				}
+				d.mu.Unlock()
+			}
 			d.State.rcvQ.Done(msg)
-			logger.Debugf("led-driver received msg: %q", msg)
-			d.mu.Lock()
-			d.State.led.Toggle()
-			d.mu.Unlock()
-
 		}
 	}
 

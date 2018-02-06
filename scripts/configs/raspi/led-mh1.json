@@ -1,0 +1,20 @@
+{
+	"machine-id": "mh1",
+	"confs": 
+	[
+		{
+			"type": "driver_led",
+			"id": "led-1",
+			"adaptor-id": "raspi",
+			"qualifier": "Debug1",
+			"conf": {
+			    "led-pin": "26"
+			},
+			"subscriptions":
+			[
+				"CmdLEDSwitch"
+			]
+
+		}
+	]
+}

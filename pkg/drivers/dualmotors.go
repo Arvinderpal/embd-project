@@ -29,6 +29,7 @@ type DualMotorsConf struct {
 	ID            string   `json:"id"`
 	DriverType    string   `json:"driver-type"`
 	AdaptorID     string   `json:"adaptor-id"`
+	Qualifier     string   `json:"qualifier"`
 	Subscriptions []string `json:"subscriptions"` // Message Type Subscriptions.
 	////////////////////////////////////////////
 	// The fields below are driver specific. //
@@ -63,6 +64,10 @@ func (c DualMotorsConf) GetID() string {
 
 func (c DualMotorsConf) GetAdaptorID() string {
 	return c.AdaptorID
+}
+
+func (c DualMotorsConf) GetQualifier() string {
+	return c.Qualifier
 }
 
 func (c DualMotorsConf) GetSubscriptions() []string {
@@ -156,12 +161,14 @@ func (d *DualMotors) work() {
 				logger.Debugf("stopping worker on driver %s", d.State.Conf.GetID())
 				return
 			}
-			logger.Debugf("dualmotors: received msg: %q", msg)
-			switch msg.ID.Type {
-			case seguepb.MessageType_CmdDrive:
-				d.ProcessDriveCmd(msg)
-			default:
-				logger.Errorf("dualmotors: unknown message type %s", msg.ID.Type)
+			if msg.ID.Qualifier == d.State.Conf.Qualifier {
+				logger.Debugf("dualmotors: received msg: %q", msg)
+				switch msg.ID.Type {
+				case seguepb.MessageType_CmdDrive:
+					d.ProcessDriveCmd(msg)
+				default:
+					logger.Errorf("dualmotors: unknown message type %s", msg.ID.Type)
+				}
 			}
 			d.State.rcvQ.Done(msg)
 		}

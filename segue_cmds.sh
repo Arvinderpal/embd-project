@@ -1,3 +1,4 @@
+sudo mkdir -p /var/run/segue ; sudo chmod 777 /var/run/segue
 ./segue --debug daemon run --n 192.168.80.201 -dr
 
 ./segue daemon machine join ../scripts/configs/mh-1.json ;./segue daemon adaptor attach ../scripts/configs/adaptor-serial-dev-ttyACM0.json

@@ -23,6 +23,7 @@ type UnitTestConf struct {
 	ID            string   `json:"id"`
 	DriverType    string   `json:"driver-type"`
 	AdaptorID     string   `json:"adaptor-id"`
+	Qualifier     string   `json:"qualifier"`
 	Subscriptions []string `json:"subscriptions"` // Message Type Subscriptions.
 
 	////////////////////////////////////////////
@@ -54,6 +55,10 @@ func (c UnitTestConf) GetID() string {
 
 func (c UnitTestConf) GetAdaptorID() string {
 	return c.AdaptorID
+}
+
+func (c UnitTestConf) GetQualifier() string {
+	return c.Qualifier
 }
 
 func (c UnitTestConf) GetSubscriptions() []string {
@@ -147,8 +152,10 @@ func (d *UnitTest) work() {
 				logger.Debugf("stopping worker on driver %s", d.State.Conf.GetID())
 				return
 			}
+			if msg.ID.Qualifier == d.State.Conf.Qualifier {
+				logger.Debugf("unittest-driver received msg: %q", msg)
+			}
 			d.State.rcvQ.Done(msg)
-			logger.Debugf("unittest-driver received msg: %q", msg)
 		}
 	}
 }

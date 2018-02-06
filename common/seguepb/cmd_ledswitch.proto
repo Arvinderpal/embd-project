@@ -1,0 +1,18 @@
+syntax = "proto3";
+package seguepb;
+
+enum LEDQualifiers {
+	General								= 0;
+	Debug1								= 1;	
+	Debug2								= 2;
+	Debug3								= 3;
+	Status1								= 4;
+	Status2								= 5;
+	Status3								= 6;
+}
+
+
+message LEDSwitchData {
+	bool 		on	 				= 1;
+	int64		value 				= 2;
+}

@@ -32,6 +32,7 @@ type DriverConfEnvelope struct {
 	Type          string      `json:"type"`
 	ID            string      `json:"id"`
 	AdaptorID     string      `json:"adaptor-id"`
+	Qualifier     string      `json:"qualifier"`
 	Subscriptions []string    `json:"subscriptions"`
 	Conf          interface{} `json:"conf"`
 }

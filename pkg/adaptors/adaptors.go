@@ -17,8 +17,9 @@ var (
 const (
 	Adaptor_UnitTest       = "adaptor_unittest"
 	Adaptor_Firmata_Serial = "adaptor_firmata_serial"
-	Adaptor_Firmata_TCP    = "adaptor_firmata_tcp"
-	Adaptor_Firmata_BLE    = "adaptor_firmata_ble"
+	// Adaptor_Firmata_TCP    = "adaptor_firmata_tcp"
+	// Adaptor_Firmata_BLE    = "adaptor_firmata_ble"
+	Adaptor_Raspi = "adaptor_raspi"
 )
 
 // NewConf is a util method used to get adaptor conf of a particular type.
@@ -38,6 +39,12 @@ func NewAdaptorConf(adaptorType, adaptorID, machineID string) (adaptorapi.Adapto
 			AdaptorType: adaptorType,
 			ID:          adaptorID,
 		}, nil
+	case Adaptor_Raspi:
+		return &RaspiConf{
+			MachineID:   machineID,
+			AdaptorType: adaptorType,
+			ID:          adaptorID,
+		}, nil
 	default:
 		return nil, types.ErrUnknownAdaptorType
 
@@ -51,6 +58,8 @@ func NewAdaptor(t string) (adaptorapi.Adaptor, error) {
 		return &UnitTest{}, nil
 	case Adaptor_Firmata_Serial:
 		return &FirmataSerial{}, nil
+	case Adaptor_Raspi:
+		return &Raspi{}, nil
 	default:
 		return nil, types.ErrUnknownAdaptorType
 	}

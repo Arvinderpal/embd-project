@@ -7,6 +7,7 @@ message Message {
 		MessageType Type				= 1;
 		string SubType 					= 2;
 		uint64 Version 					= 3;
+		string Qualifier				= 4;
 	}
 	MessageID 		ID        			= 1;
 	bytes      		Data  				= 2; 
@@ -16,6 +17,9 @@ enum MessageType {
 	UnitTest							= 0;
 	SensorUltraSonic					= 1;
 	CmdDrive							= 2;
+	CmdLEDSwitch						= 3;
+
+	// NOTE: Any changes here should also be reflected in message.go
 }
 
 message MessageEnvelope {

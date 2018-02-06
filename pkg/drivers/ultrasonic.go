@@ -25,6 +25,7 @@ type UltraSonicConf struct {
 	ID            string   `json:"id"`
 	DriverType    string   `json:"driver-type"`
 	AdaptorID     string   `json:"adaptor-id"`
+	Qualifier     string   `json:"qualifier"`
 	Subscriptions []string `json:"subscriptions"` // Message Type Subscriptions.
 
 	////////////////////////////////////////////
@@ -44,6 +45,11 @@ func (c UltraSonicConf) ValidateConf() error {
 	if c.DriverType != Driver_UltraSonic {
 		return fmt.Errorf("Invalid driver type specified. Expected %s, but got %s", Driver_UltraSonic, c.DriverType)
 	}
+	if c.Qualifier != "" {
+		if _, ok := seguepb.UltraSonicQualifiers_value[c.Qualifier]; !ok {
+			return fmt.Errorf("unknown qualifier specified: %s", c.Qualifier)
+		}
+	}
 	return nil
 }
 
@@ -57,6 +63,10 @@ func (c UltraSonicConf) GetID() string {
 
 func (c UltraSonicConf) GetAdaptorID() string {
 	return c.AdaptorID
+}
+
+func (c UltraSonicConf) GetQualifier() string {
+	return c.Qualifier
 }
 
 func (c UltraSonicConf) GetSubscriptions() []string {
@@ -138,9 +148,10 @@ func (d *UltraSonic) work() {
 		// logger.Infof("ultra-sonic reading:", data)
 		msg := message.Message{
 			ID: seguepb.Message_MessageID{
-				Type:    seguepb.MessageType_SensorUltraSonic,
-				SubType: "raw",
-				Version: version,
+				Type:      seguepb.MessageType_SensorUltraSonic,
+				SubType:   "raw",
+				Version:   version,
+				Qualifier: d.State.Conf.Qualifier,
 			},
 			Data: &seguepb.SensorUltraSonicData{EchoSample: int64(data.(int))},
 		}
