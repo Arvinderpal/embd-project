@@ -24,7 +24,7 @@ const (
 // NewConf is a util method used to get driver conf of a particular type.
 // The idea is to localize driver creation code to this package, so that each
 // time a new driver is added, the below code can be updated.
-func NewDriverConf(driverType, driverID, machineID, adaptorID string, subs []string) (driverapi.DriverConf, error) {
+func NewDriverConf(driverType, driverID, machineID, adaptorID, qualifier string, subs []string) (driverapi.DriverConf, error) {
 	switch driverType {
 	case Driver_UnitTest:
 		return &UnitTestConf{
@@ -32,6 +32,7 @@ func NewDriverConf(driverType, driverID, machineID, adaptorID string, subs []str
 			DriverType:    driverType,
 			ID:            driverID,
 			AdaptorID:     adaptorID,
+			Qualifier:     qualifier,
 			Subscriptions: subs,
 		}, nil
 	case Driver_DualMotors:
@@ -40,6 +41,7 @@ func NewDriverConf(driverType, driverID, machineID, adaptorID string, subs []str
 			DriverType:    driverType,
 			ID:            driverID,
 			AdaptorID:     adaptorID,
+			Qualifier:     qualifier,
 			Subscriptions: subs,
 		}, nil
 	case Driver_LED:
@@ -48,6 +50,7 @@ func NewDriverConf(driverType, driverID, machineID, adaptorID string, subs []str
 			DriverType:    driverType,
 			ID:            driverID,
 			AdaptorID:     adaptorID,
+			Qualifier:     qualifier,
 			Subscriptions: subs,
 		}, nil
 	case Driver_UltraSonic:
@@ -56,6 +59,7 @@ func NewDriverConf(driverType, driverID, machineID, adaptorID string, subs []str
 			DriverType:    driverType,
 			ID:            driverID,
 			AdaptorID:     adaptorID,
+			Qualifier:     qualifier,
 			Subscriptions: subs,
 		}, nil
 	default:
@@ -101,7 +105,7 @@ func NewDriverConfs(env driverapi.DriversConfEnvelope) ([]driverapi.DriverConf, 
 			return nil, fmt.Errorf("Unmarshal of driver conf %d (raw) failed: %s", i, err)
 		}
 
-		dConf, err := NewDriverConf(dEnv.Type, dEnv.ID, env.MachineID, dEnv.AdaptorID, dEnv.Subscriptions)
+		dConf, err := NewDriverConf(dEnv.Type, dEnv.ID, env.MachineID, dEnv.AdaptorID, dEnv.Qualifier, dEnv.Subscriptions)
 		if err != nil {
 			return nil, err
 		}

@@ -51,6 +51,16 @@ func ConvertToInternalFormat(m *seguepb.Message) (Message, error) {
 			ID:   *m.ID,
 			Data: data,
 		}, nil
+	case seguepb.MessageType_CmdLEDSwitch:
+		data := &seguepb.LEDSwitchData{}
+		err := proto.Unmarshal(m.GetData(), data)
+		if err != nil {
+			return Message{}, err
+		}
+		return Message{
+			ID:   *m.ID,
+			Data: data,
+		}, nil
 	default:
 		return Message{}, fmt.Errorf("converter error: unknown message type %s", m.GetID().GetType())
 	}
@@ -83,6 +93,15 @@ func ConvertToExternalFormat(iMsg Message) (*seguepb.Message, error) {
 		}, nil
 	case seguepb.MessageType_CmdDrive:
 		data, err := proto.Marshal(iMsg.Data.(*seguepb.CmdDriveData))
+		if err != nil {
+			return nil, err
+		}
+		return &seguepb.Message{
+			ID:   &iMsg.ID,
+			Data: data,
+		}, nil
+	case seguepb.MessageType_CmdLEDSwitch:
+		data, err := proto.Marshal(iMsg.Data.(*seguepb.LEDSwitchData))
 		if err != nil {
 			return nil, err
 		}

@@ -1,0 +1,12 @@
+{
+	"machine-id": "mh1",
+	"confs": 
+	[
+		{
+			"type": "adaptor_raspi",
+			"id": "raspi",
+			"conf": {
+			}
+		}
+	]
+}

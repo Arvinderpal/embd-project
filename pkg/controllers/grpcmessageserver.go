@@ -250,6 +250,9 @@ func (d *GRPCMessageServer) Messenger(stream seguepb.Messenger_MessengerServer) 
 				var eMsgs []*seguepb.Message
 				// NOTE: this assumes only a single consumer of the queue.
 				sqLen := sq.Len() // TODO: may want to cap this to say 25 msgs
+				if sqLen == 0 {
+					continue
+				}
 				logger.Debugf("grpc: sending %d messages", sqLen)
 				for i := 0; i < sqLen; i++ {
 					iMsg, shutdown := sq.Get()
