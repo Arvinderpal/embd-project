@@ -1,0 +1,9 @@
+syntax = "proto3";
+package seguepb;
+
+message LIRCEventData {
+	uint64 		code 				= 1;
+	int64 		repeat 				= 2;
+	string 		button 				= 3;
+	string 		remote 				= 4;
+}

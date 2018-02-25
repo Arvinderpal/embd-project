@@ -1,0 +1,13 @@
+{
+	"machine-id": "mh1",
+	"confs": 
+	[
+		{
+			"type": "lirc",
+			"id": "lirc-1",
+			"conf": {
+			    "lirc-socket": "/var/run/lirc/lircd"
+			}
+		}
+	]
+}

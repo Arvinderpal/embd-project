@@ -18,6 +18,7 @@ enum MessageType {
 	SensorUltraSonic					= 1;
 	CmdDrive							= 2;
 	CmdLEDSwitch						= 3;
+	LIRCEvent							= 4;
 
 	// NOTE: Any changes here should also be reflected in message.go
 }
