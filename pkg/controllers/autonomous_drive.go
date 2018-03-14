@@ -13,7 +13,7 @@ import (
 	"github.com/Arvinderpal/embd-project/common/seguepb"
 )
 
-// AutonomousDriveConf implements programapi.ProgramConf interface
+// AutonomousDriveConf implements ControllerConf interface
 type AutonomousDriveConf struct {
 	//////////////////////////////////////////////////////
 	// All controller confs should define the following fields. //
@@ -58,10 +58,11 @@ func (c AutonomousDriveConf) NewController(rcvQ *message.Queue, sndQ *message.Qu
 
 	drv := AutonomousDrive{
 		State: &autonomousDriveInternal{
-			Conf:     c,
-			rcvQ:     rcvQ,
-			sndQ:     sndQ,
-			killChan: make(chan struct{}),
+			Conf:      c,
+			rcvQ:      rcvQ,
+			sndQ:      sndQ,
+			killChan:  make(chan struct{}),
+			lircEvent: make(chan *seguepb.LIRCEventData),
 		},
 	}
 
@@ -82,7 +83,8 @@ type autonomousDriveInternal struct {
 	killChan chan struct{}
 
 	stateMU                sync.RWMutex
-	ultrasonicDataReadings []seguepb.SensorUltraSonicData
+	ultrasonicDataReadings []*seguepb.SensorUltraSonicData
+	lircEvent              chan *seguepb.LIRCEventData
 }
 
 // Start: starts the controller logic.
@@ -90,7 +92,8 @@ func (d *AutonomousDrive) Start() error {
 	d.mu.Lock()
 	defer d.mu.Unlock()
 	go d.work()
-	go d.State.commandIssuer()
+	go d.State.ultrasonicProcessor()
+	go d.State.lircProcessor()
 	return nil
 }
 
@@ -140,6 +143,7 @@ func (d *AutonomousDrive) Copy() controllerapi.Controller {
 	d.mu.RLock()
 	defer d.mu.RUnlock()
 	cpy := &AutonomousDrive{
+		// FIXME: stateMU seems racy to me. should that also be locked here or a single mutex used?
 		State: &autonomousDriveInternal{
 			Conf: d.State.Conf,
 		},
@@ -163,8 +167,13 @@ func (s *autonomousDriveInternal) messageHandler(msg message.Message) {
 	s.stateMU.Lock()
 	defer s.stateMU.Unlock()
 	switch msg.ID.Type {
+
 	case seguepb.MessageType_SensorUltraSonic:
-		s.ultrasonicDataReadings = append(s.ultrasonicDataReadings, msg.Data.(seguepb.SensorUltraSonicData))
+		s.ultrasonicDataReadings = append(s.ultrasonicDataReadings, msg.Data.(*seguepb.SensorUltraSonicData))
+
+	case seguepb.MessageType_LIRCEvent:
+		s.lircEvent <- msg.Data.(*seguepb.LIRCEventData)
+
 	default:
 		logger.Warningf("autonomous-drive unknown message type %s", msg.ID.Type)
 	}
@@ -177,7 +186,45 @@ const (
 	accelerationIncr = 15
 )
 
-func (s *autonomousDriveInternal) commandIssuer() {
+func (s *autonomousDriveInternal) lircProcessor() {
+	var version uint64
+	speed := uint32(maxSpeedValue)
+	action := "stop"
+	var driveMsg message.Message
+	for {
+		select {
+		case <-s.killChan:
+			return
+		case event := <-s.lircEvent:
+			switch event.Button {
+			case "BTN_START":
+				action = "stop"
+			case "BTN_LEFT":
+				action = "left"
+			case "BTN_RIGHT":
+				action = "right"
+			case "BTN_TOP":
+				action = "forward"
+			case "BTN_BACK":
+				action = "backward"
+			default:
+				action = "stop"
+			}
+			driveMsg = message.Message{
+				ID: seguepb.Message_MessageID{
+					Type:    seguepb.MessageType_CmdDrive,
+					SubType: action,
+					Version: version,
+				},
+				Data: &seguepb.CmdDriveData{Speed: speed},
+			}
+			s.sndQ.Add(driveMsg)
+			version += 1
+		}
+	}
+}
+
+func (s *autonomousDriveInternal) ultrasonicProcessor() {
 	var version uint64
 	speed := uint32(stopSpeedValue)
 	fadeAmount := uint32(15)
@@ -216,5 +263,4 @@ func (s *autonomousDriveInternal) commandIssuer() {
 		s.ultrasonicDataReadings = nil
 		s.stateMU.Unlock()
 	})
-
 }

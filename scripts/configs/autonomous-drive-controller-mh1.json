@@ -10,7 +10,8 @@
 			},
 			"subscriptions":
 			[
-				"SensorUltraSonic"
+				"SensorUltraSonic",
+				"LIRCEvent"
 			]
 		}
 	]

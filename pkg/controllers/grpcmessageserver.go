@@ -16,7 +16,7 @@ import (
 	"github.com/Arvinderpal/embd-project/common/seguepb"
 )
 
-// GRPCMessageServerConf implements programapi.ProgramConf interface
+// GRPCMessageServerConf implements ControllerConf interface
 type GRPCMessageServerConf struct {
 	//////////////////////////////////////////////////////
 	// All controller confs should define the following fields. //
