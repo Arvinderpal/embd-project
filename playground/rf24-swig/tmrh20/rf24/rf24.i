@@ -3,10 +3,14 @@
 #include "RF24.h"
 #include "RF24_config.h"
 #include "nRF24L01.h"
-#include "utility/includes.h"
+//#include "utility/includes.h"
+//#include "utility/RPi/bcm2835.h" 
+//#include "utility/RPi/RF24_arch_config.h"
+//#include "utility/RPi/interrupt.h"
 %}
 
 %include <typemaps.i>
+%include "stdint.i"
 %include "std_string.i"
 %include "std_vector.i"
 
@@ -21,4 +25,7 @@ namespace std {
 %include "RF24.h"
 %include "RF24_config.h"
 %include "nRF24L01.h"
-%include "utility/includes.h"
+//%include "utility/includes.h"
+//%include "utility/RPi/bcm2835.h" 
+//%include "utility/RPi/RF24_arch_config.h"
+//%include "utility/RPi/interrupt.h"

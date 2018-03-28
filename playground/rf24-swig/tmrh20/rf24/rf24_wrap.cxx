@@ -252,7 +252,13 @@ static void* Swig_malloc(int c) {
 #include "RF24.h"
 #include "RF24_config.h"
 #include "nRF24L01.h"
-#include "utility/includes.h"
+//#include "utility/includes.h"
+//#include "utility/RPi/bcm2835.h" 
+//#include "utility/RPi/RF24_arch_config.h"
+//#include "utility/RPi/interrupt.h"
+
+
+#include <stdint.h>		// Use the C99 official header
 
 
 #include <string>
@@ -293,7 +299,7 @@ SWIGINTERN void std_vector_Sl_char_Sg__set(std::vector< char > *self,int i,std::
 extern "C" {
 #endif
 
-void _wrap_Swig_free_rf24_7d7c662b7fa2227e(void *_swig_go_0) {
+void _wrap_Swig_free_rf24_8b60070a93f979d5(void *_swig_go_0) {
   void *arg1 = (void *) 0 ;
   
   arg1 = *(void **)&_swig_go_0; 
@@ -303,7 +309,7 @@ void _wrap_Swig_free_rf24_7d7c662b7fa2227e(void *_swig_go_0) {
 }
 
 
-void *_wrap_Swig_malloc_rf24_7d7c662b7fa2227e(intgo _swig_go_0) {
+void *_wrap_Swig_malloc_rf24_8b60070a93f979d5(intgo _swig_go_0) {
   int arg1 ;
   void *result = 0 ;
   void *_swig_go_result;
@@ -316,7 +322,7 @@ void *_wrap_Swig_malloc_rf24_7d7c662b7fa2227e(intgo _swig_go_0) {
 }
 
 
-std::vector< std::string > *_wrap_new_StringVector__SWIG_0_rf24_7d7c662b7fa2227e() {
+std::vector< std::string > *_wrap_new_StringVector__SWIG_0_rf24_8b60070a93f979d5() {
   std::vector< std::string > *result = 0 ;
   std::vector< std::string > *_swig_go_result;
   
@@ -327,7 +333,7 @@ std::vector< std::string > *_wrap_new_StringVector__SWIG_0_rf24_7d7c662b7fa2227e
 }
 
 
-std::vector< std::string > *_wrap_new_StringVector__SWIG_1_rf24_7d7c662b7fa2227e(long long _swig_go_0) {
+std::vector< std::string > *_wrap_new_StringVector__SWIG_1_rf24_8b60070a93f979d5(long long _swig_go_0) {
   std::vector< std::string >::size_type arg1 ;
   std::vector< std::string > *result = 0 ;
   std::vector< std::string > *_swig_go_result;
@@ -340,7 +346,7 @@ std::vector< std::string > *_wrap_new_StringVector__SWIG_1_rf24_7d7c662b7fa2227e
 }
 
 
-long long _wrap_StringVector_size_rf24_7d7c662b7fa2227e(std::vector< std::string > *_swig_go_0) {
+long long _wrap_StringVector_size_rf24_8b60070a93f979d5(std::vector< std::string > *_swig_go_0) {
   std::vector< std::string > *arg1 = (std::vector< std::string > *) 0 ;
   std::vector< std::string >::size_type result;
   long long _swig_go_result;
@@ -353,7 +359,7 @@ long long _wrap_StringVector_size_rf24_7d7c662b7fa2227e(std::vector< std::string
 }
 
 
-long long _wrap_StringVector_capacity_rf24_7d7c662b7fa2227e(std::vector< std::string > *_swig_go_0) {
+long long _wrap_StringVector_capacity_rf24_8b60070a93f979d5(std::vector< std::string > *_swig_go_0) {
   std::vector< std::string > *arg1 = (std::vector< std::string > *) 0 ;
   std::vector< std::string >::size_type result;
   long long _swig_go_result;
@@ -366,7 +372,7 @@ long long _wrap_StringVector_capacity_rf24_7d7c662b7fa2227e(std::vector< std::st
 }
 
 
-void _wrap_StringVector_reserve_rf24_7d7c662b7fa2227e(std::vector< std::string > *_swig_go_0, long long _swig_go_1) {
+void _wrap_StringVector_reserve_rf24_8b60070a93f979d5(std::vector< std::string > *_swig_go_0, long long _swig_go_1) {
   std::vector< std::string > *arg1 = (std::vector< std::string > *) 0 ;
   std::vector< std::string >::size_type arg2 ;
   
@@ -378,7 +384,7 @@ void _wrap_StringVector_reserve_rf24_7d7c662b7fa2227e(std::vector< std::string >
 }
 
 
-bool _wrap_StringVector_isEmpty_rf24_7d7c662b7fa2227e(std::vector< std::string > *_swig_go_0) {
+bool _wrap_StringVector_isEmpty_rf24_8b60070a93f979d5(std::vector< std::string > *_swig_go_0) {
   std::vector< std::string > *arg1 = (std::vector< std::string > *) 0 ;
   bool result;
   bool _swig_go_result;
@@ -391,7 +397,7 @@ bool _wrap_StringVector_isEmpty_rf24_7d7c662b7fa2227e(std::vector< std::string >
 }
 
 
-void _wrap_StringVector_clear_rf24_7d7c662b7fa2227e(std::vector< std::string > *_swig_go_0) {
+void _wrap_StringVector_clear_rf24_8b60070a93f979d5(std::vector< std::string > *_swig_go_0) {
   std::vector< std::string > *arg1 = (std::vector< std::string > *) 0 ;
   
   arg1 = *(std::vector< std::string > **)&_swig_go_0; 
@@ -401,7 +407,7 @@ void _wrap_StringVector_clear_rf24_7d7c662b7fa2227e(std::vector< std::string > *
 }
 
 
-void _wrap_StringVector_add_rf24_7d7c662b7fa2227e(std::vector< std::string > *_swig_go_0, _gostring_ _swig_go_1) {
+void _wrap_StringVector_add_rf24_8b60070a93f979d5(std::vector< std::string > *_swig_go_0, _gostring_ _swig_go_1) {
   std::vector< std::string > *arg1 = (std::vector< std::string > *) 0 ;
   std::vector< std::string >::value_type *arg2 = 0 ;
   
@@ -416,7 +422,7 @@ void _wrap_StringVector_add_rf24_7d7c662b7fa2227e(std::vector< std::string > *_s
 }
 
 
-_gostring_ _wrap_StringVector_get_rf24_7d7c662b7fa2227e(std::vector< std::string > *_swig_go_0, intgo _swig_go_1) {
+_gostring_ _wrap_StringVector_get_rf24_8b60070a93f979d5(std::vector< std::string > *_swig_go_0, intgo _swig_go_1) {
   std::vector< std::string > *arg1 = (std::vector< std::string > *) 0 ;
   int arg2 ;
   std::vector< std::string >::value_type *result = 0 ;
@@ -439,7 +445,7 @@ _gostring_ _wrap_StringVector_get_rf24_7d7c662b7fa2227e(std::vector< std::string
 }
 
 
-void _wrap_StringVector_set_rf24_7d7c662b7fa2227e(std::vector< std::string > *_swig_go_0, intgo _swig_go_1, _gostring_ _swig_go_2) {
+void _wrap_StringVector_set_rf24_8b60070a93f979d5(std::vector< std::string > *_swig_go_0, intgo _swig_go_1, _gostring_ _swig_go_2) {
   std::vector< std::string > *arg1 = (std::vector< std::string > *) 0 ;
   int arg2 ;
   std::vector< std::string >::value_type *arg3 = 0 ;
@@ -464,7 +470,7 @@ void _wrap_StringVector_set_rf24_7d7c662b7fa2227e(std::vector< std::string > *_s
 }
 
 
-void _wrap_delete_StringVector_rf24_7d7c662b7fa2227e(std::vector< std::string > *_swig_go_0) {
+void _wrap_delete_StringVector_rf24_8b60070a93f979d5(std::vector< std::string > *_swig_go_0) {
   std::vector< std::string > *arg1 = (std::vector< std::string > *) 0 ;
   
   arg1 = *(std::vector< std::string > **)&_swig_go_0; 
@@ -474,7 +480,7 @@ void _wrap_delete_StringVector_rf24_7d7c662b7fa2227e(std::vector< std::string > 
 }
 
 
-std::vector< char > *_wrap_new_ByteVector__SWIG_0_rf24_7d7c662b7fa2227e() {
+std::vector< char > *_wrap_new_ByteVector__SWIG_0_rf24_8b60070a93f979d5() {
   std::vector< char > *result = 0 ;
   std::vector< char > *_swig_go_result;
   
@@ -485,7 +491,7 @@ std::vector< char > *_wrap_new_ByteVector__SWIG_0_rf24_7d7c662b7fa2227e() {
 }
 
 
-std::vector< char > *_wrap_new_ByteVector__SWIG_1_rf24_7d7c662b7fa2227e(long long _swig_go_0) {
+std::vector< char > *_wrap_new_ByteVector__SWIG_1_rf24_8b60070a93f979d5(long long _swig_go_0) {
   std::vector< char >::size_type arg1 ;
   std::vector< char > *result = 0 ;
   std::vector< char > *_swig_go_result;
@@ -498,7 +504,7 @@ std::vector< char > *_wrap_new_ByteVector__SWIG_1_rf24_7d7c662b7fa2227e(long lon
 }
 
 
-long long _wrap_ByteVector_size_rf24_7d7c662b7fa2227e(std::vector< char > *_swig_go_0) {
+long long _wrap_ByteVector_size_rf24_8b60070a93f979d5(std::vector< char > *_swig_go_0) {
   std::vector< char > *arg1 = (std::vector< char > *) 0 ;
   std::vector< char >::size_type result;
   long long _swig_go_result;
@@ -511,7 +517,7 @@ long long _wrap_ByteVector_size_rf24_7d7c662b7fa2227e(std::vector< char > *_swig
 }
 
 
-long long _wrap_ByteVector_capacity_rf24_7d7c662b7fa2227e(std::vector< char > *_swig_go_0) {
+long long _wrap_ByteVector_capacity_rf24_8b60070a93f979d5(std::vector< char > *_swig_go_0) {
   std::vector< char > *arg1 = (std::vector< char > *) 0 ;
   std::vector< char >::size_type result;
   long long _swig_go_result;
@@ -524,7 +530,7 @@ long long _wrap_ByteVector_capacity_rf24_7d7c662b7fa2227e(std::vector< char > *_
 }
 
 
-void _wrap_ByteVector_reserve_rf24_7d7c662b7fa2227e(std::vector< char > *_swig_go_0, long long _swig_go_1) {
+void _wrap_ByteVector_reserve_rf24_8b60070a93f979d5(std::vector< char > *_swig_go_0, long long _swig_go_1) {
   std::vector< char > *arg1 = (std::vector< char > *) 0 ;
   std::vector< char >::size_type arg2 ;
   
@@ -536,7 +542,7 @@ void _wrap_ByteVector_reserve_rf24_7d7c662b7fa2227e(std::vector< char > *_swig_g
 }
 
 
-bool _wrap_ByteVector_isEmpty_rf24_7d7c662b7fa2227e(std::vector< char > *_swig_go_0) {
+bool _wrap_ByteVector_isEmpty_rf24_8b60070a93f979d5(std::vector< char > *_swig_go_0) {
   std::vector< char > *arg1 = (std::vector< char > *) 0 ;
   bool result;
   bool _swig_go_result;
@@ -549,7 +555,7 @@ bool _wrap_ByteVector_isEmpty_rf24_7d7c662b7fa2227e(std::vector< char > *_swig_g
 }
 
 
-void _wrap_ByteVector_clear_rf24_7d7c662b7fa2227e(std::vector< char > *_swig_go_0) {
+void _wrap_ByteVector_clear_rf24_8b60070a93f979d5(std::vector< char > *_swig_go_0) {
   std::vector< char > *arg1 = (std::vector< char > *) 0 ;
   
   arg1 = *(std::vector< char > **)&_swig_go_0; 
@@ -559,7 +565,7 @@ void _wrap_ByteVector_clear_rf24_7d7c662b7fa2227e(std::vector< char > *_swig_go_
 }
 
 
-void _wrap_ByteVector_add_rf24_7d7c662b7fa2227e(std::vector< char > *_swig_go_0, char _swig_go_1) {
+void _wrap_ByteVector_add_rf24_8b60070a93f979d5(std::vector< char > *_swig_go_0, char _swig_go_1) {
   std::vector< char > *arg1 = (std::vector< char > *) 0 ;
   std::vector< char >::value_type *arg2 = 0 ;
   
@@ -571,7 +577,7 @@ void _wrap_ByteVector_add_rf24_7d7c662b7fa2227e(std::vector< char > *_swig_go_0,
 }
 
 
-char _wrap_ByteVector_get_rf24_7d7c662b7fa2227e(std::vector< char > *_swig_go_0, intgo _swig_go_1) {
+char _wrap_ByteVector_get_rf24_8b60070a93f979d5(std::vector< char > *_swig_go_0, intgo _swig_go_1) {
   std::vector< char > *arg1 = (std::vector< char > *) 0 ;
   int arg2 ;
   std::vector< char >::value_type *result = 0 ;
@@ -594,7 +600,7 @@ char _wrap_ByteVector_get_rf24_7d7c662b7fa2227e(std::vector< char > *_swig_go_0,
 }
 
 
-void _wrap_ByteVector_set_rf24_7d7c662b7fa2227e(std::vector< char > *_swig_go_0, intgo _swig_go_1, char _swig_go_2) {
+void _wrap_ByteVector_set_rf24_8b60070a93f979d5(std::vector< char > *_swig_go_0, intgo _swig_go_1, char _swig_go_2) {
   std::vector< char > *arg1 = (std::vector< char > *) 0 ;
   int arg2 ;
   std::vector< char >::value_type *arg3 = 0 ;
@@ -616,7 +622,7 @@ void _wrap_ByteVector_set_rf24_7d7c662b7fa2227e(std::vector< char > *_swig_go_0,
 }
 
 
-void _wrap_delete_ByteVector_rf24_7d7c662b7fa2227e(std::vector< char > *_swig_go_0) {
+void _wrap_delete_ByteVector_rf24_8b60070a93f979d5(std::vector< char > *_swig_go_0) {
   std::vector< char > *arg1 = (std::vector< char > *) 0 ;
   
   arg1 = *(std::vector< char > **)&_swig_go_0; 
@@ -626,7 +632,7 @@ void _wrap_delete_ByteVector_rf24_7d7c662b7fa2227e(std::vector< char > *_swig_go
 }
 
 
-intgo _wrap_RF24_PA_MIN_rf24_7d7c662b7fa2227e() {
+intgo _wrap_RF24_PA_MIN_rf24_8b60070a93f979d5() {
   int result;
   intgo _swig_go_result;
   
@@ -638,7 +644,7 @@ intgo _wrap_RF24_PA_MIN_rf24_7d7c662b7fa2227e() {
 }
 
 
-intgo _wrap_RF24_PA_LOW_rf24_7d7c662b7fa2227e() {
+intgo _wrap_RF24_PA_LOW_rf24_8b60070a93f979d5() {
   int result;
   intgo _swig_go_result;
   
@@ -650,7 +656,7 @@ intgo _wrap_RF24_PA_LOW_rf24_7d7c662b7fa2227e() {
 }
 
 
-intgo _wrap_RF24_PA_HIGH_rf24_7d7c662b7fa2227e() {
+intgo _wrap_RF24_PA_HIGH_rf24_8b60070a93f979d5() {
   int result;
   intgo _swig_go_result;
   
@@ -662,7 +668,7 @@ intgo _wrap_RF24_PA_HIGH_rf24_7d7c662b7fa2227e() {
 }
 
 
-intgo _wrap_RF24_PA_MAX_rf24_7d7c662b7fa2227e() {
+intgo _wrap_RF24_PA_MAX_rf24_8b60070a93f979d5() {
   int result;
   intgo _swig_go_result;
   
@@ -674,7 +680,7 @@ intgo _wrap_RF24_PA_MAX_rf24_7d7c662b7fa2227e() {
 }
 
 
-intgo _wrap_RF24_PA_ERROR_rf24_7d7c662b7fa2227e() {
+intgo _wrap_RF24_PA_ERROR_rf24_8b60070a93f979d5() {
   int result;
   intgo _swig_go_result;
   
@@ -686,7 +692,7 @@ intgo _wrap_RF24_PA_ERROR_rf24_7d7c662b7fa2227e() {
 }
 
 
-intgo _wrap_RF24_1MBPS_rf24_7d7c662b7fa2227e() {
+intgo _wrap_RF24_1MBPS_rf24_8b60070a93f979d5() {
   int result;
   intgo _swig_go_result;
   
@@ -698,7 +704,7 @@ intgo _wrap_RF24_1MBPS_rf24_7d7c662b7fa2227e() {
 }
 
 
-intgo _wrap_RF24_2MBPS_rf24_7d7c662b7fa2227e() {
+intgo _wrap_RF24_2MBPS_rf24_8b60070a93f979d5() {
   int result;
   intgo _swig_go_result;
   
@@ -710,7 +716,7 @@ intgo _wrap_RF24_2MBPS_rf24_7d7c662b7fa2227e() {
 }
 
 
-intgo _wrap_RF24_250KBPS_rf24_7d7c662b7fa2227e() {
+intgo _wrap_RF24_250KBPS_rf24_8b60070a93f979d5() {
   int result;
   intgo _swig_go_result;
   
@@ -722,7 +728,7 @@ intgo _wrap_RF24_250KBPS_rf24_7d7c662b7fa2227e() {
 }
 
 
-intgo _wrap_RF24_CRC_DISABLED_rf24_7d7c662b7fa2227e() {
+intgo _wrap_RF24_CRC_DISABLED_rf24_8b60070a93f979d5() {
   int result;
   intgo _swig_go_result;
   
@@ -734,7 +740,7 @@ intgo _wrap_RF24_CRC_DISABLED_rf24_7d7c662b7fa2227e() {
 }
 
 
-intgo _wrap_RF24_CRC_8_rf24_7d7c662b7fa2227e() {
+intgo _wrap_RF24_CRC_8_rf24_8b60070a93f979d5() {
   int result;
   intgo _swig_go_result;
   
@@ -746,7 +752,7 @@ intgo _wrap_RF24_CRC_8_rf24_7d7c662b7fa2227e() {
 }
 
 
-intgo _wrap_RF24_CRC_16_rf24_7d7c662b7fa2227e() {
+intgo _wrap_RF24_CRC_16_rf24_8b60070a93f979d5() {
   int result;
   intgo _swig_go_result;
   
@@ -758,28 +764,14 @@ intgo _wrap_RF24_CRC_16_rf24_7d7c662b7fa2227e() {
 }
 
 
-RF24 *_wrap_new_RF24__SWIG_0_rf24_7d7c662b7fa2227e(uint16_t *_swig_go_0, uint16_t *_swig_go_1) {
+RF24 *_wrap_new_RF24__SWIG_0_rf24_8b60070a93f979d5(short _swig_go_0, short _swig_go_1) {
   uint16_t arg1 ;
   uint16_t arg2 ;
-  uint16_t *argp1 ;
-  uint16_t *argp2 ;
   RF24 *result = 0 ;
   RF24 *_swig_go_result;
   
-  
-  argp1 = (uint16_t *)_swig_go_0;
-  if (argp1 == NULL) {
-    _swig_gopanic("Attempt to dereference null uint16_t");
-  }
-  arg1 = (uint16_t)*argp1;
-  
-  
-  argp2 = (uint16_t *)_swig_go_1;
-  if (argp2 == NULL) {
-    _swig_gopanic("Attempt to dereference null uint16_t");
-  }
-  arg2 = (uint16_t)*argp2;
-  
+  arg1 = (uint16_t)_swig_go_0; 
+  arg2 = (uint16_t)_swig_go_1; 
   
   result = (RF24 *)new RF24(arg1,arg2);
   *(RF24 **)&_swig_go_result = (RF24 *)result; 
@@ -787,37 +779,16 @@ RF24 *_wrap_new_RF24__SWIG_0_rf24_7d7c662b7fa2227e(uint16_t *_swig_go_0, uint16_
 }
 
 
-RF24 *_wrap_new_RF24__SWIG_1_rf24_7d7c662b7fa2227e(uint16_t *_swig_go_0, uint16_t *_swig_go_1, uint32_t *_swig_go_2) {
+RF24 *_wrap_new_RF24__SWIG_1_rf24_8b60070a93f979d5(short _swig_go_0, short _swig_go_1, intgo _swig_go_2) {
   uint16_t arg1 ;
   uint16_t arg2 ;
   uint32_t arg3 ;
-  uint16_t *argp1 ;
-  uint16_t *argp2 ;
-  uint32_t *argp3 ;
   RF24 *result = 0 ;
   RF24 *_swig_go_result;
   
-  
-  argp1 = (uint16_t *)_swig_go_0;
-  if (argp1 == NULL) {
-    _swig_gopanic("Attempt to dereference null uint16_t");
-  }
-  arg1 = (uint16_t)*argp1;
-  
-  
-  argp2 = (uint16_t *)_swig_go_1;
-  if (argp2 == NULL) {
-    _swig_gopanic("Attempt to dereference null uint16_t");
-  }
-  arg2 = (uint16_t)*argp2;
-  
-  
-  argp3 = (uint32_t *)_swig_go_2;
-  if (argp3 == NULL) {
-    _swig_gopanic("Attempt to dereference null uint32_t");
-  }
-  arg3 = (uint32_t)*argp3;
-  
+  arg1 = (uint16_t)_swig_go_0; 
+  arg2 = (uint16_t)_swig_go_1; 
+  arg3 = (uint32_t)_swig_go_2; 
   
   result = (RF24 *)new RF24(arg1,arg2,arg3);
   *(RF24 **)&_swig_go_result = (RF24 *)result; 
@@ -825,7 +796,7 @@ RF24 *_wrap_new_RF24__SWIG_1_rf24_7d7c662b7fa2227e(uint16_t *_swig_go_0, uint16_
 }
 
 
-bool _wrap_RF24_begin_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0) {
+bool _wrap_RF24_begin_rf24_8b60070a93f979d5(RF24 *_swig_go_0) {
   RF24 *arg1 = (RF24 *) 0 ;
   bool result;
   bool _swig_go_result;
@@ -838,7 +809,7 @@ bool _wrap_RF24_begin_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0) {
 }
 
 
-bool _wrap_RF24_isChipConnected_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0) {
+bool _wrap_RF24_isChipConnected_rf24_8b60070a93f979d5(RF24 *_swig_go_0) {
   RF24 *arg1 = (RF24 *) 0 ;
   bool result;
   bool _swig_go_result;
@@ -851,7 +822,7 @@ bool _wrap_RF24_isChipConnected_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0) {
 }
 
 
-void _wrap_RF24_startListening_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0) {
+void _wrap_RF24_startListening_rf24_8b60070a93f979d5(RF24 *_swig_go_0) {
   RF24 *arg1 = (RF24 *) 0 ;
   
   arg1 = *(RF24 **)&_swig_go_0; 
@@ -861,7 +832,7 @@ void _wrap_RF24_startListening_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0) {
 }
 
 
-void _wrap_RF24_stopListening_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0) {
+void _wrap_RF24_stopListening_rf24_8b60070a93f979d5(RF24 *_swig_go_0) {
   RF24 *arg1 = (RF24 *) 0 ;
   
   arg1 = *(RF24 **)&_swig_go_0; 
@@ -871,7 +842,7 @@ void _wrap_RF24_stopListening_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0) {
 }
 
 
-bool _wrap_RF24_available__SWIG_0_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0) {
+bool _wrap_RF24_available__SWIG_0_rf24_8b60070a93f979d5(RF24 *_swig_go_0) {
   RF24 *arg1 = (RF24 *) 0 ;
   bool result;
   bool _swig_go_result;
@@ -884,44 +855,30 @@ bool _wrap_RF24_available__SWIG_0_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0) {
 }
 
 
-void _wrap_RF24_read_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0, void *_swig_go_1, uint8_t *_swig_go_2) {
+void _wrap_RF24_read_rf24_8b60070a93f979d5(RF24 *_swig_go_0, void *_swig_go_1, char _swig_go_2) {
   RF24 *arg1 = (RF24 *) 0 ;
   void *arg2 = (void *) 0 ;
   uint8_t arg3 ;
-  uint8_t *argp3 ;
   
   arg1 = *(RF24 **)&_swig_go_0; 
   arg2 = *(void **)&_swig_go_1; 
-  
-  argp3 = (uint8_t *)_swig_go_2;
-  if (argp3 == NULL) {
-    _swig_gopanic("Attempt to dereference null uint8_t");
-  }
-  arg3 = (uint8_t)*argp3;
-  
+  arg3 = (uint8_t)_swig_go_2; 
   
   (arg1)->read(arg2,arg3);
   
 }
 
 
-bool _wrap_RF24_write__SWIG_0_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0, void *_swig_go_1, uint8_t *_swig_go_2) {
+bool _wrap_RF24_write__SWIG_0_rf24_8b60070a93f979d5(RF24 *_swig_go_0, void *_swig_go_1, char _swig_go_2) {
   RF24 *arg1 = (RF24 *) 0 ;
   void *arg2 = (void *) 0 ;
   uint8_t arg3 ;
-  uint8_t *argp3 ;
   bool result;
   bool _swig_go_result;
   
   arg1 = *(RF24 **)&_swig_go_0; 
   arg2 = *(void **)&_swig_go_1; 
-  
-  argp3 = (uint8_t *)_swig_go_2;
-  if (argp3 == NULL) {
-    _swig_gopanic("Attempt to dereference null uint8_t");
-  }
-  arg3 = (uint8_t)*argp3;
-  
+  arg3 = (uint8_t)_swig_go_2; 
   
   result = (bool)(arg1)->write((void const *)arg2,arg3);
   _swig_go_result = result; 
@@ -929,7 +886,7 @@ bool _wrap_RF24_write__SWIG_0_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0, void *_swi
 }
 
 
-void _wrap_RF24_openWritingPipe__SWIG_0_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0, uint8_t *_swig_go_1) {
+void _wrap_RF24_openWritingPipe__SWIG_0_rf24_8b60070a93f979d5(RF24 *_swig_go_0, char *_swig_go_1) {
   RF24 *arg1 = (RF24 *) 0 ;
   uint8_t *arg2 = (uint8_t *) 0 ;
   
@@ -941,20 +898,13 @@ void _wrap_RF24_openWritingPipe__SWIG_0_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0, 
 }
 
 
-void _wrap_RF24_openReadingPipe__SWIG_0_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0, uint8_t *_swig_go_1, uint8_t *_swig_go_2) {
+void _wrap_RF24_openReadingPipe__SWIG_0_rf24_8b60070a93f979d5(RF24 *_swig_go_0, char _swig_go_1, char *_swig_go_2) {
   RF24 *arg1 = (RF24 *) 0 ;
   uint8_t arg2 ;
   uint8_t *arg3 = (uint8_t *) 0 ;
-  uint8_t *argp2 ;
   
   arg1 = *(RF24 **)&_swig_go_0; 
-  
-  argp2 = (uint8_t *)_swig_go_1;
-  if (argp2 == NULL) {
-    _swig_gopanic("Attempt to dereference null uint8_t");
-  }
-  arg2 = (uint8_t)*argp2;
-  
+  arg2 = (uint8_t)_swig_go_1; 
   arg3 = *(uint8_t **)&_swig_go_2; 
   
   (arg1)->openReadingPipe(arg2,(uint8_t const *)arg3);
@@ -962,7 +912,7 @@ void _wrap_RF24_openReadingPipe__SWIG_0_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0, 
 }
 
 
-void _wrap_RF24_printDetails_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0) {
+void _wrap_RF24_printDetails_rf24_8b60070a93f979d5(RF24 *_swig_go_0) {
   RF24 *arg1 = (RF24 *) 0 ;
   
   arg1 = *(RF24 **)&_swig_go_0; 
@@ -972,7 +922,7 @@ void _wrap_RF24_printDetails_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0) {
 }
 
 
-bool _wrap_RF24_available__SWIG_1_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0, uint8_t *_swig_go_1) {
+bool _wrap_RF24_available__SWIG_1_rf24_8b60070a93f979d5(RF24 *_swig_go_0, char *_swig_go_1) {
   RF24 *arg1 = (RF24 *) 0 ;
   uint8_t *arg2 = (uint8_t *) 0 ;
   bool result;
@@ -987,7 +937,7 @@ bool _wrap_RF24_available__SWIG_1_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0, uint8_
 }
 
 
-bool _wrap_RF24_rxFifoFull_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0) {
+bool _wrap_RF24_rxFifoFull_rf24_8b60070a93f979d5(RF24 *_swig_go_0) {
   RF24 *arg1 = (RF24 *) 0 ;
   bool result;
   bool _swig_go_result;
@@ -1000,7 +950,7 @@ bool _wrap_RF24_rxFifoFull_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0) {
 }
 
 
-void _wrap_RF24_powerDown_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0) {
+void _wrap_RF24_powerDown_rf24_8b60070a93f979d5(RF24 *_swig_go_0) {
   RF24 *arg1 = (RF24 *) 0 ;
   
   arg1 = *(RF24 **)&_swig_go_0; 
@@ -1010,7 +960,7 @@ void _wrap_RF24_powerDown_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0) {
 }
 
 
-void _wrap_RF24_powerUp_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0) {
+void _wrap_RF24_powerUp_rf24_8b60070a93f979d5(RF24 *_swig_go_0) {
   RF24 *arg1 = (RF24 *) 0 ;
   
   arg1 = *(RF24 **)&_swig_go_0; 
@@ -1020,24 +970,17 @@ void _wrap_RF24_powerUp_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0) {
 }
 
 
-bool _wrap_RF24_write__SWIG_1_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0, void *_swig_go_1, uint8_t *_swig_go_2, bool _swig_go_3) {
+bool _wrap_RF24_write__SWIG_1_rf24_8b60070a93f979d5(RF24 *_swig_go_0, void *_swig_go_1, char _swig_go_2, bool _swig_go_3) {
   RF24 *arg1 = (RF24 *) 0 ;
   void *arg2 = (void *) 0 ;
   uint8_t arg3 ;
   bool arg4 ;
-  uint8_t *argp3 ;
   bool result;
   bool _swig_go_result;
   
   arg1 = *(RF24 **)&_swig_go_0; 
   arg2 = *(void **)&_swig_go_1; 
-  
-  argp3 = (uint8_t *)_swig_go_2;
-  if (argp3 == NULL) {
-    _swig_gopanic("Attempt to dereference null uint8_t");
-  }
-  arg3 = (uint8_t)*argp3;
-  
+  arg3 = (uint8_t)_swig_go_2; 
   arg4 = (bool)_swig_go_3; 
   
   result = (bool)(arg1)->write((void const *)arg2,arg3,arg4);
@@ -1046,23 +989,16 @@ bool _wrap_RF24_write__SWIG_1_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0, void *_swi
 }
 
 
-bool _wrap_RF24_writeFast__SWIG_0_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0, void *_swig_go_1, uint8_t *_swig_go_2) {
+bool _wrap_RF24_writeFast__SWIG_0_rf24_8b60070a93f979d5(RF24 *_swig_go_0, void *_swig_go_1, char _swig_go_2) {
   RF24 *arg1 = (RF24 *) 0 ;
   void *arg2 = (void *) 0 ;
   uint8_t arg3 ;
-  uint8_t *argp3 ;
   bool result;
   bool _swig_go_result;
   
   arg1 = *(RF24 **)&_swig_go_0; 
   arg2 = *(void **)&_swig_go_1; 
-  
-  argp3 = (uint8_t *)_swig_go_2;
-  if (argp3 == NULL) {
-    _swig_gopanic("Attempt to dereference null uint8_t");
-  }
-  arg3 = (uint8_t)*argp3;
-  
+  arg3 = (uint8_t)_swig_go_2; 
   
   result = (bool)(arg1)->writeFast((void const *)arg2,arg3);
   _swig_go_result = result; 
@@ -1070,24 +1006,17 @@ bool _wrap_RF24_writeFast__SWIG_0_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0, void *
 }
 
 
-bool _wrap_RF24_writeFast__SWIG_1_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0, void *_swig_go_1, uint8_t *_swig_go_2, bool _swig_go_3) {
+bool _wrap_RF24_writeFast__SWIG_1_rf24_8b60070a93f979d5(RF24 *_swig_go_0, void *_swig_go_1, char _swig_go_2, bool _swig_go_3) {
   RF24 *arg1 = (RF24 *) 0 ;
   void *arg2 = (void *) 0 ;
   uint8_t arg3 ;
   bool arg4 ;
-  uint8_t *argp3 ;
   bool result;
   bool _swig_go_result;
   
   arg1 = *(RF24 **)&_swig_go_0; 
   arg2 = *(void **)&_swig_go_1; 
-  
-  argp3 = (uint8_t *)_swig_go_2;
-  if (argp3 == NULL) {
-    _swig_gopanic("Attempt to dereference null uint8_t");
-  }
-  arg3 = (uint8_t)*argp3;
-  
+  arg3 = (uint8_t)_swig_go_2; 
   arg4 = (bool)_swig_go_3; 
   
   result = (bool)(arg1)->writeFast((void const *)arg2,arg3,arg4);
@@ -1096,32 +1025,18 @@ bool _wrap_RF24_writeFast__SWIG_1_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0, void *
 }
 
 
-bool _wrap_RF24_writeBlocking_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0, void *_swig_go_1, uint8_t *_swig_go_2, uint32_t *_swig_go_3) {
+bool _wrap_RF24_writeBlocking_rf24_8b60070a93f979d5(RF24 *_swig_go_0, void *_swig_go_1, char _swig_go_2, intgo _swig_go_3) {
   RF24 *arg1 = (RF24 *) 0 ;
   void *arg2 = (void *) 0 ;
   uint8_t arg3 ;
   uint32_t arg4 ;
-  uint8_t *argp3 ;
-  uint32_t *argp4 ;
   bool result;
   bool _swig_go_result;
   
   arg1 = *(RF24 **)&_swig_go_0; 
   arg2 = *(void **)&_swig_go_1; 
-  
-  argp3 = (uint8_t *)_swig_go_2;
-  if (argp3 == NULL) {
-    _swig_gopanic("Attempt to dereference null uint8_t");
-  }
-  arg3 = (uint8_t)*argp3;
-  
-  
-  argp4 = (uint32_t *)_swig_go_3;
-  if (argp4 == NULL) {
-    _swig_gopanic("Attempt to dereference null uint32_t");
-  }
-  arg4 = (uint32_t)*argp4;
-  
+  arg3 = (uint8_t)_swig_go_2; 
+  arg4 = (uint32_t)_swig_go_3; 
   
   result = (bool)(arg1)->writeBlocking((void const *)arg2,arg3,arg4);
   _swig_go_result = result; 
@@ -1129,7 +1044,7 @@ bool _wrap_RF24_writeBlocking_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0, void *_swi
 }
 
 
-bool _wrap_RF24_txStandBy__SWIG_0_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0) {
+bool _wrap_RF24_txStandBy__SWIG_0_rf24_8b60070a93f979d5(RF24 *_swig_go_0) {
   RF24 *arg1 = (RF24 *) 0 ;
   bool result;
   bool _swig_go_result;
@@ -1142,22 +1057,15 @@ bool _wrap_RF24_txStandBy__SWIG_0_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0) {
 }
 
 
-bool _wrap_RF24_txStandBy__SWIG_1_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0, uint32_t *_swig_go_1, bool _swig_go_2) {
+bool _wrap_RF24_txStandBy__SWIG_1_rf24_8b60070a93f979d5(RF24 *_swig_go_0, intgo _swig_go_1, bool _swig_go_2) {
   RF24 *arg1 = (RF24 *) 0 ;
   uint32_t arg2 ;
   bool arg3 ;
-  uint32_t *argp2 ;
   bool result;
   bool _swig_go_result;
   
   arg1 = *(RF24 **)&_swig_go_0; 
-  
-  argp2 = (uint32_t *)_swig_go_1;
-  if (argp2 == NULL) {
-    _swig_gopanic("Attempt to dereference null uint32_t");
-  }
-  arg2 = (uint32_t)*argp2;
-  
+  arg2 = (uint32_t)_swig_go_1; 
   arg3 = (bool)_swig_go_2; 
   
   result = (bool)(arg1)->txStandBy(arg2,arg3);
@@ -1166,21 +1074,14 @@ bool _wrap_RF24_txStandBy__SWIG_1_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0, uint32
 }
 
 
-bool _wrap_RF24_txStandBy__SWIG_2_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0, uint32_t *_swig_go_1) {
+bool _wrap_RF24_txStandBy__SWIG_2_rf24_8b60070a93f979d5(RF24 *_swig_go_0, intgo _swig_go_1) {
   RF24 *arg1 = (RF24 *) 0 ;
   uint32_t arg2 ;
-  uint32_t *argp2 ;
   bool result;
   bool _swig_go_result;
   
   arg1 = *(RF24 **)&_swig_go_0; 
-  
-  argp2 = (uint32_t *)_swig_go_1;
-  if (argp2 == NULL) {
-    _swig_gopanic("Attempt to dereference null uint32_t");
-  }
-  arg2 = (uint32_t)*argp2;
-  
+  arg2 = (uint32_t)_swig_go_1; 
   
   result = (bool)(arg1)->txStandBy(arg2);
   _swig_go_result = result; 
@@ -1188,37 +1089,23 @@ bool _wrap_RF24_txStandBy__SWIG_2_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0, uint32
 }
 
 
-void _wrap_RF24_writeAckPayload_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0, uint8_t *_swig_go_1, void *_swig_go_2, uint8_t *_swig_go_3) {
+void _wrap_RF24_writeAckPayload_rf24_8b60070a93f979d5(RF24 *_swig_go_0, char _swig_go_1, void *_swig_go_2, char _swig_go_3) {
   RF24 *arg1 = (RF24 *) 0 ;
   uint8_t arg2 ;
   void *arg3 = (void *) 0 ;
   uint8_t arg4 ;
-  uint8_t *argp2 ;
-  uint8_t *argp4 ;
   
   arg1 = *(RF24 **)&_swig_go_0; 
-  
-  argp2 = (uint8_t *)_swig_go_1;
-  if (argp2 == NULL) {
-    _swig_gopanic("Attempt to dereference null uint8_t");
-  }
-  arg2 = (uint8_t)*argp2;
-  
+  arg2 = (uint8_t)_swig_go_1; 
   arg3 = *(void **)&_swig_go_2; 
-  
-  argp4 = (uint8_t *)_swig_go_3;
-  if (argp4 == NULL) {
-    _swig_gopanic("Attempt to dereference null uint8_t");
-  }
-  arg4 = (uint8_t)*argp4;
-  
+  arg4 = (uint8_t)_swig_go_3; 
   
   (arg1)->writeAckPayload(arg2,(void const *)arg3,arg4);
   
 }
 
 
-bool _wrap_RF24_isAckPayloadAvailable_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0) {
+bool _wrap_RF24_isAckPayloadAvailable_rf24_8b60070a93f979d5(RF24 *_swig_go_0) {
   RF24 *arg1 = (RF24 *) 0 ;
   bool result;
   bool _swig_go_result;
@@ -1231,7 +1118,7 @@ bool _wrap_RF24_isAckPayloadAvailable_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0) {
 }
 
 
-void _wrap_RF24_whatHappened_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0, bool *_swig_go_1, bool *_swig_go_2, bool *_swig_go_3) {
+void _wrap_RF24_whatHappened_rf24_8b60070a93f979d5(RF24 *_swig_go_0, bool *_swig_go_1, bool *_swig_go_2, bool *_swig_go_3) {
   RF24 *arg1 = (RF24 *) 0 ;
   bool *arg2 = 0 ;
   bool *arg3 = 0 ;
@@ -1247,23 +1134,16 @@ void _wrap_RF24_whatHappened_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0, bool *_swig
 }
 
 
-void _wrap_RF24_startFastWrite__SWIG_0_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0, void *_swig_go_1, uint8_t *_swig_go_2, bool _swig_go_3, bool _swig_go_4) {
+void _wrap_RF24_startFastWrite__SWIG_0_rf24_8b60070a93f979d5(RF24 *_swig_go_0, void *_swig_go_1, char _swig_go_2, bool _swig_go_3, bool _swig_go_4) {
   RF24 *arg1 = (RF24 *) 0 ;
   void *arg2 = (void *) 0 ;
   uint8_t arg3 ;
   bool arg4 ;
   bool arg5 ;
-  uint8_t *argp3 ;
   
   arg1 = *(RF24 **)&_swig_go_0; 
   arg2 = *(void **)&_swig_go_1; 
-  
-  argp3 = (uint8_t *)_swig_go_2;
-  if (argp3 == NULL) {
-    _swig_gopanic("Attempt to dereference null uint8_t");
-  }
-  arg3 = (uint8_t)*argp3;
-  
+  arg3 = (uint8_t)_swig_go_2; 
   arg4 = (bool)_swig_go_3; 
   arg5 = (bool)_swig_go_4; 
   
@@ -1272,22 +1152,15 @@ void _wrap_RF24_startFastWrite__SWIG_0_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0, v
 }
 
 
-void _wrap_RF24_startFastWrite__SWIG_1_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0, void *_swig_go_1, uint8_t *_swig_go_2, bool _swig_go_3) {
+void _wrap_RF24_startFastWrite__SWIG_1_rf24_8b60070a93f979d5(RF24 *_swig_go_0, void *_swig_go_1, char _swig_go_2, bool _swig_go_3) {
   RF24 *arg1 = (RF24 *) 0 ;
   void *arg2 = (void *) 0 ;
   uint8_t arg3 ;
   bool arg4 ;
-  uint8_t *argp3 ;
   
   arg1 = *(RF24 **)&_swig_go_0; 
   arg2 = *(void **)&_swig_go_1; 
-  
-  argp3 = (uint8_t *)_swig_go_2;
-  if (argp3 == NULL) {
-    _swig_gopanic("Attempt to dereference null uint8_t");
-  }
-  arg3 = (uint8_t)*argp3;
-  
+  arg3 = (uint8_t)_swig_go_2; 
   arg4 = (bool)_swig_go_3; 
   
   (arg1)->startFastWrite((void const *)arg2,arg3,arg4);
@@ -1295,22 +1168,15 @@ void _wrap_RF24_startFastWrite__SWIG_1_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0, v
 }
 
 
-void _wrap_RF24_startWrite_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0, void *_swig_go_1, uint8_t *_swig_go_2, bool _swig_go_3) {
+void _wrap_RF24_startWrite_rf24_8b60070a93f979d5(RF24 *_swig_go_0, void *_swig_go_1, char _swig_go_2, bool _swig_go_3) {
   RF24 *arg1 = (RF24 *) 0 ;
   void *arg2 = (void *) 0 ;
   uint8_t arg3 ;
   bool arg4 ;
-  uint8_t *argp3 ;
   
   arg1 = *(RF24 **)&_swig_go_0; 
   arg2 = *(void **)&_swig_go_1; 
-  
-  argp3 = (uint8_t *)_swig_go_2;
-  if (argp3 == NULL) {
-    _swig_gopanic("Attempt to dereference null uint8_t");
-  }
-  arg3 = (uint8_t)*argp3;
-  
+  arg3 = (uint8_t)_swig_go_2; 
   arg4 = (bool)_swig_go_3; 
   
   (arg1)->startWrite((void const *)arg2,arg3,arg4);
@@ -1318,7 +1184,7 @@ void _wrap_RF24_startWrite_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0, void *_swig_g
 }
 
 
-void _wrap_RF24_reUseTX_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0) {
+void _wrap_RF24_reUseTX_rf24_8b60070a93f979d5(RF24 *_swig_go_0) {
   RF24 *arg1 = (RF24 *) 0 ;
   
   arg1 = *(RF24 **)&_swig_go_0; 
@@ -1328,20 +1194,20 @@ void _wrap_RF24_reUseTX_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0) {
 }
 
 
-uint8_t *_wrap_RF24_flush_tx_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0) {
+char _wrap_RF24_flush_tx_rf24_8b60070a93f979d5(RF24 *_swig_go_0) {
   RF24 *arg1 = (RF24 *) 0 ;
   uint8_t result;
-  uint8_t *_swig_go_result;
+  char _swig_go_result;
   
   arg1 = *(RF24 **)&_swig_go_0; 
   
-  result = (arg1)->flush_tx();
-  *(uint8_t **)&_swig_go_result = new uint8_t(result); 
+  result = (uint8_t)(arg1)->flush_tx();
+  _swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-bool _wrap_RF24_testCarrier_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0) {
+bool _wrap_RF24_testCarrier_rf24_8b60070a93f979d5(RF24 *_swig_go_0) {
   RF24 *arg1 = (RF24 *) 0 ;
   bool result;
   bool _swig_go_result;
@@ -1354,7 +1220,7 @@ bool _wrap_RF24_testCarrier_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0) {
 }
 
 
-bool _wrap_RF24_testRPD_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0) {
+bool _wrap_RF24_testRPD_rf24_8b60070a93f979d5(RF24 *_swig_go_0) {
   RF24 *arg1 = (RF24 *) 0 ;
   bool result;
   bool _swig_go_result;
@@ -1367,7 +1233,7 @@ bool _wrap_RF24_testRPD_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0) {
 }
 
 
-bool _wrap_RF24_isValid_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0) {
+bool _wrap_RF24_isValid_rf24_8b60070a93f979d5(RF24 *_swig_go_0) {
   RF24 *arg1 = (RF24 *) 0 ;
   bool result;
   bool _swig_go_result;
@@ -1380,26 +1246,19 @@ bool _wrap_RF24_isValid_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0) {
 }
 
 
-void _wrap_RF24_closeReadingPipe_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0, uint8_t *_swig_go_1) {
+void _wrap_RF24_closeReadingPipe_rf24_8b60070a93f979d5(RF24 *_swig_go_0, char _swig_go_1) {
   RF24 *arg1 = (RF24 *) 0 ;
   uint8_t arg2 ;
-  uint8_t *argp2 ;
   
   arg1 = *(RF24 **)&_swig_go_0; 
-  
-  argp2 = (uint8_t *)_swig_go_1;
-  if (argp2 == NULL) {
-    _swig_gopanic("Attempt to dereference null uint8_t");
-  }
-  arg2 = (uint8_t)*argp2;
-  
+  arg2 = (uint8_t)_swig_go_1; 
   
   (arg1)->closeReadingPipe(arg2);
   
 }
 
 
-void _wrap_RF24_failureDetected_set_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0, bool _swig_go_1) {
+void _wrap_RF24_failureDetected_set_rf24_8b60070a93f979d5(RF24 *_swig_go_0, bool _swig_go_1) {
   RF24 *arg1 = (RF24 *) 0 ;
   bool arg2 ;
   
@@ -1411,7 +1270,7 @@ void _wrap_RF24_failureDetected_set_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0, bool
 }
 
 
-bool _wrap_RF24_failureDetected_get_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0) {
+bool _wrap_RF24_failureDetected_get_rf24_8b60070a93f979d5(RF24 *_swig_go_0) {
   RF24 *arg1 = (RF24 *) 0 ;
   bool result;
   bool _swig_go_result;
@@ -1424,131 +1283,96 @@ bool _wrap_RF24_failureDetected_get_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0) {
 }
 
 
-void _wrap_RF24_setAddressWidth_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0, uint8_t *_swig_go_1) {
+void _wrap_RF24_setAddressWidth_rf24_8b60070a93f979d5(RF24 *_swig_go_0, char _swig_go_1) {
   RF24 *arg1 = (RF24 *) 0 ;
   uint8_t arg2 ;
-  uint8_t *argp2 ;
   
   arg1 = *(RF24 **)&_swig_go_0; 
-  
-  argp2 = (uint8_t *)_swig_go_1;
-  if (argp2 == NULL) {
-    _swig_gopanic("Attempt to dereference null uint8_t");
-  }
-  arg2 = (uint8_t)*argp2;
-  
+  arg2 = (uint8_t)_swig_go_1; 
   
   (arg1)->setAddressWidth(arg2);
   
 }
 
 
-void _wrap_RF24_setRetries_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0, uint8_t *_swig_go_1, uint8_t *_swig_go_2) {
+void _wrap_RF24_setRetries_rf24_8b60070a93f979d5(RF24 *_swig_go_0, char _swig_go_1, char _swig_go_2) {
   RF24 *arg1 = (RF24 *) 0 ;
   uint8_t arg2 ;
   uint8_t arg3 ;
-  uint8_t *argp2 ;
-  uint8_t *argp3 ;
   
   arg1 = *(RF24 **)&_swig_go_0; 
-  
-  argp2 = (uint8_t *)_swig_go_1;
-  if (argp2 == NULL) {
-    _swig_gopanic("Attempt to dereference null uint8_t");
-  }
-  arg2 = (uint8_t)*argp2;
-  
-  
-  argp3 = (uint8_t *)_swig_go_2;
-  if (argp3 == NULL) {
-    _swig_gopanic("Attempt to dereference null uint8_t");
-  }
-  arg3 = (uint8_t)*argp3;
-  
+  arg2 = (uint8_t)_swig_go_1; 
+  arg3 = (uint8_t)_swig_go_2; 
   
   (arg1)->setRetries(arg2,arg3);
   
 }
 
 
-void _wrap_RF24_setChannel_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0, uint8_t *_swig_go_1) {
+void _wrap_RF24_setChannel_rf24_8b60070a93f979d5(RF24 *_swig_go_0, char _swig_go_1) {
   RF24 *arg1 = (RF24 *) 0 ;
   uint8_t arg2 ;
-  uint8_t *argp2 ;
   
   arg1 = *(RF24 **)&_swig_go_0; 
-  
-  argp2 = (uint8_t *)_swig_go_1;
-  if (argp2 == NULL) {
-    _swig_gopanic("Attempt to dereference null uint8_t");
-  }
-  arg2 = (uint8_t)*argp2;
-  
+  arg2 = (uint8_t)_swig_go_1; 
   
   (arg1)->setChannel(arg2);
   
 }
 
 
-uint8_t *_wrap_RF24_getChannel_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0) {
+char _wrap_RF24_getChannel_rf24_8b60070a93f979d5(RF24 *_swig_go_0) {
   RF24 *arg1 = (RF24 *) 0 ;
   uint8_t result;
-  uint8_t *_swig_go_result;
+  char _swig_go_result;
   
   arg1 = *(RF24 **)&_swig_go_0; 
   
-  result = (arg1)->getChannel();
-  *(uint8_t **)&_swig_go_result = new uint8_t(result); 
+  result = (uint8_t)(arg1)->getChannel();
+  _swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-void _wrap_RF24_setPayloadSize_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0, uint8_t *_swig_go_1) {
+void _wrap_RF24_setPayloadSize_rf24_8b60070a93f979d5(RF24 *_swig_go_0, char _swig_go_1) {
   RF24 *arg1 = (RF24 *) 0 ;
   uint8_t arg2 ;
-  uint8_t *argp2 ;
   
   arg1 = *(RF24 **)&_swig_go_0; 
-  
-  argp2 = (uint8_t *)_swig_go_1;
-  if (argp2 == NULL) {
-    _swig_gopanic("Attempt to dereference null uint8_t");
-  }
-  arg2 = (uint8_t)*argp2;
-  
+  arg2 = (uint8_t)_swig_go_1; 
   
   (arg1)->setPayloadSize(arg2);
   
 }
 
 
-uint8_t *_wrap_RF24_getPayloadSize_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0) {
+char _wrap_RF24_getPayloadSize_rf24_8b60070a93f979d5(RF24 *_swig_go_0) {
   RF24 *arg1 = (RF24 *) 0 ;
   uint8_t result;
-  uint8_t *_swig_go_result;
+  char _swig_go_result;
   
   arg1 = *(RF24 **)&_swig_go_0; 
   
-  result = (arg1)->getPayloadSize();
-  *(uint8_t **)&_swig_go_result = new uint8_t(result); 
+  result = (uint8_t)(arg1)->getPayloadSize();
+  _swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-uint8_t *_wrap_RF24_getDynamicPayloadSize_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0) {
+char _wrap_RF24_getDynamicPayloadSize_rf24_8b60070a93f979d5(RF24 *_swig_go_0) {
   RF24 *arg1 = (RF24 *) 0 ;
   uint8_t result;
-  uint8_t *_swig_go_result;
+  char _swig_go_result;
   
   arg1 = *(RF24 **)&_swig_go_0; 
   
-  result = (arg1)->getDynamicPayloadSize();
-  *(uint8_t **)&_swig_go_result = new uint8_t(result); 
+  result = (uint8_t)(arg1)->getDynamicPayloadSize();
+  _swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-void _wrap_RF24_enableAckPayload_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0) {
+void _wrap_RF24_enableAckPayload_rf24_8b60070a93f979d5(RF24 *_swig_go_0) {
   RF24 *arg1 = (RF24 *) 0 ;
   
   arg1 = *(RF24 **)&_swig_go_0; 
@@ -1558,7 +1382,7 @@ void _wrap_RF24_enableAckPayload_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0) {
 }
 
 
-void _wrap_RF24_enableDynamicPayloads_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0) {
+void _wrap_RF24_enableDynamicPayloads_rf24_8b60070a93f979d5(RF24 *_swig_go_0) {
   RF24 *arg1 = (RF24 *) 0 ;
   
   arg1 = *(RF24 **)&_swig_go_0; 
@@ -1568,7 +1392,7 @@ void _wrap_RF24_enableDynamicPayloads_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0) {
 }
 
 
-void _wrap_RF24_disableDynamicPayloads_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0) {
+void _wrap_RF24_disableDynamicPayloads_rf24_8b60070a93f979d5(RF24 *_swig_go_0) {
   RF24 *arg1 = (RF24 *) 0 ;
   
   arg1 = *(RF24 **)&_swig_go_0; 
@@ -1578,7 +1402,7 @@ void _wrap_RF24_disableDynamicPayloads_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0) {
 }
 
 
-void _wrap_RF24_enableDynamicAck_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0) {
+void _wrap_RF24_enableDynamicAck_rf24_8b60070a93f979d5(RF24 *_swig_go_0) {
   RF24 *arg1 = (RF24 *) 0 ;
   
   arg1 = *(RF24 **)&_swig_go_0; 
@@ -1588,7 +1412,7 @@ void _wrap_RF24_enableDynamicAck_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0) {
 }
 
 
-bool _wrap_RF24_isPVariant_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0) {
+bool _wrap_RF24_isPVariant_rf24_8b60070a93f979d5(RF24 *_swig_go_0) {
   RF24 *arg1 = (RF24 *) 0 ;
   bool result;
   bool _swig_go_result;
@@ -1601,7 +1425,7 @@ bool _wrap_RF24_isPVariant_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0) {
 }
 
 
-void _wrap_RF24_setAutoAck__SWIG_0_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0, bool _swig_go_1) {
+void _wrap_RF24_setAutoAck__SWIG_0_rf24_8b60070a93f979d5(RF24 *_swig_go_0, bool _swig_go_1) {
   RF24 *arg1 = (RF24 *) 0 ;
   bool arg2 ;
   
@@ -1613,20 +1437,13 @@ void _wrap_RF24_setAutoAck__SWIG_0_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0, bool 
 }
 
 
-void _wrap_RF24_setAutoAck__SWIG_1_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0, uint8_t *_swig_go_1, bool _swig_go_2) {
+void _wrap_RF24_setAutoAck__SWIG_1_rf24_8b60070a93f979d5(RF24 *_swig_go_0, char _swig_go_1, bool _swig_go_2) {
   RF24 *arg1 = (RF24 *) 0 ;
   uint8_t arg2 ;
   bool arg3 ;
-  uint8_t *argp2 ;
   
   arg1 = *(RF24 **)&_swig_go_0; 
-  
-  argp2 = (uint8_t *)_swig_go_1;
-  if (argp2 == NULL) {
-    _swig_gopanic("Attempt to dereference null uint8_t");
-  }
-  arg2 = (uint8_t)*argp2;
-  
+  arg2 = (uint8_t)_swig_go_1; 
   arg3 = (bool)_swig_go_2; 
   
   (arg1)->setAutoAck(arg2,arg3);
@@ -1634,39 +1451,32 @@ void _wrap_RF24_setAutoAck__SWIG_1_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0, uint8
 }
 
 
-void _wrap_RF24_setPALevel_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0, uint8_t *_swig_go_1) {
+void _wrap_RF24_setPALevel_rf24_8b60070a93f979d5(RF24 *_swig_go_0, char _swig_go_1) {
   RF24 *arg1 = (RF24 *) 0 ;
   uint8_t arg2 ;
-  uint8_t *argp2 ;
   
   arg1 = *(RF24 **)&_swig_go_0; 
-  
-  argp2 = (uint8_t *)_swig_go_1;
-  if (argp2 == NULL) {
-    _swig_gopanic("Attempt to dereference null uint8_t");
-  }
-  arg2 = (uint8_t)*argp2;
-  
+  arg2 = (uint8_t)_swig_go_1; 
   
   (arg1)->setPALevel(arg2);
   
 }
 
 
-uint8_t *_wrap_RF24_getPALevel_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0) {
+char _wrap_RF24_getPALevel_rf24_8b60070a93f979d5(RF24 *_swig_go_0) {
   RF24 *arg1 = (RF24 *) 0 ;
   uint8_t result;
-  uint8_t *_swig_go_result;
+  char _swig_go_result;
   
   arg1 = *(RF24 **)&_swig_go_0; 
   
-  result = (arg1)->getPALevel();
-  *(uint8_t **)&_swig_go_result = new uint8_t(result); 
+  result = (uint8_t)(arg1)->getPALevel();
+  _swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-bool _wrap_RF24_setDataRate_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0, intgo _swig_go_1) {
+bool _wrap_RF24_setDataRate_rf24_8b60070a93f979d5(RF24 *_swig_go_0, intgo _swig_go_1) {
   RF24 *arg1 = (RF24 *) 0 ;
   rf24_datarate_e arg2 ;
   bool result;
@@ -1681,7 +1491,7 @@ bool _wrap_RF24_setDataRate_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0, intgo _swig_
 }
 
 
-intgo _wrap_RF24_getDataRate_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0) {
+intgo _wrap_RF24_getDataRate_rf24_8b60070a93f979d5(RF24 *_swig_go_0) {
   RF24 *arg1 = (RF24 *) 0 ;
   rf24_datarate_e result;
   intgo _swig_go_result;
@@ -1694,7 +1504,7 @@ intgo _wrap_RF24_getDataRate_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0) {
 }
 
 
-void _wrap_RF24_setCRCLength_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0, intgo _swig_go_1) {
+void _wrap_RF24_setCRCLength_rf24_8b60070a93f979d5(RF24 *_swig_go_0, intgo _swig_go_1) {
   RF24 *arg1 = (RF24 *) 0 ;
   rf24_crclength_e arg2 ;
   
@@ -1706,7 +1516,7 @@ void _wrap_RF24_setCRCLength_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0, intgo _swig
 }
 
 
-intgo _wrap_RF24_getCRCLength_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0) {
+intgo _wrap_RF24_getCRCLength_rf24_8b60070a93f979d5(RF24 *_swig_go_0) {
   RF24 *arg1 = (RF24 *) 0 ;
   rf24_crclength_e result;
   intgo _swig_go_result;
@@ -1719,7 +1529,7 @@ intgo _wrap_RF24_getCRCLength_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0) {
 }
 
 
-void _wrap_RF24_disableCRC_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0) {
+void _wrap_RF24_disableCRC_rf24_8b60070a93f979d5(RF24 *_swig_go_0) {
   RF24 *arg1 = (RF24 *) 0 ;
   
   arg1 = *(RF24 **)&_swig_go_0; 
@@ -1729,7 +1539,7 @@ void _wrap_RF24_disableCRC_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0) {
 }
 
 
-void _wrap_RF24_maskIRQ_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0, bool _swig_go_1, bool _swig_go_2, bool _swig_go_3) {
+void _wrap_RF24_maskIRQ_rf24_8b60070a93f979d5(RF24 *_swig_go_0, bool _swig_go_1, bool _swig_go_2, bool _swig_go_3) {
   RF24 *arg1 = (RF24 *) 0 ;
   bool arg2 ;
   bool arg3 ;
@@ -1745,131 +1555,96 @@ void _wrap_RF24_maskIRQ_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0, bool _swig_go_1,
 }
 
 
-void _wrap_RF24_txDelay_set_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0, uint32_t *_swig_go_1) {
+void _wrap_RF24_txDelay_set_rf24_8b60070a93f979d5(RF24 *_swig_go_0, intgo _swig_go_1) {
   RF24 *arg1 = (RF24 *) 0 ;
   uint32_t arg2 ;
-  uint32_t *argp2 ;
   
   arg1 = *(RF24 **)&_swig_go_0; 
-  
-  argp2 = (uint32_t *)_swig_go_1;
-  if (argp2 == NULL) {
-    _swig_gopanic("Attempt to dereference null uint32_t");
-  }
-  arg2 = (uint32_t)*argp2;
-  
+  arg2 = (uint32_t)_swig_go_1; 
   
   if (arg1) (arg1)->txDelay = arg2;
   
 }
 
 
-uint32_t *_wrap_RF24_txDelay_get_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0) {
+intgo _wrap_RF24_txDelay_get_rf24_8b60070a93f979d5(RF24 *_swig_go_0) {
   RF24 *arg1 = (RF24 *) 0 ;
   uint32_t result;
-  uint32_t *_swig_go_result;
+  intgo _swig_go_result;
   
   arg1 = *(RF24 **)&_swig_go_0; 
   
-  result =  ((arg1)->txDelay);
-  *(uint32_t **)&_swig_go_result = new uint32_t(result); 
+  result = (uint32_t) ((arg1)->txDelay);
+  _swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-void _wrap_RF24_csDelay_set_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0, uint32_t *_swig_go_1) {
+void _wrap_RF24_csDelay_set_rf24_8b60070a93f979d5(RF24 *_swig_go_0, intgo _swig_go_1) {
   RF24 *arg1 = (RF24 *) 0 ;
   uint32_t arg2 ;
-  uint32_t *argp2 ;
   
   arg1 = *(RF24 **)&_swig_go_0; 
-  
-  argp2 = (uint32_t *)_swig_go_1;
-  if (argp2 == NULL) {
-    _swig_gopanic("Attempt to dereference null uint32_t");
-  }
-  arg2 = (uint32_t)*argp2;
-  
+  arg2 = (uint32_t)_swig_go_1; 
   
   if (arg1) (arg1)->csDelay = arg2;
   
 }
 
 
-uint32_t *_wrap_RF24_csDelay_get_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0) {
+intgo _wrap_RF24_csDelay_get_rf24_8b60070a93f979d5(RF24 *_swig_go_0) {
   RF24 *arg1 = (RF24 *) 0 ;
   uint32_t result;
-  uint32_t *_swig_go_result;
+  intgo _swig_go_result;
   
   arg1 = *(RF24 **)&_swig_go_0; 
   
-  result =  ((arg1)->csDelay);
-  *(uint32_t **)&_swig_go_result = new uint32_t(result); 
+  result = (uint32_t) ((arg1)->csDelay);
+  _swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-void _wrap_RF24_openReadingPipe__SWIG_1_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0, uint8_t *_swig_go_1, uint64_t *_swig_go_2) {
+void _wrap_RF24_openReadingPipe__SWIG_1_rf24_8b60070a93f979d5(RF24 *_swig_go_0, char _swig_go_1, long long _swig_go_2) {
   RF24 *arg1 = (RF24 *) 0 ;
   uint8_t arg2 ;
   uint64_t arg3 ;
-  uint8_t *argp2 ;
-  uint64_t *argp3 ;
   
   arg1 = *(RF24 **)&_swig_go_0; 
-  
-  argp2 = (uint8_t *)_swig_go_1;
-  if (argp2 == NULL) {
-    _swig_gopanic("Attempt to dereference null uint8_t");
-  }
-  arg2 = (uint8_t)*argp2;
-  
-  
-  argp3 = (uint64_t *)_swig_go_2;
-  if (argp3 == NULL) {
-    _swig_gopanic("Attempt to dereference null uint64_t");
-  }
-  arg3 = (uint64_t)*argp3;
-  
+  arg2 = (uint8_t)_swig_go_1; 
+  arg3 = (uint64_t)_swig_go_2; 
   
   (arg1)->openReadingPipe(arg2,arg3);
   
 }
 
 
-void _wrap_RF24_openWritingPipe__SWIG_1_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0, uint64_t *_swig_go_1) {
+void _wrap_RF24_openWritingPipe__SWIG_1_rf24_8b60070a93f979d5(RF24 *_swig_go_0, long long _swig_go_1) {
   RF24 *arg1 = (RF24 *) 0 ;
   uint64_t arg2 ;
-  uint64_t *argp2 ;
   
   arg1 = *(RF24 **)&_swig_go_0; 
-  
-  argp2 = (uint64_t *)_swig_go_1;
-  if (argp2 == NULL) {
-    _swig_gopanic("Attempt to dereference null uint64_t");
-  }
-  arg2 = (uint64_t)*argp2;
-  
+  arg2 = (uint64_t)_swig_go_1; 
   
   (arg1)->openWritingPipe(arg2);
   
 }
 
 
-uint8_t *_wrap_RF24_flush_rx_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0) {
+char _wrap_RF24_flush_rx_rf24_8b60070a93f979d5(RF24 *_swig_go_0) {
   RF24 *arg1 = (RF24 *) 0 ;
   uint8_t result;
-  uint8_t *_swig_go_result;
+  char _swig_go_result;
   
   arg1 = *(RF24 **)&_swig_go_0; 
   
-  result = (arg1)->flush_rx();
-  *(uint8_t **)&_swig_go_result = new uint8_t(result); 
+  result = (uint8_t)(arg1)->flush_rx();
+  _swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-void _wrap_delete_RF24_rf24_7d7c662b7fa2227e(RF24 *_swig_go_0) {
+void _wrap_delete_RF24_rf24_8b60070a93f979d5(RF24 *_swig_go_0) {
   RF24 *arg1 = (RF24 *) 0 ;
   
   arg1 = *(RF24 **)&_swig_go_0; 

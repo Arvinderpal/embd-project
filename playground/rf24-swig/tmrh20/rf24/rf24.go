@@ -39,108 +39,110 @@ typedef long long swig_type_8;
 typedef long long swig_type_9;
 typedef long long swig_type_10;
 typedef long long swig_type_11;
-extern void _wrap_Swig_free_rf24_7d7c662b7fa2227e(uintptr_t arg1);
-extern uintptr_t _wrap_Swig_malloc_rf24_7d7c662b7fa2227e(swig_intgo arg1);
-extern uintptr_t _wrap_new_StringVector__SWIG_0_rf24_7d7c662b7fa2227e(void);
-extern uintptr_t _wrap_new_StringVector__SWIG_1_rf24_7d7c662b7fa2227e(swig_type_1 arg1);
-extern swig_type_2 _wrap_StringVector_size_rf24_7d7c662b7fa2227e(uintptr_t arg1);
-extern swig_type_3 _wrap_StringVector_capacity_rf24_7d7c662b7fa2227e(uintptr_t arg1);
-extern void _wrap_StringVector_reserve_rf24_7d7c662b7fa2227e(uintptr_t arg1, swig_type_4 arg2);
-extern _Bool _wrap_StringVector_isEmpty_rf24_7d7c662b7fa2227e(uintptr_t arg1);
-extern void _wrap_StringVector_clear_rf24_7d7c662b7fa2227e(uintptr_t arg1);
-extern void _wrap_StringVector_add_rf24_7d7c662b7fa2227e(uintptr_t arg1, swig_type_5 arg2);
-extern swig_type_6 _wrap_StringVector_get_rf24_7d7c662b7fa2227e(uintptr_t arg1, swig_intgo arg2);
-extern void _wrap_StringVector_set_rf24_7d7c662b7fa2227e(uintptr_t arg1, swig_intgo arg2, swig_type_7 arg3);
-extern void _wrap_delete_StringVector_rf24_7d7c662b7fa2227e(uintptr_t arg1);
-extern uintptr_t _wrap_new_ByteVector__SWIG_0_rf24_7d7c662b7fa2227e(void);
-extern uintptr_t _wrap_new_ByteVector__SWIG_1_rf24_7d7c662b7fa2227e(swig_type_8 arg1);
-extern swig_type_9 _wrap_ByteVector_size_rf24_7d7c662b7fa2227e(uintptr_t arg1);
-extern swig_type_10 _wrap_ByteVector_capacity_rf24_7d7c662b7fa2227e(uintptr_t arg1);
-extern void _wrap_ByteVector_reserve_rf24_7d7c662b7fa2227e(uintptr_t arg1, swig_type_11 arg2);
-extern _Bool _wrap_ByteVector_isEmpty_rf24_7d7c662b7fa2227e(uintptr_t arg1);
-extern void _wrap_ByteVector_clear_rf24_7d7c662b7fa2227e(uintptr_t arg1);
-extern void _wrap_ByteVector_add_rf24_7d7c662b7fa2227e(uintptr_t arg1, char arg2);
-extern char _wrap_ByteVector_get_rf24_7d7c662b7fa2227e(uintptr_t arg1, swig_intgo arg2);
-extern void _wrap_ByteVector_set_rf24_7d7c662b7fa2227e(uintptr_t arg1, swig_intgo arg2, char arg3);
-extern void _wrap_delete_ByteVector_rf24_7d7c662b7fa2227e(uintptr_t arg1);
-extern swig_intgo _wrap_RF24_PA_MIN_rf24_7d7c662b7fa2227e(void);
-extern swig_intgo _wrap_RF24_PA_LOW_rf24_7d7c662b7fa2227e(void);
-extern swig_intgo _wrap_RF24_PA_HIGH_rf24_7d7c662b7fa2227e(void);
-extern swig_intgo _wrap_RF24_PA_MAX_rf24_7d7c662b7fa2227e(void);
-extern swig_intgo _wrap_RF24_PA_ERROR_rf24_7d7c662b7fa2227e(void);
-extern swig_intgo _wrap_RF24_1MBPS_rf24_7d7c662b7fa2227e(void);
-extern swig_intgo _wrap_RF24_2MBPS_rf24_7d7c662b7fa2227e(void);
-extern swig_intgo _wrap_RF24_250KBPS_rf24_7d7c662b7fa2227e(void);
-extern swig_intgo _wrap_RF24_CRC_DISABLED_rf24_7d7c662b7fa2227e(void);
-extern swig_intgo _wrap_RF24_CRC_8_rf24_7d7c662b7fa2227e(void);
-extern swig_intgo _wrap_RF24_CRC_16_rf24_7d7c662b7fa2227e(void);
-extern uintptr_t _wrap_new_RF24__SWIG_0_rf24_7d7c662b7fa2227e(uintptr_t arg1, uintptr_t arg2);
-extern uintptr_t _wrap_new_RF24__SWIG_1_rf24_7d7c662b7fa2227e(uintptr_t arg1, uintptr_t arg2, uintptr_t arg3);
-extern _Bool _wrap_RF24_begin_rf24_7d7c662b7fa2227e(uintptr_t arg1);
-extern _Bool _wrap_RF24_isChipConnected_rf24_7d7c662b7fa2227e(uintptr_t arg1);
-extern void _wrap_RF24_startListening_rf24_7d7c662b7fa2227e(uintptr_t arg1);
-extern void _wrap_RF24_stopListening_rf24_7d7c662b7fa2227e(uintptr_t arg1);
-extern _Bool _wrap_RF24_available__SWIG_0_rf24_7d7c662b7fa2227e(uintptr_t arg1);
-extern void _wrap_RF24_read_rf24_7d7c662b7fa2227e(uintptr_t arg1, uintptr_t arg2, uintptr_t arg3);
-extern _Bool _wrap_RF24_write__SWIG_0_rf24_7d7c662b7fa2227e(uintptr_t arg1, uintptr_t arg2, uintptr_t arg3);
-extern void _wrap_RF24_openWritingPipe__SWIG_0_rf24_7d7c662b7fa2227e(uintptr_t arg1, uintptr_t arg2);
-extern void _wrap_RF24_openReadingPipe__SWIG_0_rf24_7d7c662b7fa2227e(uintptr_t arg1, uintptr_t arg2, uintptr_t arg3);
-extern void _wrap_RF24_printDetails_rf24_7d7c662b7fa2227e(uintptr_t arg1);
-extern _Bool _wrap_RF24_available__SWIG_1_rf24_7d7c662b7fa2227e(uintptr_t arg1, uintptr_t arg2);
-extern _Bool _wrap_RF24_rxFifoFull_rf24_7d7c662b7fa2227e(uintptr_t arg1);
-extern void _wrap_RF24_powerDown_rf24_7d7c662b7fa2227e(uintptr_t arg1);
-extern void _wrap_RF24_powerUp_rf24_7d7c662b7fa2227e(uintptr_t arg1);
-extern _Bool _wrap_RF24_write__SWIG_1_rf24_7d7c662b7fa2227e(uintptr_t arg1, uintptr_t arg2, uintptr_t arg3, _Bool arg4);
-extern _Bool _wrap_RF24_writeFast__SWIG_0_rf24_7d7c662b7fa2227e(uintptr_t arg1, uintptr_t arg2, uintptr_t arg3);
-extern _Bool _wrap_RF24_writeFast__SWIG_1_rf24_7d7c662b7fa2227e(uintptr_t arg1, uintptr_t arg2, uintptr_t arg3, _Bool arg4);
-extern _Bool _wrap_RF24_writeBlocking_rf24_7d7c662b7fa2227e(uintptr_t arg1, uintptr_t arg2, uintptr_t arg3, uintptr_t arg4);
-extern _Bool _wrap_RF24_txStandBy__SWIG_0_rf24_7d7c662b7fa2227e(uintptr_t arg1);
-extern _Bool _wrap_RF24_txStandBy__SWIG_1_rf24_7d7c662b7fa2227e(uintptr_t arg1, uintptr_t arg2, _Bool arg3);
-extern _Bool _wrap_RF24_txStandBy__SWIG_2_rf24_7d7c662b7fa2227e(uintptr_t arg1, uintptr_t arg2);
-extern void _wrap_RF24_writeAckPayload_rf24_7d7c662b7fa2227e(uintptr_t arg1, uintptr_t arg2, uintptr_t arg3, uintptr_t arg4);
-extern _Bool _wrap_RF24_isAckPayloadAvailable_rf24_7d7c662b7fa2227e(uintptr_t arg1);
-extern void _wrap_RF24_whatHappened_rf24_7d7c662b7fa2227e(uintptr_t arg1, swig_voidp arg2, swig_voidp arg3, swig_voidp arg4);
-extern void _wrap_RF24_startFastWrite__SWIG_0_rf24_7d7c662b7fa2227e(uintptr_t arg1, uintptr_t arg2, uintptr_t arg3, _Bool arg4, _Bool arg5);
-extern void _wrap_RF24_startFastWrite__SWIG_1_rf24_7d7c662b7fa2227e(uintptr_t arg1, uintptr_t arg2, uintptr_t arg3, _Bool arg4);
-extern void _wrap_RF24_startWrite_rf24_7d7c662b7fa2227e(uintptr_t arg1, uintptr_t arg2, uintptr_t arg3, _Bool arg4);
-extern void _wrap_RF24_reUseTX_rf24_7d7c662b7fa2227e(uintptr_t arg1);
-extern uintptr_t _wrap_RF24_flush_tx_rf24_7d7c662b7fa2227e(uintptr_t arg1);
-extern _Bool _wrap_RF24_testCarrier_rf24_7d7c662b7fa2227e(uintptr_t arg1);
-extern _Bool _wrap_RF24_testRPD_rf24_7d7c662b7fa2227e(uintptr_t arg1);
-extern _Bool _wrap_RF24_isValid_rf24_7d7c662b7fa2227e(uintptr_t arg1);
-extern void _wrap_RF24_closeReadingPipe_rf24_7d7c662b7fa2227e(uintptr_t arg1, uintptr_t arg2);
-extern void _wrap_RF24_failureDetected_set_rf24_7d7c662b7fa2227e(uintptr_t arg1, _Bool arg2);
-extern _Bool _wrap_RF24_failureDetected_get_rf24_7d7c662b7fa2227e(uintptr_t arg1);
-extern void _wrap_RF24_setAddressWidth_rf24_7d7c662b7fa2227e(uintptr_t arg1, uintptr_t arg2);
-extern void _wrap_RF24_setRetries_rf24_7d7c662b7fa2227e(uintptr_t arg1, uintptr_t arg2, uintptr_t arg3);
-extern void _wrap_RF24_setChannel_rf24_7d7c662b7fa2227e(uintptr_t arg1, uintptr_t arg2);
-extern uintptr_t _wrap_RF24_getChannel_rf24_7d7c662b7fa2227e(uintptr_t arg1);
-extern void _wrap_RF24_setPayloadSize_rf24_7d7c662b7fa2227e(uintptr_t arg1, uintptr_t arg2);
-extern uintptr_t _wrap_RF24_getPayloadSize_rf24_7d7c662b7fa2227e(uintptr_t arg1);
-extern uintptr_t _wrap_RF24_getDynamicPayloadSize_rf24_7d7c662b7fa2227e(uintptr_t arg1);
-extern void _wrap_RF24_enableAckPayload_rf24_7d7c662b7fa2227e(uintptr_t arg1);
-extern void _wrap_RF24_enableDynamicPayloads_rf24_7d7c662b7fa2227e(uintptr_t arg1);
-extern void _wrap_RF24_disableDynamicPayloads_rf24_7d7c662b7fa2227e(uintptr_t arg1);
-extern void _wrap_RF24_enableDynamicAck_rf24_7d7c662b7fa2227e(uintptr_t arg1);
-extern _Bool _wrap_RF24_isPVariant_rf24_7d7c662b7fa2227e(uintptr_t arg1);
-extern void _wrap_RF24_setAutoAck__SWIG_0_rf24_7d7c662b7fa2227e(uintptr_t arg1, _Bool arg2);
-extern void _wrap_RF24_setAutoAck__SWIG_1_rf24_7d7c662b7fa2227e(uintptr_t arg1, uintptr_t arg2, _Bool arg3);
-extern void _wrap_RF24_setPALevel_rf24_7d7c662b7fa2227e(uintptr_t arg1, uintptr_t arg2);
-extern uintptr_t _wrap_RF24_getPALevel_rf24_7d7c662b7fa2227e(uintptr_t arg1);
-extern _Bool _wrap_RF24_setDataRate_rf24_7d7c662b7fa2227e(uintptr_t arg1, swig_intgo arg2);
-extern swig_intgo _wrap_RF24_getDataRate_rf24_7d7c662b7fa2227e(uintptr_t arg1);
-extern void _wrap_RF24_setCRCLength_rf24_7d7c662b7fa2227e(uintptr_t arg1, swig_intgo arg2);
-extern swig_intgo _wrap_RF24_getCRCLength_rf24_7d7c662b7fa2227e(uintptr_t arg1);
-extern void _wrap_RF24_disableCRC_rf24_7d7c662b7fa2227e(uintptr_t arg1);
-extern void _wrap_RF24_maskIRQ_rf24_7d7c662b7fa2227e(uintptr_t arg1, _Bool arg2, _Bool arg3, _Bool arg4);
-extern void _wrap_RF24_txDelay_set_rf24_7d7c662b7fa2227e(uintptr_t arg1, uintptr_t arg2);
-extern uintptr_t _wrap_RF24_txDelay_get_rf24_7d7c662b7fa2227e(uintptr_t arg1);
-extern void _wrap_RF24_csDelay_set_rf24_7d7c662b7fa2227e(uintptr_t arg1, uintptr_t arg2);
-extern uintptr_t _wrap_RF24_csDelay_get_rf24_7d7c662b7fa2227e(uintptr_t arg1);
-extern void _wrap_RF24_openReadingPipe__SWIG_1_rf24_7d7c662b7fa2227e(uintptr_t arg1, uintptr_t arg2, uintptr_t arg3);
-extern void _wrap_RF24_openWritingPipe__SWIG_1_rf24_7d7c662b7fa2227e(uintptr_t arg1, uintptr_t arg2);
-extern uintptr_t _wrap_RF24_flush_rx_rf24_7d7c662b7fa2227e(uintptr_t arg1);
-extern void _wrap_delete_RF24_rf24_7d7c662b7fa2227e(uintptr_t arg1);
+typedef long long swig_type_12;
+typedef long long swig_type_13;
+extern void _wrap_Swig_free_rf24_8b60070a93f979d5(uintptr_t arg1);
+extern uintptr_t _wrap_Swig_malloc_rf24_8b60070a93f979d5(swig_intgo arg1);
+extern uintptr_t _wrap_new_StringVector__SWIG_0_rf24_8b60070a93f979d5(void);
+extern uintptr_t _wrap_new_StringVector__SWIG_1_rf24_8b60070a93f979d5(swig_type_1 arg1);
+extern swig_type_2 _wrap_StringVector_size_rf24_8b60070a93f979d5(uintptr_t arg1);
+extern swig_type_3 _wrap_StringVector_capacity_rf24_8b60070a93f979d5(uintptr_t arg1);
+extern void _wrap_StringVector_reserve_rf24_8b60070a93f979d5(uintptr_t arg1, swig_type_4 arg2);
+extern _Bool _wrap_StringVector_isEmpty_rf24_8b60070a93f979d5(uintptr_t arg1);
+extern void _wrap_StringVector_clear_rf24_8b60070a93f979d5(uintptr_t arg1);
+extern void _wrap_StringVector_add_rf24_8b60070a93f979d5(uintptr_t arg1, swig_type_5 arg2);
+extern swig_type_6 _wrap_StringVector_get_rf24_8b60070a93f979d5(uintptr_t arg1, swig_intgo arg2);
+extern void _wrap_StringVector_set_rf24_8b60070a93f979d5(uintptr_t arg1, swig_intgo arg2, swig_type_7 arg3);
+extern void _wrap_delete_StringVector_rf24_8b60070a93f979d5(uintptr_t arg1);
+extern uintptr_t _wrap_new_ByteVector__SWIG_0_rf24_8b60070a93f979d5(void);
+extern uintptr_t _wrap_new_ByteVector__SWIG_1_rf24_8b60070a93f979d5(swig_type_8 arg1);
+extern swig_type_9 _wrap_ByteVector_size_rf24_8b60070a93f979d5(uintptr_t arg1);
+extern swig_type_10 _wrap_ByteVector_capacity_rf24_8b60070a93f979d5(uintptr_t arg1);
+extern void _wrap_ByteVector_reserve_rf24_8b60070a93f979d5(uintptr_t arg1, swig_type_11 arg2);
+extern _Bool _wrap_ByteVector_isEmpty_rf24_8b60070a93f979d5(uintptr_t arg1);
+extern void _wrap_ByteVector_clear_rf24_8b60070a93f979d5(uintptr_t arg1);
+extern void _wrap_ByteVector_add_rf24_8b60070a93f979d5(uintptr_t arg1, char arg2);
+extern char _wrap_ByteVector_get_rf24_8b60070a93f979d5(uintptr_t arg1, swig_intgo arg2);
+extern void _wrap_ByteVector_set_rf24_8b60070a93f979d5(uintptr_t arg1, swig_intgo arg2, char arg3);
+extern void _wrap_delete_ByteVector_rf24_8b60070a93f979d5(uintptr_t arg1);
+extern swig_intgo _wrap_RF24_PA_MIN_rf24_8b60070a93f979d5(void);
+extern swig_intgo _wrap_RF24_PA_LOW_rf24_8b60070a93f979d5(void);
+extern swig_intgo _wrap_RF24_PA_HIGH_rf24_8b60070a93f979d5(void);
+extern swig_intgo _wrap_RF24_PA_MAX_rf24_8b60070a93f979d5(void);
+extern swig_intgo _wrap_RF24_PA_ERROR_rf24_8b60070a93f979d5(void);
+extern swig_intgo _wrap_RF24_1MBPS_rf24_8b60070a93f979d5(void);
+extern swig_intgo _wrap_RF24_2MBPS_rf24_8b60070a93f979d5(void);
+extern swig_intgo _wrap_RF24_250KBPS_rf24_8b60070a93f979d5(void);
+extern swig_intgo _wrap_RF24_CRC_DISABLED_rf24_8b60070a93f979d5(void);
+extern swig_intgo _wrap_RF24_CRC_8_rf24_8b60070a93f979d5(void);
+extern swig_intgo _wrap_RF24_CRC_16_rf24_8b60070a93f979d5(void);
+extern uintptr_t _wrap_new_RF24__SWIG_0_rf24_8b60070a93f979d5(short arg1, short arg2);
+extern uintptr_t _wrap_new_RF24__SWIG_1_rf24_8b60070a93f979d5(short arg1, short arg2, swig_intgo arg3);
+extern _Bool _wrap_RF24_begin_rf24_8b60070a93f979d5(uintptr_t arg1);
+extern _Bool _wrap_RF24_isChipConnected_rf24_8b60070a93f979d5(uintptr_t arg1);
+extern void _wrap_RF24_startListening_rf24_8b60070a93f979d5(uintptr_t arg1);
+extern void _wrap_RF24_stopListening_rf24_8b60070a93f979d5(uintptr_t arg1);
+extern _Bool _wrap_RF24_available__SWIG_0_rf24_8b60070a93f979d5(uintptr_t arg1);
+extern void _wrap_RF24_read_rf24_8b60070a93f979d5(uintptr_t arg1, uintptr_t arg2, char arg3);
+extern _Bool _wrap_RF24_write__SWIG_0_rf24_8b60070a93f979d5(uintptr_t arg1, uintptr_t arg2, char arg3);
+extern void _wrap_RF24_openWritingPipe__SWIG_0_rf24_8b60070a93f979d5(uintptr_t arg1, swig_voidp arg2);
+extern void _wrap_RF24_openReadingPipe__SWIG_0_rf24_8b60070a93f979d5(uintptr_t arg1, char arg2, swig_voidp arg3);
+extern void _wrap_RF24_printDetails_rf24_8b60070a93f979d5(uintptr_t arg1);
+extern _Bool _wrap_RF24_available__SWIG_1_rf24_8b60070a93f979d5(uintptr_t arg1, swig_voidp arg2);
+extern _Bool _wrap_RF24_rxFifoFull_rf24_8b60070a93f979d5(uintptr_t arg1);
+extern void _wrap_RF24_powerDown_rf24_8b60070a93f979d5(uintptr_t arg1);
+extern void _wrap_RF24_powerUp_rf24_8b60070a93f979d5(uintptr_t arg1);
+extern _Bool _wrap_RF24_write__SWIG_1_rf24_8b60070a93f979d5(uintptr_t arg1, uintptr_t arg2, char arg3, _Bool arg4);
+extern _Bool _wrap_RF24_writeFast__SWIG_0_rf24_8b60070a93f979d5(uintptr_t arg1, uintptr_t arg2, char arg3);
+extern _Bool _wrap_RF24_writeFast__SWIG_1_rf24_8b60070a93f979d5(uintptr_t arg1, uintptr_t arg2, char arg3, _Bool arg4);
+extern _Bool _wrap_RF24_writeBlocking_rf24_8b60070a93f979d5(uintptr_t arg1, uintptr_t arg2, char arg3, swig_intgo arg4);
+extern _Bool _wrap_RF24_txStandBy__SWIG_0_rf24_8b60070a93f979d5(uintptr_t arg1);
+extern _Bool _wrap_RF24_txStandBy__SWIG_1_rf24_8b60070a93f979d5(uintptr_t arg1, swig_intgo arg2, _Bool arg3);
+extern _Bool _wrap_RF24_txStandBy__SWIG_2_rf24_8b60070a93f979d5(uintptr_t arg1, swig_intgo arg2);
+extern void _wrap_RF24_writeAckPayload_rf24_8b60070a93f979d5(uintptr_t arg1, char arg2, uintptr_t arg3, char arg4);
+extern _Bool _wrap_RF24_isAckPayloadAvailable_rf24_8b60070a93f979d5(uintptr_t arg1);
+extern void _wrap_RF24_whatHappened_rf24_8b60070a93f979d5(uintptr_t arg1, swig_voidp arg2, swig_voidp arg3, swig_voidp arg4);
+extern void _wrap_RF24_startFastWrite__SWIG_0_rf24_8b60070a93f979d5(uintptr_t arg1, uintptr_t arg2, char arg3, _Bool arg4, _Bool arg5);
+extern void _wrap_RF24_startFastWrite__SWIG_1_rf24_8b60070a93f979d5(uintptr_t arg1, uintptr_t arg2, char arg3, _Bool arg4);
+extern void _wrap_RF24_startWrite_rf24_8b60070a93f979d5(uintptr_t arg1, uintptr_t arg2, char arg3, _Bool arg4);
+extern void _wrap_RF24_reUseTX_rf24_8b60070a93f979d5(uintptr_t arg1);
+extern char _wrap_RF24_flush_tx_rf24_8b60070a93f979d5(uintptr_t arg1);
+extern _Bool _wrap_RF24_testCarrier_rf24_8b60070a93f979d5(uintptr_t arg1);
+extern _Bool _wrap_RF24_testRPD_rf24_8b60070a93f979d5(uintptr_t arg1);
+extern _Bool _wrap_RF24_isValid_rf24_8b60070a93f979d5(uintptr_t arg1);
+extern void _wrap_RF24_closeReadingPipe_rf24_8b60070a93f979d5(uintptr_t arg1, char arg2);
+extern void _wrap_RF24_failureDetected_set_rf24_8b60070a93f979d5(uintptr_t arg1, _Bool arg2);
+extern _Bool _wrap_RF24_failureDetected_get_rf24_8b60070a93f979d5(uintptr_t arg1);
+extern void _wrap_RF24_setAddressWidth_rf24_8b60070a93f979d5(uintptr_t arg1, char arg2);
+extern void _wrap_RF24_setRetries_rf24_8b60070a93f979d5(uintptr_t arg1, char arg2, char arg3);
+extern void _wrap_RF24_setChannel_rf24_8b60070a93f979d5(uintptr_t arg1, char arg2);
+extern char _wrap_RF24_getChannel_rf24_8b60070a93f979d5(uintptr_t arg1);
+extern void _wrap_RF24_setPayloadSize_rf24_8b60070a93f979d5(uintptr_t arg1, char arg2);
+extern char _wrap_RF24_getPayloadSize_rf24_8b60070a93f979d5(uintptr_t arg1);
+extern char _wrap_RF24_getDynamicPayloadSize_rf24_8b60070a93f979d5(uintptr_t arg1);
+extern void _wrap_RF24_enableAckPayload_rf24_8b60070a93f979d5(uintptr_t arg1);
+extern void _wrap_RF24_enableDynamicPayloads_rf24_8b60070a93f979d5(uintptr_t arg1);
+extern void _wrap_RF24_disableDynamicPayloads_rf24_8b60070a93f979d5(uintptr_t arg1);
+extern void _wrap_RF24_enableDynamicAck_rf24_8b60070a93f979d5(uintptr_t arg1);
+extern _Bool _wrap_RF24_isPVariant_rf24_8b60070a93f979d5(uintptr_t arg1);
+extern void _wrap_RF24_setAutoAck__SWIG_0_rf24_8b60070a93f979d5(uintptr_t arg1, _Bool arg2);
+extern void _wrap_RF24_setAutoAck__SWIG_1_rf24_8b60070a93f979d5(uintptr_t arg1, char arg2, _Bool arg3);
+extern void _wrap_RF24_setPALevel_rf24_8b60070a93f979d5(uintptr_t arg1, char arg2);
+extern char _wrap_RF24_getPALevel_rf24_8b60070a93f979d5(uintptr_t arg1);
+extern _Bool _wrap_RF24_setDataRate_rf24_8b60070a93f979d5(uintptr_t arg1, swig_intgo arg2);
+extern swig_intgo _wrap_RF24_getDataRate_rf24_8b60070a93f979d5(uintptr_t arg1);
+extern void _wrap_RF24_setCRCLength_rf24_8b60070a93f979d5(uintptr_t arg1, swig_intgo arg2);
+extern swig_intgo _wrap_RF24_getCRCLength_rf24_8b60070a93f979d5(uintptr_t arg1);
+extern void _wrap_RF24_disableCRC_rf24_8b60070a93f979d5(uintptr_t arg1);
+extern void _wrap_RF24_maskIRQ_rf24_8b60070a93f979d5(uintptr_t arg1, _Bool arg2, _Bool arg3, _Bool arg4);
+extern void _wrap_RF24_txDelay_set_rf24_8b60070a93f979d5(uintptr_t arg1, swig_intgo arg2);
+extern swig_intgo _wrap_RF24_txDelay_get_rf24_8b60070a93f979d5(uintptr_t arg1);
+extern void _wrap_RF24_csDelay_set_rf24_8b60070a93f979d5(uintptr_t arg1, swig_intgo arg2);
+extern swig_intgo _wrap_RF24_csDelay_get_rf24_8b60070a93f979d5(uintptr_t arg1);
+extern void _wrap_RF24_openReadingPipe__SWIG_1_rf24_8b60070a93f979d5(uintptr_t arg1, char arg2, swig_type_12 arg3);
+extern void _wrap_RF24_openWritingPipe__SWIG_1_rf24_8b60070a93f979d5(uintptr_t arg1, swig_type_13 arg2);
+extern char _wrap_RF24_flush_rx_rf24_8b60070a93f979d5(uintptr_t arg1);
+extern void _wrap_delete_RF24_rf24_8b60070a93f979d5(uintptr_t arg1);
 #undef intgo
 */
 import "C"
@@ -175,13 +177,13 @@ func swigCopyString(s string) string {
 
 func Swig_free(arg1 uintptr) {
 	_swig_i_0 := arg1
-	C._wrap_Swig_free_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0))
+	C._wrap_Swig_free_rf24_8b60070a93f979d5(C.uintptr_t(_swig_i_0))
 }
 
 func Swig_malloc(arg1 int) (_swig_ret uintptr) {
 	var swig_r uintptr
 	_swig_i_0 := arg1
-	swig_r = (uintptr)(C._wrap_Swig_malloc_rf24_7d7c662b7fa2227e(C.swig_intgo(_swig_i_0)))
+	swig_r = (uintptr)(C._wrap_Swig_malloc_rf24_8b60070a93f979d5(C.swig_intgo(_swig_i_0)))
 	return swig_r
 }
 
@@ -196,14 +198,14 @@ func (p SwigcptrStringVector) SwigIsStringVector() {
 
 func NewStringVector__SWIG_0() (_swig_ret StringVector) {
 	var swig_r StringVector
-	swig_r = (StringVector)(SwigcptrStringVector(C._wrap_new_StringVector__SWIG_0_rf24_7d7c662b7fa2227e()))
+	swig_r = (StringVector)(SwigcptrStringVector(C._wrap_new_StringVector__SWIG_0_rf24_8b60070a93f979d5()))
 	return swig_r
 }
 
 func NewStringVector__SWIG_1(arg1 int64) (_swig_ret StringVector) {
 	var swig_r StringVector
 	_swig_i_0 := arg1
-	swig_r = (StringVector)(SwigcptrStringVector(C._wrap_new_StringVector__SWIG_1_rf24_7d7c662b7fa2227e(C.swig_type_1(_swig_i_0))))
+	swig_r = (StringVector)(SwigcptrStringVector(C._wrap_new_StringVector__SWIG_1_rf24_8b60070a93f979d5(C.swig_type_1(_swig_i_0))))
 	return swig_r
 }
 
@@ -221,39 +223,39 @@ func NewStringVector(a ...interface{}) StringVector {
 func (arg1 SwigcptrStringVector) Size() (_swig_ret int64) {
 	var swig_r int64
 	_swig_i_0 := arg1
-	swig_r = (int64)(C._wrap_StringVector_size_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0)))
+	swig_r = (int64)(C._wrap_StringVector_size_rf24_8b60070a93f979d5(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
 func (arg1 SwigcptrStringVector) Capacity() (_swig_ret int64) {
 	var swig_r int64
 	_swig_i_0 := arg1
-	swig_r = (int64)(C._wrap_StringVector_capacity_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0)))
+	swig_r = (int64)(C._wrap_StringVector_capacity_rf24_8b60070a93f979d5(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
 func (arg1 SwigcptrStringVector) Reserve(arg2 int64) {
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
-	C._wrap_StringVector_reserve_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0), C.swig_type_4(_swig_i_1))
+	C._wrap_StringVector_reserve_rf24_8b60070a93f979d5(C.uintptr_t(_swig_i_0), C.swig_type_4(_swig_i_1))
 }
 
 func (arg1 SwigcptrStringVector) IsEmpty() (_swig_ret bool) {
 	var swig_r bool
 	_swig_i_0 := arg1
-	swig_r = (bool)(C._wrap_StringVector_isEmpty_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0)))
+	swig_r = (bool)(C._wrap_StringVector_isEmpty_rf24_8b60070a93f979d5(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
 func (arg1 SwigcptrStringVector) Clear() {
 	_swig_i_0 := arg1
-	C._wrap_StringVector_clear_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0))
+	C._wrap_StringVector_clear_rf24_8b60070a93f979d5(C.uintptr_t(_swig_i_0))
 }
 
 func (arg1 SwigcptrStringVector) Add(arg2 string) {
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
-	C._wrap_StringVector_add_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0), *(*C.swig_type_5)(unsafe.Pointer(&_swig_i_1)))
+	C._wrap_StringVector_add_rf24_8b60070a93f979d5(C.uintptr_t(_swig_i_0), *(*C.swig_type_5)(unsafe.Pointer(&_swig_i_1)))
 	if Swig_escape_always_false {
 		Swig_escape_val = arg2
 	}
@@ -263,7 +265,7 @@ func (arg1 SwigcptrStringVector) Get(arg2 int) (_swig_ret string) {
 	var swig_r string
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
-	swig_r_p := C._wrap_StringVector_get_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1))
+	swig_r_p := C._wrap_StringVector_get_rf24_8b60070a93f979d5(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1))
 	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
 	var swig_r_1 string
  swig_r_1 = swigCopyString(swig_r) 
@@ -274,7 +276,7 @@ func (arg1 SwigcptrStringVector) Set(arg2 int, arg3 string) {
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
 	_swig_i_2 := arg3
-	C._wrap_StringVector_set_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1), *(*C.swig_type_7)(unsafe.Pointer(&_swig_i_2)))
+	C._wrap_StringVector_set_rf24_8b60070a93f979d5(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1), *(*C.swig_type_7)(unsafe.Pointer(&_swig_i_2)))
 	if Swig_escape_always_false {
 		Swig_escape_val = arg3
 	}
@@ -282,7 +284,7 @@ func (arg1 SwigcptrStringVector) Set(arg2 int, arg3 string) {
 
 func DeleteStringVector(arg1 StringVector) {
 	_swig_i_0 := arg1.Swigcptr()
-	C._wrap_delete_StringVector_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0))
+	C._wrap_delete_StringVector_rf24_8b60070a93f979d5(C.uintptr_t(_swig_i_0))
 }
 
 type StringVector interface {
@@ -309,14 +311,14 @@ func (p SwigcptrByteVector) SwigIsByteVector() {
 
 func NewByteVector__SWIG_0() (_swig_ret ByteVector) {
 	var swig_r ByteVector
-	swig_r = (ByteVector)(SwigcptrByteVector(C._wrap_new_ByteVector__SWIG_0_rf24_7d7c662b7fa2227e()))
+	swig_r = (ByteVector)(SwigcptrByteVector(C._wrap_new_ByteVector__SWIG_0_rf24_8b60070a93f979d5()))
 	return swig_r
 }
 
 func NewByteVector__SWIG_1(arg1 int64) (_swig_ret ByteVector) {
 	var swig_r ByteVector
 	_swig_i_0 := arg1
-	swig_r = (ByteVector)(SwigcptrByteVector(C._wrap_new_ByteVector__SWIG_1_rf24_7d7c662b7fa2227e(C.swig_type_8(_swig_i_0))))
+	swig_r = (ByteVector)(SwigcptrByteVector(C._wrap_new_ByteVector__SWIG_1_rf24_8b60070a93f979d5(C.swig_type_8(_swig_i_0))))
 	return swig_r
 }
 
@@ -334,46 +336,46 @@ func NewByteVector(a ...interface{}) ByteVector {
 func (arg1 SwigcptrByteVector) Size() (_swig_ret int64) {
 	var swig_r int64
 	_swig_i_0 := arg1
-	swig_r = (int64)(C._wrap_ByteVector_size_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0)))
+	swig_r = (int64)(C._wrap_ByteVector_size_rf24_8b60070a93f979d5(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
 func (arg1 SwigcptrByteVector) Capacity() (_swig_ret int64) {
 	var swig_r int64
 	_swig_i_0 := arg1
-	swig_r = (int64)(C._wrap_ByteVector_capacity_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0)))
+	swig_r = (int64)(C._wrap_ByteVector_capacity_rf24_8b60070a93f979d5(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
 func (arg1 SwigcptrByteVector) Reserve(arg2 int64) {
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
-	C._wrap_ByteVector_reserve_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0), C.swig_type_11(_swig_i_1))
+	C._wrap_ByteVector_reserve_rf24_8b60070a93f979d5(C.uintptr_t(_swig_i_0), C.swig_type_11(_swig_i_1))
 }
 
 func (arg1 SwigcptrByteVector) IsEmpty() (_swig_ret bool) {
 	var swig_r bool
 	_swig_i_0 := arg1
-	swig_r = (bool)(C._wrap_ByteVector_isEmpty_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0)))
+	swig_r = (bool)(C._wrap_ByteVector_isEmpty_rf24_8b60070a93f979d5(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
 func (arg1 SwigcptrByteVector) Clear() {
 	_swig_i_0 := arg1
-	C._wrap_ByteVector_clear_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0))
+	C._wrap_ByteVector_clear_rf24_8b60070a93f979d5(C.uintptr_t(_swig_i_0))
 }
 
 func (arg1 SwigcptrByteVector) Add(arg2 byte) {
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
-	C._wrap_ByteVector_add_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0), C.char(_swig_i_1))
+	C._wrap_ByteVector_add_rf24_8b60070a93f979d5(C.uintptr_t(_swig_i_0), C.char(_swig_i_1))
 }
 
 func (arg1 SwigcptrByteVector) Get(arg2 int) (_swig_ret byte) {
 	var swig_r byte
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
-	swig_r = (byte)(C._wrap_ByteVector_get_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1)))
+	swig_r = (byte)(C._wrap_ByteVector_get_rf24_8b60070a93f979d5(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1)))
 	return swig_r
 }
 
@@ -381,12 +383,12 @@ func (arg1 SwigcptrByteVector) Set(arg2 int, arg3 byte) {
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
 	_swig_i_2 := arg3
-	C._wrap_ByteVector_set_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1), C.char(_swig_i_2))
+	C._wrap_ByteVector_set_rf24_8b60070a93f979d5(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1), C.char(_swig_i_2))
 }
 
 func DeleteByteVector(arg1 ByteVector) {
 	_swig_i_0 := arg1.Swigcptr()
-	C._wrap_delete_ByteVector_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0))
+	C._wrap_delete_ByteVector_rf24_8b60070a93f979d5(C.uintptr_t(_swig_i_0))
 }
 
 type ByteVector interface {
@@ -405,35 +407,35 @@ type ByteVector interface {
 type Rf24_pa_dbm_e int
 func _swig_getRF24_PA_MIN() (_swig_ret int) {
 	var swig_r int
-	swig_r = (int)(C._wrap_RF24_PA_MIN_rf24_7d7c662b7fa2227e())
+	swig_r = (int)(C._wrap_RF24_PA_MIN_rf24_8b60070a93f979d5())
 	return swig_r
 }
 
 var RF24_PA_MIN int = _swig_getRF24_PA_MIN()
 func _swig_getRF24_PA_LOW() (_swig_ret int) {
 	var swig_r int
-	swig_r = (int)(C._wrap_RF24_PA_LOW_rf24_7d7c662b7fa2227e())
+	swig_r = (int)(C._wrap_RF24_PA_LOW_rf24_8b60070a93f979d5())
 	return swig_r
 }
 
 var RF24_PA_LOW int = _swig_getRF24_PA_LOW()
 func _swig_getRF24_PA_HIGH() (_swig_ret int) {
 	var swig_r int
-	swig_r = (int)(C._wrap_RF24_PA_HIGH_rf24_7d7c662b7fa2227e())
+	swig_r = (int)(C._wrap_RF24_PA_HIGH_rf24_8b60070a93f979d5())
 	return swig_r
 }
 
 var RF24_PA_HIGH int = _swig_getRF24_PA_HIGH()
 func _swig_getRF24_PA_MAX() (_swig_ret int) {
 	var swig_r int
-	swig_r = (int)(C._wrap_RF24_PA_MAX_rf24_7d7c662b7fa2227e())
+	swig_r = (int)(C._wrap_RF24_PA_MAX_rf24_8b60070a93f979d5())
 	return swig_r
 }
 
 var RF24_PA_MAX int = _swig_getRF24_PA_MAX()
 func _swig_getRF24_PA_ERROR() (_swig_ret int) {
 	var swig_r int
-	swig_r = (int)(C._wrap_RF24_PA_ERROR_rf24_7d7c662b7fa2227e())
+	swig_r = (int)(C._wrap_RF24_PA_ERROR_rf24_8b60070a93f979d5())
 	return swig_r
 }
 
@@ -441,21 +443,21 @@ var RF24_PA_ERROR int = _swig_getRF24_PA_ERROR()
 type Rf24_datarate_e int
 func _swig_getRF24_1MBPS() (_swig_ret int) {
 	var swig_r int
-	swig_r = (int)(C._wrap_RF24_1MBPS_rf24_7d7c662b7fa2227e())
+	swig_r = (int)(C._wrap_RF24_1MBPS_rf24_8b60070a93f979d5())
 	return swig_r
 }
 
 var RF24_1MBPS int = _swig_getRF24_1MBPS()
 func _swig_getRF24_2MBPS() (_swig_ret int) {
 	var swig_r int
-	swig_r = (int)(C._wrap_RF24_2MBPS_rf24_7d7c662b7fa2227e())
+	swig_r = (int)(C._wrap_RF24_2MBPS_rf24_8b60070a93f979d5())
 	return swig_r
 }
 
 var RF24_2MBPS int = _swig_getRF24_2MBPS()
 func _swig_getRF24_250KBPS() (_swig_ret int) {
 	var swig_r int
-	swig_r = (int)(C._wrap_RF24_250KBPS_rf24_7d7c662b7fa2227e())
+	swig_r = (int)(C._wrap_RF24_250KBPS_rf24_8b60070a93f979d5())
 	return swig_r
 }
 
@@ -463,21 +465,21 @@ var RF24_250KBPS int = _swig_getRF24_250KBPS()
 type Rf24_crclength_e int
 func _swig_getRF24_CRC_DISABLED() (_swig_ret int) {
 	var swig_r int
-	swig_r = (int)(C._wrap_RF24_CRC_DISABLED_rf24_7d7c662b7fa2227e())
+	swig_r = (int)(C._wrap_RF24_CRC_DISABLED_rf24_8b60070a93f979d5())
 	return swig_r
 }
 
 var RF24_CRC_DISABLED int = _swig_getRF24_CRC_DISABLED()
 func _swig_getRF24_CRC_8() (_swig_ret int) {
 	var swig_r int
-	swig_r = (int)(C._wrap_RF24_CRC_8_rf24_7d7c662b7fa2227e())
+	swig_r = (int)(C._wrap_RF24_CRC_8_rf24_8b60070a93f979d5())
 	return swig_r
 }
 
 var RF24_CRC_8 int = _swig_getRF24_CRC_8()
 func _swig_getRF24_CRC_16() (_swig_ret int) {
 	var swig_r int
-	swig_r = (int)(C._wrap_RF24_CRC_16_rf24_7d7c662b7fa2227e())
+	swig_r = (int)(C._wrap_RF24_CRC_16_rf24_8b60070a93f979d5())
 	return swig_r
 }
 
@@ -491,30 +493,30 @@ func (p SwigcptrRF24) Swigcptr() uintptr {
 func (p SwigcptrRF24) SwigIsRF24() {
 }
 
-func NewRF24__SWIG_0(arg1 Uint16_t, arg2 Uint16_t) (_swig_ret RF24) {
+func NewRF24__SWIG_0(arg1 uint16, arg2 uint16) (_swig_ret RF24) {
 	var swig_r RF24
-	_swig_i_0 := arg1.Swigcptr()
-	_swig_i_1 := arg2.Swigcptr()
-	swig_r = (RF24)(SwigcptrRF24(C._wrap_new_RF24__SWIG_0_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	swig_r = (RF24)(SwigcptrRF24(C._wrap_new_RF24__SWIG_0_rf24_8b60070a93f979d5(C.short(_swig_i_0), C.short(_swig_i_1))))
 	return swig_r
 }
 
-func NewRF24__SWIG_1(arg1 Uint16_t, arg2 Uint16_t, arg3 Uint32_t) (_swig_ret RF24) {
+func NewRF24__SWIG_1(arg1 uint16, arg2 uint16, arg3 uint) (_swig_ret RF24) {
 	var swig_r RF24
-	_swig_i_0 := arg1.Swigcptr()
-	_swig_i_1 := arg2.Swigcptr()
-	_swig_i_2 := arg3.Swigcptr()
-	swig_r = (RF24)(SwigcptrRF24(C._wrap_new_RF24__SWIG_1_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), C.uintptr_t(_swig_i_2))))
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	swig_r = (RF24)(SwigcptrRF24(C._wrap_new_RF24__SWIG_1_rf24_8b60070a93f979d5(C.short(_swig_i_0), C.short(_swig_i_1), C.swig_intgo(_swig_i_2))))
 	return swig_r
 }
 
 func NewRF24(a ...interface{}) RF24 {
 	argc := len(a)
 	if argc == 2 {
-		return NewRF24__SWIG_0(a[0].(Uint16_t), a[1].(Uint16_t))
+		return NewRF24__SWIG_0(a[0].(uint16), a[1].(uint16))
 	}
 	if argc == 3 {
-		return NewRF24__SWIG_1(a[0].(Uint16_t), a[1].(Uint16_t), a[2].(Uint32_t))
+		return NewRF24__SWIG_1(a[0].(uint16), a[1].(uint16), a[2].(uint))
 	}
 	panic("No match for overloaded function call")
 }
@@ -522,73 +524,73 @@ func NewRF24(a ...interface{}) RF24 {
 func (arg1 SwigcptrRF24) Begin() (_swig_ret bool) {
 	var swig_r bool
 	_swig_i_0 := arg1
-	swig_r = (bool)(C._wrap_RF24_begin_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0)))
+	swig_r = (bool)(C._wrap_RF24_begin_rf24_8b60070a93f979d5(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
 func (arg1 SwigcptrRF24) IsChipConnected() (_swig_ret bool) {
 	var swig_r bool
 	_swig_i_0 := arg1
-	swig_r = (bool)(C._wrap_RF24_isChipConnected_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0)))
+	swig_r = (bool)(C._wrap_RF24_isChipConnected_rf24_8b60070a93f979d5(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
 func (arg1 SwigcptrRF24) StartListening() {
 	_swig_i_0 := arg1
-	C._wrap_RF24_startListening_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0))
+	C._wrap_RF24_startListening_rf24_8b60070a93f979d5(C.uintptr_t(_swig_i_0))
 }
 
 func (arg1 SwigcptrRF24) StopListening() {
 	_swig_i_0 := arg1
-	C._wrap_RF24_stopListening_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0))
+	C._wrap_RF24_stopListening_rf24_8b60070a93f979d5(C.uintptr_t(_swig_i_0))
 }
 
 func (arg1 SwigcptrRF24) Available__SWIG_0() (_swig_ret bool) {
 	var swig_r bool
 	_swig_i_0 := arg1
-	swig_r = (bool)(C._wrap_RF24_available__SWIG_0_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0)))
+	swig_r = (bool)(C._wrap_RF24_available__SWIG_0_rf24_8b60070a93f979d5(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
-func (arg1 SwigcptrRF24) Read(arg2 uintptr, arg3 Uint8_t) {
+func (arg1 SwigcptrRF24) Read(arg2 uintptr, arg3 byte) {
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
-	_swig_i_2 := arg3.Swigcptr()
-	C._wrap_RF24_read_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), C.uintptr_t(_swig_i_2))
+	_swig_i_2 := arg3
+	C._wrap_RF24_read_rf24_8b60070a93f979d5(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), C.char(_swig_i_2))
 }
 
-func (arg1 SwigcptrRF24) Write__SWIG_0(arg2 uintptr, arg3 Uint8_t) (_swig_ret bool) {
+func (arg1 SwigcptrRF24) Write__SWIG_0(arg2 uintptr, arg3 byte) (_swig_ret bool) {
 	var swig_r bool
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
-	_swig_i_2 := arg3.Swigcptr()
-	swig_r = (bool)(C._wrap_RF24_write__SWIG_0_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), C.uintptr_t(_swig_i_2)))
+	_swig_i_2 := arg3
+	swig_r = (bool)(C._wrap_RF24_write__SWIG_0_rf24_8b60070a93f979d5(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), C.char(_swig_i_2)))
 	return swig_r
 }
 
-func (arg1 SwigcptrRF24) OpenWritingPipe__SWIG_0(arg2 Uint8_t) {
+func (arg1 SwigcptrRF24) OpenWritingPipe__SWIG_0(arg2 *byte) {
 	_swig_i_0 := arg1
-	_swig_i_1 := arg2.Swigcptr()
-	C._wrap_RF24_openWritingPipe__SWIG_0_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))
+	_swig_i_1 := arg2
+	C._wrap_RF24_openWritingPipe__SWIG_0_rf24_8b60070a93f979d5(C.uintptr_t(_swig_i_0), C.swig_voidp(_swig_i_1))
 }
 
-func (arg1 SwigcptrRF24) OpenReadingPipe__SWIG_0(arg2 Uint8_t, arg3 Uint8_t) {
+func (arg1 SwigcptrRF24) OpenReadingPipe__SWIG_0(arg2 byte, arg3 *byte) {
 	_swig_i_0 := arg1
-	_swig_i_1 := arg2.Swigcptr()
-	_swig_i_2 := arg3.Swigcptr()
-	C._wrap_RF24_openReadingPipe__SWIG_0_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), C.uintptr_t(_swig_i_2))
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	C._wrap_RF24_openReadingPipe__SWIG_0_rf24_8b60070a93f979d5(C.uintptr_t(_swig_i_0), C.char(_swig_i_1), C.swig_voidp(_swig_i_2))
 }
 
 func (arg1 SwigcptrRF24) PrintDetails() {
 	_swig_i_0 := arg1
-	C._wrap_RF24_printDetails_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0))
+	C._wrap_RF24_printDetails_rf24_8b60070a93f979d5(C.uintptr_t(_swig_i_0))
 }
 
-func (arg1 SwigcptrRF24) Available__SWIG_1(arg2 Uint8_t) (_swig_ret bool) {
+func (arg1 SwigcptrRF24) Available__SWIG_1(arg2 *byte) (_swig_ret bool) {
 	var swig_r bool
 	_swig_i_0 := arg1
-	_swig_i_1 := arg2.Swigcptr()
-	swig_r = (bool)(C._wrap_RF24_available__SWIG_1_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1)))
+	_swig_i_1 := arg2
+	swig_r = (bool)(C._wrap_RF24_available__SWIG_1_rf24_8b60070a93f979d5(C.uintptr_t(_swig_i_0), C.swig_voidp(_swig_i_1)))
 	return swig_r
 }
 
@@ -598,7 +600,7 @@ func (p SwigcptrRF24) Available(a ...interface{}) bool {
 		return p.Available__SWIG_0()
 	}
 	if argc == 1 {
-		return p.Available__SWIG_1(a[0].(Uint8_t))
+		return p.Available__SWIG_1(a[0].(*byte))
 	}
 	panic("No match for overloaded function call")
 }
@@ -606,102 +608,102 @@ func (p SwigcptrRF24) Available(a ...interface{}) bool {
 func (arg1 SwigcptrRF24) RxFifoFull() (_swig_ret bool) {
 	var swig_r bool
 	_swig_i_0 := arg1
-	swig_r = (bool)(C._wrap_RF24_rxFifoFull_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0)))
+	swig_r = (bool)(C._wrap_RF24_rxFifoFull_rf24_8b60070a93f979d5(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
 func (arg1 SwigcptrRF24) PowerDown() {
 	_swig_i_0 := arg1
-	C._wrap_RF24_powerDown_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0))
+	C._wrap_RF24_powerDown_rf24_8b60070a93f979d5(C.uintptr_t(_swig_i_0))
 }
 
 func (arg1 SwigcptrRF24) PowerUp() {
 	_swig_i_0 := arg1
-	C._wrap_RF24_powerUp_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0))
+	C._wrap_RF24_powerUp_rf24_8b60070a93f979d5(C.uintptr_t(_swig_i_0))
 }
 
-func (arg1 SwigcptrRF24) Write__SWIG_1(arg2 uintptr, arg3 Uint8_t, arg4 bool) (_swig_ret bool) {
+func (arg1 SwigcptrRF24) Write__SWIG_1(arg2 uintptr, arg3 byte, arg4 bool) (_swig_ret bool) {
 	var swig_r bool
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
-	_swig_i_2 := arg3.Swigcptr()
+	_swig_i_2 := arg3
 	_swig_i_3 := arg4
-	swig_r = (bool)(C._wrap_RF24_write__SWIG_1_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), C.uintptr_t(_swig_i_2), C._Bool(_swig_i_3)))
+	swig_r = (bool)(C._wrap_RF24_write__SWIG_1_rf24_8b60070a93f979d5(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), C.char(_swig_i_2), C._Bool(_swig_i_3)))
 	return swig_r
 }
 
 func (p SwigcptrRF24) Write(a ...interface{}) bool {
 	argc := len(a)
 	if argc == 2 {
-		return p.Write__SWIG_0(a[0].(uintptr), a[1].(Uint8_t))
+		return p.Write__SWIG_0(a[0].(uintptr), a[1].(byte))
 	}
 	if argc == 3 {
-		return p.Write__SWIG_1(a[0].(uintptr), a[1].(Uint8_t), a[2].(bool))
+		return p.Write__SWIG_1(a[0].(uintptr), a[1].(byte), a[2].(bool))
 	}
 	panic("No match for overloaded function call")
 }
 
-func (arg1 SwigcptrRF24) WriteFast__SWIG_0(arg2 uintptr, arg3 Uint8_t) (_swig_ret bool) {
+func (arg1 SwigcptrRF24) WriteFast__SWIG_0(arg2 uintptr, arg3 byte) (_swig_ret bool) {
 	var swig_r bool
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
-	_swig_i_2 := arg3.Swigcptr()
-	swig_r = (bool)(C._wrap_RF24_writeFast__SWIG_0_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), C.uintptr_t(_swig_i_2)))
+	_swig_i_2 := arg3
+	swig_r = (bool)(C._wrap_RF24_writeFast__SWIG_0_rf24_8b60070a93f979d5(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), C.char(_swig_i_2)))
 	return swig_r
 }
 
-func (arg1 SwigcptrRF24) WriteFast__SWIG_1(arg2 uintptr, arg3 Uint8_t, arg4 bool) (_swig_ret bool) {
+func (arg1 SwigcptrRF24) WriteFast__SWIG_1(arg2 uintptr, arg3 byte, arg4 bool) (_swig_ret bool) {
 	var swig_r bool
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
-	_swig_i_2 := arg3.Swigcptr()
+	_swig_i_2 := arg3
 	_swig_i_3 := arg4
-	swig_r = (bool)(C._wrap_RF24_writeFast__SWIG_1_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), C.uintptr_t(_swig_i_2), C._Bool(_swig_i_3)))
+	swig_r = (bool)(C._wrap_RF24_writeFast__SWIG_1_rf24_8b60070a93f979d5(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), C.char(_swig_i_2), C._Bool(_swig_i_3)))
 	return swig_r
 }
 
 func (p SwigcptrRF24) WriteFast(a ...interface{}) bool {
 	argc := len(a)
 	if argc == 2 {
-		return p.WriteFast__SWIG_0(a[0].(uintptr), a[1].(Uint8_t))
+		return p.WriteFast__SWIG_0(a[0].(uintptr), a[1].(byte))
 	}
 	if argc == 3 {
-		return p.WriteFast__SWIG_1(a[0].(uintptr), a[1].(Uint8_t), a[2].(bool))
+		return p.WriteFast__SWIG_1(a[0].(uintptr), a[1].(byte), a[2].(bool))
 	}
 	panic("No match for overloaded function call")
 }
 
-func (arg1 SwigcptrRF24) WriteBlocking(arg2 uintptr, arg3 Uint8_t, arg4 Uint32_t) (_swig_ret bool) {
+func (arg1 SwigcptrRF24) WriteBlocking(arg2 uintptr, arg3 byte, arg4 uint) (_swig_ret bool) {
 	var swig_r bool
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
-	_swig_i_2 := arg3.Swigcptr()
-	_swig_i_3 := arg4.Swigcptr()
-	swig_r = (bool)(C._wrap_RF24_writeBlocking_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), C.uintptr_t(_swig_i_2), C.uintptr_t(_swig_i_3)))
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	swig_r = (bool)(C._wrap_RF24_writeBlocking_rf24_8b60070a93f979d5(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), C.char(_swig_i_2), C.swig_intgo(_swig_i_3)))
 	return swig_r
 }
 
 func (arg1 SwigcptrRF24) TxStandBy__SWIG_0() (_swig_ret bool) {
 	var swig_r bool
 	_swig_i_0 := arg1
-	swig_r = (bool)(C._wrap_RF24_txStandBy__SWIG_0_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0)))
+	swig_r = (bool)(C._wrap_RF24_txStandBy__SWIG_0_rf24_8b60070a93f979d5(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
-func (arg1 SwigcptrRF24) TxStandBy__SWIG_1(arg2 Uint32_t, arg3 bool) (_swig_ret bool) {
+func (arg1 SwigcptrRF24) TxStandBy__SWIG_1(arg2 uint, arg3 bool) (_swig_ret bool) {
 	var swig_r bool
 	_swig_i_0 := arg1
-	_swig_i_1 := arg2.Swigcptr()
+	_swig_i_1 := arg2
 	_swig_i_2 := arg3
-	swig_r = (bool)(C._wrap_RF24_txStandBy__SWIG_1_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), C._Bool(_swig_i_2)))
+	swig_r = (bool)(C._wrap_RF24_txStandBy__SWIG_1_rf24_8b60070a93f979d5(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1), C._Bool(_swig_i_2)))
 	return swig_r
 }
 
-func (arg1 SwigcptrRF24) TxStandBy__SWIG_2(arg2 Uint32_t) (_swig_ret bool) {
+func (arg1 SwigcptrRF24) TxStandBy__SWIG_2(arg2 uint) (_swig_ret bool) {
 	var swig_r bool
 	_swig_i_0 := arg1
-	_swig_i_1 := arg2.Swigcptr()
-	swig_r = (bool)(C._wrap_RF24_txStandBy__SWIG_2_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1)))
+	_swig_i_1 := arg2
+	swig_r = (bool)(C._wrap_RF24_txStandBy__SWIG_2_rf24_8b60070a93f979d5(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1)))
 	return swig_r
 }
 
@@ -711,26 +713,26 @@ func (p SwigcptrRF24) TxStandBy(a ...interface{}) bool {
 		return p.TxStandBy__SWIG_0()
 	}
 	if argc == 1 {
-		return p.TxStandBy__SWIG_2(a[0].(Uint32_t))
+		return p.TxStandBy__SWIG_2(a[0].(uint))
 	}
 	if argc == 2 {
-		return p.TxStandBy__SWIG_1(a[0].(Uint32_t), a[1].(bool))
+		return p.TxStandBy__SWIG_1(a[0].(uint), a[1].(bool))
 	}
 	panic("No match for overloaded function call")
 }
 
-func (arg1 SwigcptrRF24) WriteAckPayload(arg2 Uint8_t, arg3 uintptr, arg4 Uint8_t) {
+func (arg1 SwigcptrRF24) WriteAckPayload(arg2 byte, arg3 uintptr, arg4 byte) {
 	_swig_i_0 := arg1
-	_swig_i_1 := arg2.Swigcptr()
+	_swig_i_1 := arg2
 	_swig_i_2 := arg3
-	_swig_i_3 := arg4.Swigcptr()
-	C._wrap_RF24_writeAckPayload_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), C.uintptr_t(_swig_i_2), C.uintptr_t(_swig_i_3))
+	_swig_i_3 := arg4
+	C._wrap_RF24_writeAckPayload_rf24_8b60070a93f979d5(C.uintptr_t(_swig_i_0), C.char(_swig_i_1), C.uintptr_t(_swig_i_2), C.char(_swig_i_3))
 }
 
 func (arg1 SwigcptrRF24) IsAckPayloadAvailable() (_swig_ret bool) {
 	var swig_r bool
 	_swig_i_0 := arg1
-	swig_r = (bool)(C._wrap_RF24_isAckPayloadAvailable_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0)))
+	swig_r = (bool)(C._wrap_RF24_isAckPayloadAvailable_rf24_8b60070a93f979d5(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
@@ -739,183 +741,183 @@ func (arg1 SwigcptrRF24) WhatHappened(arg2 *bool, arg3 *bool, arg4 *bool) {
 	_swig_i_1 := arg2
 	_swig_i_2 := arg3
 	_swig_i_3 := arg4
-	C._wrap_RF24_whatHappened_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0), C.swig_voidp(_swig_i_1), C.swig_voidp(_swig_i_2), C.swig_voidp(_swig_i_3))
+	C._wrap_RF24_whatHappened_rf24_8b60070a93f979d5(C.uintptr_t(_swig_i_0), C.swig_voidp(_swig_i_1), C.swig_voidp(_swig_i_2), C.swig_voidp(_swig_i_3))
 }
 
-func (arg1 SwigcptrRF24) StartFastWrite__SWIG_0(arg2 uintptr, arg3 Uint8_t, arg4 bool, arg5 bool) {
+func (arg1 SwigcptrRF24) StartFastWrite__SWIG_0(arg2 uintptr, arg3 byte, arg4 bool, arg5 bool) {
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
-	_swig_i_2 := arg3.Swigcptr()
+	_swig_i_2 := arg3
 	_swig_i_3 := arg4
 	_swig_i_4 := arg5
-	C._wrap_RF24_startFastWrite__SWIG_0_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), C.uintptr_t(_swig_i_2), C._Bool(_swig_i_3), C._Bool(_swig_i_4))
+	C._wrap_RF24_startFastWrite__SWIG_0_rf24_8b60070a93f979d5(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), C.char(_swig_i_2), C._Bool(_swig_i_3), C._Bool(_swig_i_4))
 }
 
-func (arg1 SwigcptrRF24) StartFastWrite__SWIG_1(arg2 uintptr, arg3 Uint8_t, arg4 bool) {
+func (arg1 SwigcptrRF24) StartFastWrite__SWIG_1(arg2 uintptr, arg3 byte, arg4 bool) {
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
-	_swig_i_2 := arg3.Swigcptr()
+	_swig_i_2 := arg3
 	_swig_i_3 := arg4
-	C._wrap_RF24_startFastWrite__SWIG_1_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), C.uintptr_t(_swig_i_2), C._Bool(_swig_i_3))
+	C._wrap_RF24_startFastWrite__SWIG_1_rf24_8b60070a93f979d5(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), C.char(_swig_i_2), C._Bool(_swig_i_3))
 }
 
 func (p SwigcptrRF24) StartFastWrite(a ...interface{}) {
 	argc := len(a)
 	if argc == 3 {
-		p.StartFastWrite__SWIG_1(a[0].(uintptr), a[1].(Uint8_t), a[2].(bool))
+		p.StartFastWrite__SWIG_1(a[0].(uintptr), a[1].(byte), a[2].(bool))
 		return
 	}
 	if argc == 4 {
-		p.StartFastWrite__SWIG_0(a[0].(uintptr), a[1].(Uint8_t), a[2].(bool), a[3].(bool))
+		p.StartFastWrite__SWIG_0(a[0].(uintptr), a[1].(byte), a[2].(bool), a[3].(bool))
 		return
 	}
 	panic("No match for overloaded function call")
 }
 
-func (arg1 SwigcptrRF24) StartWrite(arg2 uintptr, arg3 Uint8_t, arg4 bool) {
+func (arg1 SwigcptrRF24) StartWrite(arg2 uintptr, arg3 byte, arg4 bool) {
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
-	_swig_i_2 := arg3.Swigcptr()
+	_swig_i_2 := arg3
 	_swig_i_3 := arg4
-	C._wrap_RF24_startWrite_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), C.uintptr_t(_swig_i_2), C._Bool(_swig_i_3))
+	C._wrap_RF24_startWrite_rf24_8b60070a93f979d5(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), C.char(_swig_i_2), C._Bool(_swig_i_3))
 }
 
 func (arg1 SwigcptrRF24) ReUseTX() {
 	_swig_i_0 := arg1
-	C._wrap_RF24_reUseTX_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0))
+	C._wrap_RF24_reUseTX_rf24_8b60070a93f979d5(C.uintptr_t(_swig_i_0))
 }
 
-func (arg1 SwigcptrRF24) Flush_tx() (_swig_ret Uint8_t) {
-	var swig_r Uint8_t
+func (arg1 SwigcptrRF24) Flush_tx() (_swig_ret byte) {
+	var swig_r byte
 	_swig_i_0 := arg1
-	swig_r = (Uint8_t)(SwigcptrUint8_t(C._wrap_RF24_flush_tx_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0))))
+	swig_r = (byte)(C._wrap_RF24_flush_tx_rf24_8b60070a93f979d5(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
 func (arg1 SwigcptrRF24) TestCarrier() (_swig_ret bool) {
 	var swig_r bool
 	_swig_i_0 := arg1
-	swig_r = (bool)(C._wrap_RF24_testCarrier_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0)))
+	swig_r = (bool)(C._wrap_RF24_testCarrier_rf24_8b60070a93f979d5(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
 func (arg1 SwigcptrRF24) TestRPD() (_swig_ret bool) {
 	var swig_r bool
 	_swig_i_0 := arg1
-	swig_r = (bool)(C._wrap_RF24_testRPD_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0)))
+	swig_r = (bool)(C._wrap_RF24_testRPD_rf24_8b60070a93f979d5(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
 func (arg1 SwigcptrRF24) IsValid() (_swig_ret bool) {
 	var swig_r bool
 	_swig_i_0 := arg1
-	swig_r = (bool)(C._wrap_RF24_isValid_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0)))
+	swig_r = (bool)(C._wrap_RF24_isValid_rf24_8b60070a93f979d5(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
-func (arg1 SwigcptrRF24) CloseReadingPipe(arg2 Uint8_t) {
+func (arg1 SwigcptrRF24) CloseReadingPipe(arg2 byte) {
 	_swig_i_0 := arg1
-	_swig_i_1 := arg2.Swigcptr()
-	C._wrap_RF24_closeReadingPipe_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))
+	_swig_i_1 := arg2
+	C._wrap_RF24_closeReadingPipe_rf24_8b60070a93f979d5(C.uintptr_t(_swig_i_0), C.char(_swig_i_1))
 }
 
 func (arg1 SwigcptrRF24) SetFailureDetected(arg2 bool) {
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
-	C._wrap_RF24_failureDetected_set_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0), C._Bool(_swig_i_1))
+	C._wrap_RF24_failureDetected_set_rf24_8b60070a93f979d5(C.uintptr_t(_swig_i_0), C._Bool(_swig_i_1))
 }
 
 func (arg1 SwigcptrRF24) GetFailureDetected() (_swig_ret bool) {
 	var swig_r bool
 	_swig_i_0 := arg1
-	swig_r = (bool)(C._wrap_RF24_failureDetected_get_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0)))
+	swig_r = (bool)(C._wrap_RF24_failureDetected_get_rf24_8b60070a93f979d5(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
-func (arg1 SwigcptrRF24) SetAddressWidth(arg2 Uint8_t) {
+func (arg1 SwigcptrRF24) SetAddressWidth(arg2 byte) {
 	_swig_i_0 := arg1
-	_swig_i_1 := arg2.Swigcptr()
-	C._wrap_RF24_setAddressWidth_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))
+	_swig_i_1 := arg2
+	C._wrap_RF24_setAddressWidth_rf24_8b60070a93f979d5(C.uintptr_t(_swig_i_0), C.char(_swig_i_1))
 }
 
-func (arg1 SwigcptrRF24) SetRetries(arg2 Uint8_t, arg3 Uint8_t) {
+func (arg1 SwigcptrRF24) SetRetries(arg2 byte, arg3 byte) {
 	_swig_i_0 := arg1
-	_swig_i_1 := arg2.Swigcptr()
-	_swig_i_2 := arg3.Swigcptr()
-	C._wrap_RF24_setRetries_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), C.uintptr_t(_swig_i_2))
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	C._wrap_RF24_setRetries_rf24_8b60070a93f979d5(C.uintptr_t(_swig_i_0), C.char(_swig_i_1), C.char(_swig_i_2))
 }
 
-func (arg1 SwigcptrRF24) SetChannel(arg2 Uint8_t) {
+func (arg1 SwigcptrRF24) SetChannel(arg2 byte) {
 	_swig_i_0 := arg1
-	_swig_i_1 := arg2.Swigcptr()
-	C._wrap_RF24_setChannel_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))
+	_swig_i_1 := arg2
+	C._wrap_RF24_setChannel_rf24_8b60070a93f979d5(C.uintptr_t(_swig_i_0), C.char(_swig_i_1))
 }
 
-func (arg1 SwigcptrRF24) GetChannel() (_swig_ret Uint8_t) {
-	var swig_r Uint8_t
+func (arg1 SwigcptrRF24) GetChannel() (_swig_ret byte) {
+	var swig_r byte
 	_swig_i_0 := arg1
-	swig_r = (Uint8_t)(SwigcptrUint8_t(C._wrap_RF24_getChannel_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0))))
+	swig_r = (byte)(C._wrap_RF24_getChannel_rf24_8b60070a93f979d5(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
-func (arg1 SwigcptrRF24) SetPayloadSize(arg2 Uint8_t) {
+func (arg1 SwigcptrRF24) SetPayloadSize(arg2 byte) {
 	_swig_i_0 := arg1
-	_swig_i_1 := arg2.Swigcptr()
-	C._wrap_RF24_setPayloadSize_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))
+	_swig_i_1 := arg2
+	C._wrap_RF24_setPayloadSize_rf24_8b60070a93f979d5(C.uintptr_t(_swig_i_0), C.char(_swig_i_1))
 }
 
-func (arg1 SwigcptrRF24) GetPayloadSize() (_swig_ret Uint8_t) {
-	var swig_r Uint8_t
+func (arg1 SwigcptrRF24) GetPayloadSize() (_swig_ret byte) {
+	var swig_r byte
 	_swig_i_0 := arg1
-	swig_r = (Uint8_t)(SwigcptrUint8_t(C._wrap_RF24_getPayloadSize_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0))))
+	swig_r = (byte)(C._wrap_RF24_getPayloadSize_rf24_8b60070a93f979d5(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
-func (arg1 SwigcptrRF24) GetDynamicPayloadSize() (_swig_ret Uint8_t) {
-	var swig_r Uint8_t
+func (arg1 SwigcptrRF24) GetDynamicPayloadSize() (_swig_ret byte) {
+	var swig_r byte
 	_swig_i_0 := arg1
-	swig_r = (Uint8_t)(SwigcptrUint8_t(C._wrap_RF24_getDynamicPayloadSize_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0))))
+	swig_r = (byte)(C._wrap_RF24_getDynamicPayloadSize_rf24_8b60070a93f979d5(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
 func (arg1 SwigcptrRF24) EnableAckPayload() {
 	_swig_i_0 := arg1
-	C._wrap_RF24_enableAckPayload_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0))
+	C._wrap_RF24_enableAckPayload_rf24_8b60070a93f979d5(C.uintptr_t(_swig_i_0))
 }
 
 func (arg1 SwigcptrRF24) EnableDynamicPayloads() {
 	_swig_i_0 := arg1
-	C._wrap_RF24_enableDynamicPayloads_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0))
+	C._wrap_RF24_enableDynamicPayloads_rf24_8b60070a93f979d5(C.uintptr_t(_swig_i_0))
 }
 
 func (arg1 SwigcptrRF24) DisableDynamicPayloads() {
 	_swig_i_0 := arg1
-	C._wrap_RF24_disableDynamicPayloads_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0))
+	C._wrap_RF24_disableDynamicPayloads_rf24_8b60070a93f979d5(C.uintptr_t(_swig_i_0))
 }
 
 func (arg1 SwigcptrRF24) EnableDynamicAck() {
 	_swig_i_0 := arg1
-	C._wrap_RF24_enableDynamicAck_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0))
+	C._wrap_RF24_enableDynamicAck_rf24_8b60070a93f979d5(C.uintptr_t(_swig_i_0))
 }
 
 func (arg1 SwigcptrRF24) IsPVariant() (_swig_ret bool) {
 	var swig_r bool
 	_swig_i_0 := arg1
-	swig_r = (bool)(C._wrap_RF24_isPVariant_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0)))
+	swig_r = (bool)(C._wrap_RF24_isPVariant_rf24_8b60070a93f979d5(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
 func (arg1 SwigcptrRF24) SetAutoAck__SWIG_0(arg2 bool) {
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
-	C._wrap_RF24_setAutoAck__SWIG_0_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0), C._Bool(_swig_i_1))
+	C._wrap_RF24_setAutoAck__SWIG_0_rf24_8b60070a93f979d5(C.uintptr_t(_swig_i_0), C._Bool(_swig_i_1))
 }
 
-func (arg1 SwigcptrRF24) SetAutoAck__SWIG_1(arg2 Uint8_t, arg3 bool) {
+func (arg1 SwigcptrRF24) SetAutoAck__SWIG_1(arg2 byte, arg3 bool) {
 	_swig_i_0 := arg1
-	_swig_i_1 := arg2.Swigcptr()
+	_swig_i_1 := arg2
 	_swig_i_2 := arg3
-	C._wrap_RF24_setAutoAck__SWIG_1_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), C._Bool(_swig_i_2))
+	C._wrap_RF24_setAutoAck__SWIG_1_rf24_8b60070a93f979d5(C.uintptr_t(_swig_i_0), C.char(_swig_i_1), C._Bool(_swig_i_2))
 }
 
 func (p SwigcptrRF24) SetAutoAck(a ...interface{}) {
@@ -925,22 +927,22 @@ func (p SwigcptrRF24) SetAutoAck(a ...interface{}) {
 		return
 	}
 	if argc == 2 {
-		p.SetAutoAck__SWIG_1(a[0].(Uint8_t), a[1].(bool))
+		p.SetAutoAck__SWIG_1(a[0].(byte), a[1].(bool))
 		return
 	}
 	panic("No match for overloaded function call")
 }
 
-func (arg1 SwigcptrRF24) SetPALevel(arg2 Uint8_t) {
+func (arg1 SwigcptrRF24) SetPALevel(arg2 byte) {
 	_swig_i_0 := arg1
-	_swig_i_1 := arg2.Swigcptr()
-	C._wrap_RF24_setPALevel_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))
+	_swig_i_1 := arg2
+	C._wrap_RF24_setPALevel_rf24_8b60070a93f979d5(C.uintptr_t(_swig_i_0), C.char(_swig_i_1))
 }
 
-func (arg1 SwigcptrRF24) GetPALevel() (_swig_ret Uint8_t) {
-	var swig_r Uint8_t
+func (arg1 SwigcptrRF24) GetPALevel() (_swig_ret byte) {
+	var swig_r byte
 	_swig_i_0 := arg1
-	swig_r = (Uint8_t)(SwigcptrUint8_t(C._wrap_RF24_getPALevel_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0))))
+	swig_r = (byte)(C._wrap_RF24_getPALevel_rf24_8b60070a93f979d5(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
@@ -948,33 +950,33 @@ func (arg1 SwigcptrRF24) SetDataRate(arg2 Rf24_datarate_e) (_swig_ret bool) {
 	var swig_r bool
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
-	swig_r = (bool)(C._wrap_RF24_setDataRate_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1)))
+	swig_r = (bool)(C._wrap_RF24_setDataRate_rf24_8b60070a93f979d5(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1)))
 	return swig_r
 }
 
 func (arg1 SwigcptrRF24) GetDataRate() (_swig_ret Rf24_datarate_e) {
 	var swig_r Rf24_datarate_e
 	_swig_i_0 := arg1
-	swig_r = (Rf24_datarate_e)(C._wrap_RF24_getDataRate_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0)))
+	swig_r = (Rf24_datarate_e)(C._wrap_RF24_getDataRate_rf24_8b60070a93f979d5(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
 func (arg1 SwigcptrRF24) SetCRCLength(arg2 Rf24_crclength_e) {
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
-	C._wrap_RF24_setCRCLength_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1))
+	C._wrap_RF24_setCRCLength_rf24_8b60070a93f979d5(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1))
 }
 
 func (arg1 SwigcptrRF24) GetCRCLength() (_swig_ret Rf24_crclength_e) {
 	var swig_r Rf24_crclength_e
 	_swig_i_0 := arg1
-	swig_r = (Rf24_crclength_e)(C._wrap_RF24_getCRCLength_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0)))
+	swig_r = (Rf24_crclength_e)(C._wrap_RF24_getCRCLength_rf24_8b60070a93f979d5(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
 func (arg1 SwigcptrRF24) DisableCRC() {
 	_swig_i_0 := arg1
-	C._wrap_RF24_disableCRC_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0))
+	C._wrap_RF24_disableCRC_rf24_8b60070a93f979d5(C.uintptr_t(_swig_i_0))
 }
 
 func (arg1 SwigcptrRF24) MaskIRQ(arg2 bool, arg3 bool, arg4 bool) {
@@ -982,92 +984,92 @@ func (arg1 SwigcptrRF24) MaskIRQ(arg2 bool, arg3 bool, arg4 bool) {
 	_swig_i_1 := arg2
 	_swig_i_2 := arg3
 	_swig_i_3 := arg4
-	C._wrap_RF24_maskIRQ_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0), C._Bool(_swig_i_1), C._Bool(_swig_i_2), C._Bool(_swig_i_3))
+	C._wrap_RF24_maskIRQ_rf24_8b60070a93f979d5(C.uintptr_t(_swig_i_0), C._Bool(_swig_i_1), C._Bool(_swig_i_2), C._Bool(_swig_i_3))
 }
 
-func (arg1 SwigcptrRF24) SetTxDelay(arg2 Uint32_t) {
+func (arg1 SwigcptrRF24) SetTxDelay(arg2 uint) {
 	_swig_i_0 := arg1
-	_swig_i_1 := arg2.Swigcptr()
-	C._wrap_RF24_txDelay_set_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))
+	_swig_i_1 := arg2
+	C._wrap_RF24_txDelay_set_rf24_8b60070a93f979d5(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1))
 }
 
-func (arg1 SwigcptrRF24) GetTxDelay() (_swig_ret Uint32_t) {
-	var swig_r Uint32_t
+func (arg1 SwigcptrRF24) GetTxDelay() (_swig_ret uint) {
+	var swig_r uint
 	_swig_i_0 := arg1
-	swig_r = (Uint32_t)(SwigcptrUint32_t(C._wrap_RF24_txDelay_get_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0))))
+	swig_r = (uint)(C._wrap_RF24_txDelay_get_rf24_8b60070a93f979d5(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
-func (arg1 SwigcptrRF24) SetCsDelay(arg2 Uint32_t) {
+func (arg1 SwigcptrRF24) SetCsDelay(arg2 uint) {
 	_swig_i_0 := arg1
-	_swig_i_1 := arg2.Swigcptr()
-	C._wrap_RF24_csDelay_set_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))
+	_swig_i_1 := arg2
+	C._wrap_RF24_csDelay_set_rf24_8b60070a93f979d5(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1))
 }
 
-func (arg1 SwigcptrRF24) GetCsDelay() (_swig_ret Uint32_t) {
-	var swig_r Uint32_t
+func (arg1 SwigcptrRF24) GetCsDelay() (_swig_ret uint) {
+	var swig_r uint
 	_swig_i_0 := arg1
-	swig_r = (Uint32_t)(SwigcptrUint32_t(C._wrap_RF24_csDelay_get_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0))))
+	swig_r = (uint)(C._wrap_RF24_csDelay_get_rf24_8b60070a93f979d5(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
-func (arg1 SwigcptrRF24) OpenReadingPipe__SWIG_1(arg2 Uint8_t, arg3 Uint64_t) {
+func (arg1 SwigcptrRF24) OpenReadingPipe__SWIG_1(arg2 byte, arg3 uint64) {
 	_swig_i_0 := arg1
-	_swig_i_1 := arg2.Swigcptr()
-	_swig_i_2 := arg3.Swigcptr()
-	C._wrap_RF24_openReadingPipe__SWIG_1_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), C.uintptr_t(_swig_i_2))
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	C._wrap_RF24_openReadingPipe__SWIG_1_rf24_8b60070a93f979d5(C.uintptr_t(_swig_i_0), C.char(_swig_i_1), C.swig_type_12(_swig_i_2))
 }
 
 func (p SwigcptrRF24) OpenReadingPipe(a ...interface{}) {
 	argc := len(a)
 	if argc == 2 {
-		if _, ok := a[1].(SwigcptrUint8_t); !ok {
+		if _, ok := a[1].(uint64); !ok {
 			goto check_1
 		}
-		p.OpenReadingPipe__SWIG_0(a[0].(Uint8_t), a[1].(Uint8_t))
+		p.OpenReadingPipe__SWIG_1(a[0].(byte), a[1].(uint64))
 		return
 	}
 check_1:
 	if argc == 2 {
-		p.OpenReadingPipe__SWIG_1(a[0].(Uint8_t), a[1].(Uint64_t))
+		p.OpenReadingPipe__SWIG_0(a[0].(byte), a[1].(*byte))
 		return
 	}
 	panic("No match for overloaded function call")
 }
 
-func (arg1 SwigcptrRF24) OpenWritingPipe__SWIG_1(arg2 Uint64_t) {
+func (arg1 SwigcptrRF24) OpenWritingPipe__SWIG_1(arg2 uint64) {
 	_swig_i_0 := arg1
-	_swig_i_1 := arg2.Swigcptr()
-	C._wrap_RF24_openWritingPipe__SWIG_1_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))
+	_swig_i_1 := arg2
+	C._wrap_RF24_openWritingPipe__SWIG_1_rf24_8b60070a93f979d5(C.uintptr_t(_swig_i_0), C.swig_type_13(_swig_i_1))
 }
 
 func (p SwigcptrRF24) OpenWritingPipe(a ...interface{}) {
 	argc := len(a)
 	if argc == 1 {
-		if _, ok := a[0].(SwigcptrUint8_t); !ok {
+		if _, ok := a[0].(uint64); !ok {
 			goto check_1
 		}
-		p.OpenWritingPipe__SWIG_0(a[0].(Uint8_t))
+		p.OpenWritingPipe__SWIG_1(a[0].(uint64))
 		return
 	}
 check_1:
 	if argc == 1 {
-		p.OpenWritingPipe__SWIG_1(a[0].(Uint64_t))
+		p.OpenWritingPipe__SWIG_0(a[0].(*byte))
 		return
 	}
 	panic("No match for overloaded function call")
 }
 
-func (arg1 SwigcptrRF24) Flush_rx() (_swig_ret Uint8_t) {
-	var swig_r Uint8_t
+func (arg1 SwigcptrRF24) Flush_rx() (_swig_ret byte) {
+	var swig_r byte
 	_swig_i_0 := arg1
-	swig_r = (Uint8_t)(SwigcptrUint8_t(C._wrap_RF24_flush_rx_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0))))
+	swig_r = (byte)(C._wrap_RF24_flush_rx_rf24_8b60070a93f979d5(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
 func DeleteRF24(arg1 RF24) {
 	_swig_i_0 := arg1.Swigcptr()
-	C._wrap_delete_RF24_rf24_7d7c662b7fa2227e(C.uintptr_t(_swig_i_0))
+	C._wrap_delete_RF24_rf24_8b60070a93f979d5(C.uintptr_t(_swig_i_0))
 }
 
 type RF24 interface {
@@ -1077,7 +1079,7 @@ type RF24 interface {
 	IsChipConnected() (_swig_ret bool)
 	StartListening()
 	StopListening()
-	Read(arg2 uintptr, arg3 Uint8_t)
+	Read(arg2 uintptr, arg3 byte)
 	PrintDetails()
 	Available(a ...interface{}) bool
 	RxFifoFull() (_swig_ret bool)
@@ -1085,49 +1087,49 @@ type RF24 interface {
 	PowerUp()
 	Write(a ...interface{}) bool
 	WriteFast(a ...interface{}) bool
-	WriteBlocking(arg2 uintptr, arg3 Uint8_t, arg4 Uint32_t) (_swig_ret bool)
+	WriteBlocking(arg2 uintptr, arg3 byte, arg4 uint) (_swig_ret bool)
 	TxStandBy(a ...interface{}) bool
-	WriteAckPayload(arg2 Uint8_t, arg3 uintptr, arg4 Uint8_t)
+	WriteAckPayload(arg2 byte, arg3 uintptr, arg4 byte)
 	IsAckPayloadAvailable() (_swig_ret bool)
 	WhatHappened(arg2 *bool, arg3 *bool, arg4 *bool)
 	StartFastWrite(a ...interface{})
-	StartWrite(arg2 uintptr, arg3 Uint8_t, arg4 bool)
+	StartWrite(arg2 uintptr, arg3 byte, arg4 bool)
 	ReUseTX()
-	Flush_tx() (_swig_ret Uint8_t)
+	Flush_tx() (_swig_ret byte)
 	TestCarrier() (_swig_ret bool)
 	TestRPD() (_swig_ret bool)
 	IsValid() (_swig_ret bool)
-	CloseReadingPipe(arg2 Uint8_t)
+	CloseReadingPipe(arg2 byte)
 	SetFailureDetected(arg2 bool)
 	GetFailureDetected() (_swig_ret bool)
-	SetAddressWidth(arg2 Uint8_t)
-	SetRetries(arg2 Uint8_t, arg3 Uint8_t)
-	SetChannel(arg2 Uint8_t)
-	GetChannel() (_swig_ret Uint8_t)
-	SetPayloadSize(arg2 Uint8_t)
-	GetPayloadSize() (_swig_ret Uint8_t)
-	GetDynamicPayloadSize() (_swig_ret Uint8_t)
+	SetAddressWidth(arg2 byte)
+	SetRetries(arg2 byte, arg3 byte)
+	SetChannel(arg2 byte)
+	GetChannel() (_swig_ret byte)
+	SetPayloadSize(arg2 byte)
+	GetPayloadSize() (_swig_ret byte)
+	GetDynamicPayloadSize() (_swig_ret byte)
 	EnableAckPayload()
 	EnableDynamicPayloads()
 	DisableDynamicPayloads()
 	EnableDynamicAck()
 	IsPVariant() (_swig_ret bool)
 	SetAutoAck(a ...interface{})
-	SetPALevel(arg2 Uint8_t)
-	GetPALevel() (_swig_ret Uint8_t)
+	SetPALevel(arg2 byte)
+	GetPALevel() (_swig_ret byte)
 	SetDataRate(arg2 Rf24_datarate_e) (_swig_ret bool)
 	GetDataRate() (_swig_ret Rf24_datarate_e)
 	SetCRCLength(arg2 Rf24_crclength_e)
 	GetCRCLength() (_swig_ret Rf24_crclength_e)
 	DisableCRC()
 	MaskIRQ(arg2 bool, arg3 bool, arg4 bool)
-	SetTxDelay(arg2 Uint32_t)
-	GetTxDelay() (_swig_ret Uint32_t)
-	SetCsDelay(arg2 Uint32_t)
-	GetCsDelay() (_swig_ret Uint32_t)
+	SetTxDelay(arg2 uint)
+	GetTxDelay() (_swig_ret uint)
+	SetCsDelay(arg2 uint)
+	GetCsDelay() (_swig_ret uint)
 	OpenReadingPipe(a ...interface{})
 	OpenWritingPipe(a ...interface{})
-	Flush_rx() (_swig_ret Uint8_t)
+	Flush_rx() (_swig_ret byte)
 }
 
 const NRF_CONFIG int = 0x00
@@ -1221,36 +1223,4 @@ const RF_DR_LOW int = 5
 const RF_DR_HIGH int = 3
 const RF_PWR_LOW int = 1
 const RF_PWR_HIGH int = 2
-
-type SwigcptrUint16_t uintptr
-type Uint16_t interface {
-	Swigcptr() uintptr;
-}
-func (p SwigcptrUint16_t) Swigcptr() uintptr {
-	return uintptr(p)
-}
-
-type SwigcptrUint32_t uintptr
-type Uint32_t interface {
-	Swigcptr() uintptr;
-}
-func (p SwigcptrUint32_t) Swigcptr() uintptr {
-	return uintptr(p)
-}
-
-type SwigcptrUint64_t uintptr
-type Uint64_t interface {
-	Swigcptr() uintptr;
-}
-func (p SwigcptrUint64_t) Swigcptr() uintptr {
-	return uintptr(p)
-}
-
-type SwigcptrUint8_t uintptr
-type Uint8_t interface {
-	Swigcptr() uintptr;
-}
-func (p SwigcptrUint8_t) Swigcptr() uintptr {
-	return uintptr(p)
-}
 
