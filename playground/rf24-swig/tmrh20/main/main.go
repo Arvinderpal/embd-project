@@ -8,11 +8,11 @@ import (
 	"time"
 	"unsafe"
 
-	"github.com/Arvinderpal/embd-project/playground/rf24-swig/tmrh20/rf24"
+	"github.com/Arvinderpal/RF24"
 )
 
 // *************** NOTE *************************
-// This is the golang version of the gettingstarted.cpp that comes with rf24
+// This is the golang version of the gettingstarted.cpp that comes with RF24
 
 const (
 	CEPIN     = 25 // RPI_V2_GPIO_P1_22     = 25,  /*!< Version 2, Pin P1-22 */
@@ -39,7 +39,7 @@ func main() {
 
 	cepin = CEPIN
 	cspin = CSPIN
-	radio := rf24.NewRF24(cepin, cspin)
+	radio := RF24.NewRF24(cepin, cspin)
 
 	// bool role_ping_out = true, role_pong_back = false;
 	// bool role = role_pong_back;
