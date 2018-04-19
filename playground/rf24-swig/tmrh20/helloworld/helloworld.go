@@ -52,10 +52,10 @@ func main() {
 
 	fmt.Printf("\n ************ Role Setup ***********\n")
 	reader := bufio.NewReader(os.Stdin)
-	fmt.Print("Choose a role: Enter 0 for TX (default), 1 for RX (CTRL+C to exit): ")
+	fmt.Print("Choose a role: Enter `t` for TX (default), `r` for RX (CTRL+C to exit): ")
 	input, _ := reader.ReadString('\n')
 	input = strings.TrimSuffix(input, "\n")
-	if input == "1" {
+	if input == "r" {
 		fmt.Printf("Role: RX\n")
 		rx(network)
 	} else {
@@ -98,7 +98,6 @@ func tx(network RF24Network.RF24Network) {
 			}
 		}
 	}
-
 }
 
 func rx(network RF24Network.RF24Network) {
@@ -119,12 +118,13 @@ func rx(network RF24Network.RF24Network) {
 			if network.Available() { // Is there anything ready for us?
 				var payload int64
 				ptr := (uintptr)(unsafe.Pointer(&payload))
-				var header RF24Network.RF24NetworkHeader
+				header := RF24Network.NewRF24NetworkHeader()
 				network.Read(header, uintptr(ptr), uint16(8))
 				fmt.Printf("received payload %x (%d)\n", payload)
+			} else {
 				break INNER_LOOP
 			}
-			time.Sleep(100 * time.Millisecond)
+			// time.Sleep(100 * time.Millisecond)
 		}
 		time.Sleep(TRANSMIT_INTERVAL * time.Second)
 	}
