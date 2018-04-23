@@ -19,6 +19,7 @@ const (
 	Controller_GRPCMessageServer = "grpc-message-server"
 	Controller_AutonomousDrive   = "autonomous-drive"
 	Controller_LIRC              = "lirc"
+	Controller_RF24NetworkNode   = "rf24network-node"
 )
 
 // NewConf is a util method used to get controller conf of a particular type.
@@ -54,6 +55,13 @@ func NewControllerConf(controllerType, controllerID, machineID string, subs []st
 			ID:             controllerID,
 			Subscriptions:  subs,
 		}, nil
+	case Controller_RF24NetworkNode:
+		return &RF24NetworkNodeConf{
+			MachineID:      machineID,
+			ControllerType: controllerType,
+			ID:             controllerID,
+			Subscriptions:  subs,
+		}, nil
 	default:
 		return nil, types.ErrUnknownControllerType
 
@@ -71,6 +79,8 @@ func NewController(t string) (controllerapi.Controller, error) {
 		return &GRPCMessageServer{}, nil
 	case Controller_LIRC:
 		return &LIRC{}, nil
+	case Controller_RF24NetworkNode:
+		return &RF24NetworkNode{}, nil
 	default:
 		return nil, types.ErrUnknownControllerType
 	}

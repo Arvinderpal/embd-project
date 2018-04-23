@@ -1,0 +1,24 @@
+{
+	"machine-id": "mh1",
+	"confs": 
+	[
+		{
+			"type": "rf24network-node",
+			"id": "rf24network-1st-level-node-controller-mh1",
+			"conf": {
+			    "ce-pin": 25,
+			    "cs-pin": 0,
+			    "channel": 90,
+			    "address": 1,
+			    "master": false,
+			    "poll-interval": 10,
+			    "heartbeat-interval": 5 
+			},
+			"subscriptions":
+			[
+				"CmdDrive",
+				"UnitTest"
+			]
+		}
+	]
+}

@@ -8,6 +8,7 @@ It is generated from these files:
 	cmd_drive.proto
 	cmd_ledswitch.proto
 	lirc_event.proto
+	rf24networknode_heartbeat.proto
 	segue.proto
 	sensor_ultrasonic.proto
 	unittest.proto
@@ -16,6 +17,7 @@ It has these top-level messages:
 	CmdDriveData
 	LEDSwitchData
 	LIRCEventData
+	RF24NetworkNodeHeartbeatData
 	Message
 	MessageEnvelope
 	SensorUltraSonicData

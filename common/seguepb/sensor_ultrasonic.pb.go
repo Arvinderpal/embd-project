@@ -37,7 +37,7 @@ var UltraSonicQualifiers_value = map[string]int32{
 func (x UltraSonicQualifiers) String() string {
 	return proto.EnumName(UltraSonicQualifiers_name, int32(x))
 }
-func (UltraSonicQualifiers) EnumDescriptor() ([]byte, []int) { return fileDescriptor4, []int{0} }
+func (UltraSonicQualifiers) EnumDescriptor() ([]byte, []int) { return fileDescriptor5, []int{0} }
 
 type SensorUltraSonicData struct {
 	EchoSample int64 `protobuf:"varint,1,opt,name=echoSample" json:"echoSample,omitempty"`
@@ -46,7 +46,7 @@ type SensorUltraSonicData struct {
 func (m *SensorUltraSonicData) Reset()                    { *m = SensorUltraSonicData{} }
 func (m *SensorUltraSonicData) String() string            { return proto.CompactTextString(m) }
 func (*SensorUltraSonicData) ProtoMessage()               {}
-func (*SensorUltraSonicData) Descriptor() ([]byte, []int) { return fileDescriptor4, []int{0} }
+func (*SensorUltraSonicData) Descriptor() ([]byte, []int) { return fileDescriptor5, []int{0} }
 
 func (m *SensorUltraSonicData) GetEchoSample() int64 {
 	if m != nil {
@@ -60,9 +60,9 @@ func init() {
 	proto.RegisterEnum("seguepb.UltraSonicQualifiers", UltraSonicQualifiers_name, UltraSonicQualifiers_value)
 }
 
-func init() { proto.RegisterFile("sensor_ultrasonic.proto", fileDescriptor4) }
+func init() { proto.RegisterFile("sensor_ultrasonic.proto", fileDescriptor5) }
 
-var fileDescriptor4 = []byte{
+var fileDescriptor5 = []byte{
 	// 164 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x12, 0x2f, 0x4e, 0xcd, 0x2b,
 	0xce, 0x2f, 0x8a, 0x2f, 0xcd, 0x29, 0x29, 0x4a, 0x2c, 0xce, 0xcf, 0xcb, 0x4c, 0xd6, 0x2b, 0x28,

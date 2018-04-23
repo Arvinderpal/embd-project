@@ -124,7 +124,6 @@ func rx(network RF24Network.RF24Network) {
 			} else {
 				break INNER_LOOP
 			}
-			// time.Sleep(100 * time.Millisecond)
 		}
 		time.Sleep(TRANSMIT_INTERVAL * time.Second)
 	}
