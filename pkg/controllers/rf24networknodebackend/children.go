@@ -1,8 +1,6 @@
 package rf24networknodebackend
 
 import (
-	"fmt"
-	"sync"
 	"time"
 
 	"github.com/Arvinderpal/RF24Network"
@@ -12,16 +10,16 @@ import (
 
 // Implements RF24NetworkNodeBackend interface
 type RF24NetworkNodeChild struct {
-	mu                sync.RWMutex
-	id                string
-	address           uint16
-	subscriptions     []string
-	network           RF24Network.RF24Network
+	id            string
+	address       uint16
+	subscriptions []string
+	// network           RF24Network.RF24Network
 	killChan          chan struct{}
 	heartbeatInterval time.Duration
 	pollInterval      time.Duration
-	controllerSndQ    *message.Queue // messages received on rf24network are placed here for consumption by drivers/controllers on this node.
-	controllerRcvQ    *message.Queue // messages are read from this queue and sent out over the rf24network
+
+	controllerSndQ *message.Queue // messages received on rf24network are placed here for consumption by drivers/controllers on this node.
+	controllerRcvQ *message.Queue // messages are read from this queue and sent out over the rf24network
 
 	rfhook *RF24NetworkHook
 }
@@ -29,17 +27,19 @@ type RF24NetworkNodeChild struct {
 func NewRF24NetworkNodeChild(id string, address uint16, subs []string, n RF24Network.RF24Network, pollInterval, hbinterval int, sndQ, rcvQ *message.Queue) *RF24NetworkNodeChild {
 
 	child := &RF24NetworkNodeChild{
-		id:                id,
-		address:           address,
-		subscriptions:     subs,
-		network:           n,
+		id:            id,
+		address:       address,
+		subscriptions: subs,
+		// network:           n,
 		killChan:          make(chan struct{}),
 		pollInterval:      time.Duration(pollInterval),
 		heartbeatInterval: time.Duration(hbinterval),
 		controllerSndQ:    sndQ,
 		controllerRcvQ:    rcvQ,
-		rfhook:            NewRF24NetworkHook(n),
 	}
+
+	child.rfhook = NewRF24NetworkHook(n, child.killChan)
+
 	return child
 }
 
@@ -50,7 +50,8 @@ func (r *RF24NetworkNodeChild) Stop() error {
 
 func (r *RF24NetworkNodeChild) Run() error {
 
-	fmt.Printf("RF24NetworkNodeChild: running... ")
+	go r.rfhook.processFrames()
+	go r.messageHandler()
 	go r.heartbeat()
 	go r.sender()
 
@@ -79,15 +80,15 @@ func (r *RF24NetworkNodeChild) sender() {
 		default:
 			iMsg, shutdown := r.controllerRcvQ.Get()
 			if shutdown {
-				fmt.Printf("stopping sender\n")
+				logger.Debugf("stopping sender\n")
 				return
 			}
 
-			fmt.Printf("sender: sending message %v\n", iMsg)
+			logger.Debugf("sender: sending message %v\n", iMsg)
 
 			err := r.rfhook.rf24NetworkSend(iMsg)
 			if err != nil {
-				fmt.Errorf("error in rf24 send routine: %v", err)
+				logger.Errorf("error in rf24 send routine: %v", err)
 			}
 			r.controllerRcvQ.Done(iMsg)
 		}
@@ -110,7 +111,7 @@ func (r *RF24NetworkNodeChild) heartbeat() {
 		case <-r.killChan:
 			return
 		case <-tickChan:
-			fmt.Printf("hb.\n")
+			logger.Debugf("hb.\n")
 			msg := message.Message{
 				ID: seguepb.Message_MessageID{
 					Type:      seguepb.MessageType_RF24NetworkNodeHeartbeat,
@@ -123,8 +124,21 @@ func (r *RF24NetworkNodeChild) heartbeat() {
 			version += 1
 			err := r.rfhook.rf24NetworkSend(msg)
 			if err != nil {
-				fmt.Printf("error in rf24 send routine: %v\n", err)
+				logger.Errorf("error in rf24 send routine: %v\n", err)
 			}
+		}
+	}
+}
+
+// messageHandler: messages received from rf24network
+func (r *RF24NetworkNodeChild) messageHandler() {
+	for {
+		select {
+		case <-r.killChan:
+			return
+		case iMsg := <-r.rfhook.messageChan:
+			logger.Debugf("Got Message: %v\n", iMsg)
+			r.controllerSndQ.Add(iMsg)
 		}
 	}
 }

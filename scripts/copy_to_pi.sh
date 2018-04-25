@@ -22,6 +22,6 @@ scp -r $PROJECT_HOME/scripts/configs pi@pi2b1:/home/pi/embd-project/scripts
 # scp $PROJECT_HOME/playground/seguepb-clients/remotecar/remotecar pi@pi2b1:/home/pi/embd-project/segue
 
 ## BLINK ##
-# cd $PROJECT_HOME/playground/seguepb-clients/blink; make arm
-# scp $PROJECT_HOME/playground/seguepb-clients/blink/blink pi@raspberrypi:/home/pi/embd-project/segue
-# scp $PROJECT_HOME/playground/seguepb-clients/blink/blink pi@pi2b1:/home/pi/embd-project/segue
+cd $PROJECT_HOME/playground/seguepb-clients/blink; make arm
+scp $PROJECT_HOME/playground/seguepb-clients/blink/blink pi@raspberrypi:/home/pi/embd-project/segue
+scp $PROJECT_HOME/playground/seguepb-clients/blink/blink pi@pi2b1:/home/pi/embd-project/segue

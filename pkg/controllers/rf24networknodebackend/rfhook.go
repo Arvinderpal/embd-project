@@ -7,26 +7,31 @@ import (
 
 	"github.com/Arvinderpal/RF24Network"
 	"github.com/Arvinderpal/embd-project/common/message"
+	"github.com/Arvinderpal/embd-project/common/seguepb"
 	"github.com/dim13/cobs"
 	"github.com/gogo/protobuf/proto"
 )
 
 type RF24NetworkHook struct {
-	mu      sync.RWMutex
-	network RF24Network.RF24Network
+	mu       sync.RWMutex
+	network  RF24Network.RF24Network
+	killChan chan struct{} // killChan of the master/child node
 	// receive side data structs
-	frameChan chan []byte // frames off the wire are written to this chan
-	buf       []byte      // data of the wire is accumulated into this buffer
-	tbuf      []byte      // temp buffer for wire immediately off the wire
+	frameChan   chan []byte          // frames off the wire are written to this chan
+	messageChan chan message.Message // received messages are put here
+	buf         []byte               // data of the wire is accumulated into this buffer
+	tbuf        []byte               // temp buffer for wire immediately off the wire
 
 }
 
-func NewRF24NetworkHook(n RF24Network.RF24Network) *RF24NetworkHook {
+func NewRF24NetworkHook(n RF24Network.RF24Network, killChan chan struct{}) *RF24NetworkHook {
 
 	hook := &RF24NetworkHook{
-		network:   n,
-		frameChan: make(chan []byte, frameChanCapacity),
-		tbuf:      make([]byte, rf24NetworkReadBufferrSize),
+		network:     n,
+		frameChan:   make(chan []byte, frameChanCapacity),
+		tbuf:        make([]byte, rf24NetworkReadBufferrSize),
+		messageChan: make(chan message.Message),
+		killChan:    killChan,
 	}
 	return hook
 }
@@ -38,7 +43,7 @@ func (r *RF24NetworkHook) Receive() error {
 	r.network.Update()
 	for {
 		if r.network.Available() { // Is there anything ready for us?
-			fmt.Printf("RF24NetworkHook: data available...\n")
+			logger.Debugf("RF24NetworkHook: data available...\n")
 			r.rf24NetworkReceive()
 		} else {
 			break
@@ -52,7 +57,7 @@ func (r *RF24NetworkHook) rf24NetworkReceive() {
 	ptr := (uintptr)(unsafe.Pointer(&r.tbuf[0]))
 	header := RF24Network.NewRF24NetworkHeader()
 	tbufLen := r.network.Read(header, uintptr(ptr), uint16(rf24NetworkReadBufferrSize))
-	// fmt.Printf("received payload: \n%x\n", r.tbuf[:tbufLen])
+
 	if tbufLen == 0 {
 		// hmmm. no data in payload
 		return
@@ -97,7 +102,7 @@ func (r *RF24NetworkHook) rf24NetworkSend(iMsg message.Message) error {
 	r.mu.Lock()
 	defer r.mu.Unlock()
 
-	fmt.Printf("writing payload of len %d: \n %x\n", len(payload), payload)
+	logger.Debugf("writing payload of len %d: \n %x\n", len(payload), payload)
 
 	r.network.Update() // FIXME: how often to call this method?
 	ptr := (uintptr)(unsafe.Pointer(&payload[0]))
@@ -107,4 +112,27 @@ func (r *RF24NetworkHook) rf24NetworkSend(iMsg message.Message) error {
 		return fmt.Errorf("write failed.\n")
 	}
 	return nil
+}
+
+func (r *RF24NetworkHook) processFrames() {
+	for {
+		select {
+		case <-r.killChan:
+			return
+		case frame := <-r.frameChan:
+			logger.Debugf("received frame of length %d: %x\n", len(frame), frame)
+			// Decode the frame in cobs framing.
+			rawData := cobs.Decode(frame)
+			eMsg := &seguepb.Message{}
+			err := proto.Unmarshal(rawData, eMsg)
+			if err != nil {
+				logger.Errorf(fmt.Sprintf("error unmarshaling to sequepb.message: %s", err))
+			}
+			iMsg, err := message.ConvertToInternalFormat(eMsg)
+			if err != nil {
+				logger.Errorf(fmt.Sprintf("error converting to internal message format: %s", err))
+			}
+			r.messageChan <- iMsg
+		}
+	}
 }
