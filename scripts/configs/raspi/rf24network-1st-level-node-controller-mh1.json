@@ -11,7 +11,7 @@
 			    "channel": 90,
 			    "address": 1,
 			    "master": false,
-			    "poll-interval": 10,
+			    "poll-interval": 100,
 			    "heartbeat-interval": 5 
 			},
 			"subscriptions":

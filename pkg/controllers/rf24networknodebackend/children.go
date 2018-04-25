@@ -4,28 +4,41 @@ import (
 	"fmt"
 	"sync"
 	"time"
-	"unsafe"
 
 	"github.com/Arvinderpal/RF24Network"
 	"github.com/Arvinderpal/embd-project/common/message"
+	"github.com/Arvinderpal/embd-project/common/seguepb"
 )
 
 // Implements RF24NetworkNodeBackend interface
 type RF24NetworkNodeChild struct {
 	mu                sync.RWMutex
+	id                string
+	address           uint16
+	subscriptions     []string
 	network           RF24Network.RF24Network
 	killChan          chan struct{}
 	heartbeatInterval time.Duration
 	pollInterval      time.Duration
+	controllerSndQ    *message.Queue // messages received on rf24network are placed here for consumption by drivers/controllers on this node.
+	controllerRcvQ    *message.Queue // messages are read from this queue and sent out over the rf24network
+
+	rfhook *RF24NetworkHook
 }
 
-func NewRF24NetworkNodeChild(n RF24Network.RF24Network, pollInterval, hbinterval int) *RF24NetworkNodeChild {
+func NewRF24NetworkNodeChild(id string, address uint16, subs []string, n RF24Network.RF24Network, pollInterval, hbinterval int, sndQ, rcvQ *message.Queue) *RF24NetworkNodeChild {
 
 	child := &RF24NetworkNodeChild{
+		id:                id,
+		address:           address,
+		subscriptions:     subs,
 		network:           n,
 		killChan:          make(chan struct{}),
 		pollInterval:      time.Duration(pollInterval),
 		heartbeatInterval: time.Duration(hbinterval),
+		controllerSndQ:    sndQ,
+		controllerRcvQ:    rcvQ,
+		rfhook:            NewRF24NetworkHook(n),
 	}
 	return child
 }
@@ -37,66 +50,81 @@ func (r *RF24NetworkNodeChild) Stop() error {
 
 func (r *RF24NetworkNodeChild) Run() error {
 
-	fmt.Printf("RF24NetworkNodeMaster: running... %v", msg)
+	fmt.Printf("RF24NetworkNodeChild: running... ")
 	go r.heartbeat()
+	go r.sender()
 
+	tickChan := time.NewTicker(r.pollInterval * time.Millisecond).C
 	// Main listener loop for RF24Network:
 	for {
-		r.mu.Lock()
-		r.network.Update()
-		r.mu.Unlock()
-	INNER_LOOP:
-		for {
-			select {
-			case <-r.killChan:
-				return nil
-			default:
-				r.mu.Lock()
-				if r.network.Available() { // Is there anything ready for us?
-					var payload int64
-					ptr := (uintptr)(unsafe.Pointer(&payload))
-					header := RF24Network.NewRF24NetworkHeader()
-					r.network.Read(header, uintptr(ptr), uint16(8))
-					fmt.Printf("received payload %x\n", payload)
-				} else {
-					r.mu.Unlock()
-					break INNER_LOOP
-				}
-				r.mu.Unlock()
-			}
-			time.Sleep(r.pollInterval * time.Millisecond)
+		select {
+		case <-r.killChan:
+			return nil
+		case <-tickChan:
+			r.rfhook.Receive()
 		}
 	}
 	return nil
 }
 
-func (r *RF24NetworkNodeChild) Send(msg message.Message) error {
-	fmt.Printf("RF24NetworkNodeChild: sending message %v", msg)
-	return nil
+// TODO: What if the queue gets too long? We should probably drop stale messages that have been sitting too long.
+// Queue build up could occur when:
+// 1. incoming > outgoing rate.
+// 2. remote is unavailable.
+func (r *RF24NetworkNodeChild) sender() {
+	for {
+		select {
+		case <-r.killChan:
+			return
+		default:
+			iMsg, shutdown := r.controllerRcvQ.Get()
+			if shutdown {
+				fmt.Printf("stopping sender\n")
+				return
+			}
+
+			fmt.Printf("sender: sending message %v\n", iMsg)
+
+			err := r.rfhook.rf24NetworkSend(iMsg)
+			if err != nil {
+				fmt.Errorf("error in rf24 send routine: %v", err)
+			}
+			r.controllerRcvQ.Done(iMsg)
+		}
+	}
 }
 
 // Send periodic heartbeats to master.
 func (r *RF24NetworkNodeChild) heartbeat() {
 
-	master_node := uint16(Master_Node_Address)
+	var version uint64
 	tickChan := time.NewTicker(r.heartbeatInterval * time.Second).C
+	hbData := &seguepb.RF24NetworkNodeHeartbeatData{
+		Id:                "child-node",
+		Address:           uint32(r.address),
+		Heartbeatinterval: uint64(r.heartbeatInterval),
+		Subscriptions:     r.subscriptions,
+	}
 	for {
 		select {
 		case <-r.killChan:
 			return
 		case <-tickChan:
-			fmt.Printf(".\n")
-			r.mu.Lock()
-			r.network.Update()
-			var payload int64
-			payload = time.Now().UnixNano()
-			ptr := (uintptr)(unsafe.Pointer(&payload))
-			header := RF24Network.NewRF24NetworkHeader(master_node)
-			ok := r.network.Write(header, uintptr(ptr), uint16(8))
-			if !ok {
-				fmt.Printf("write failed.\n")
+			fmt.Printf("hb.\n")
+			msg := message.Message{
+				ID: seguepb.Message_MessageID{
+					Type:      seguepb.MessageType_RF24NetworkNodeHeartbeat,
+					SubType:   "na",
+					Version:   version,
+					Qualifier: "",
+				},
+				Data: hbData,
 			}
-			r.mu.Unlock()
+			version += 1
+			err := r.rfhook.rf24NetworkSend(msg)
+			if err != nil {
+				fmt.Printf("error in rf24 send routine: %v\n", err)
+			}
 		}
 	}
 }

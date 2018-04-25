@@ -131,10 +131,10 @@ func (d *RF24NetworkNode) Start() error {
 
 	if d.State.Conf.Master {
 		logger.Infof("creating master node for rf24 network...\n")
-		d.State.backend = rf24networknodebackend.NewRF24NetworkNodeMaster(d.State.network, d.State.Conf.PollInterval)
+		d.State.backend = rf24networknodebackend.NewRF24NetworkNodeMaster(d.State.Conf.ID, d.State.Conf.Address, d.State.Conf.Subscriptions, d.State.network, d.State.Conf.PollInterval, d.State.sndQ, d.State.rcvQ)
 	} else {
 		logger.Infof("creating child node for rf24 network...\n")
-		d.State.backend = rf24networknodebackend.NewRF24NetworkNodeChild(d.State.network, d.State.Conf.PollInterval, d.State.Conf.HeartbeatInterval)
+		d.State.backend = rf24networknodebackend.NewRF24NetworkNodeChild(d.State.Conf.ID, d.State.Conf.Address, d.State.Conf.Subscriptions, d.State.network, d.State.Conf.PollInterval, d.State.Conf.HeartbeatInterval, d.State.sndQ, d.State.rcvQ)
 	}
 
 	go d.work()
@@ -154,24 +154,6 @@ func (d *RF24NetworkNode) Stop() error {
 
 // work: processes messages to be sent out and listens for incoming messages on RF.
 func (d *RF24NetworkNode) work() {
-
-	// Get internal messages from rcvQ and send them to all subscribers
-	go func() {
-		for {
-			select {
-			case <-d.State.killChan:
-				return
-			default:
-				msg, shutdown := d.State.rcvQ.Get()
-				if shutdown {
-					logger.Debugf("stopping send routine in worker on controller %s", d.State.Conf.GetID())
-					return
-				}
-				d.State.backend.Send(msg)
-				d.State.rcvQ.Done(msg)
-			}
-		}
-	}()
 
 	err := d.State.backend.Run()
 	if err != nil {
@@ -211,104 +193,3 @@ func (d *RF24NetworkNode) UnmarshalJSON(data []byte) error {
 	err := json.Unmarshal(data, d.State)
 	return err
 }
-
-// func (d *RF24NetworkNode) Messenger(stream seguepb.Messenger_MessengerServer) error {
-// 	// Add a new queue on which we will receive messages from the work() func; these messages will be then be sent on the stream.
-// 	d.mu.Lock()
-// 	id := fmt.Sprintf("%d", d.State.sQCount)
-// 	d.State.sQCount += 1
-// 	sq := message.NewQueue(id)
-// 	d.State.streamQs = append(d.State.streamQs, sq)
-// 	d.mu.Unlock()
-// 	defer func() {
-// 		logger.Debugf("grpc: stoping messenger")
-// 		sq.ShutDown()
-// 		d.mu.Lock()
-// 		for i, q := range d.State.streamQs {
-// 			if q.ID() == id {
-// 				d.State.streamQs = append(d.State.streamQs[:i], d.State.streamQs[i+1:]...)
-// 				break
-// 			}
-// 		}
-// 		d.mu.Unlock()
-// 	}()
-// 	// Send routine
-// 	go func() {
-// 		defer func() {
-// 			logger.Debugf("grpc: stoping messenger-send routine")
-// 		}()
-
-// 		logger.Debugf("grpc: starting messenger-send routine")
-// 		// Read all the messages in the streams send queue every X
-// 		// milliseconds. All the messages will be put in the envelope.
-// 		// The idea being that we'll minimize network stack overhead.
-// 		// However, this approach introduces latency; alternatives include
-// 		// reducing the interval or just sending a message as soon as it arrives.
-// 		tickChan := time.NewTicker(time.Millisecond * 100).C
-// 		for {
-// 			select {
-// 			case <-d.State.killChan:
-// 				return
-// 			case <-tickChan:
-// 				if sq.IsShuttingDown() {
-// 					return
-// 				}
-// 				var eMsgs []*seguepb.Message
-// 				// NOTE: this assumes only a single consumer of the queue.
-// 				sqLen := sq.Len() // TODO: may want to cap this to say 25 msgs
-// 				if sqLen == 0 {
-// 					continue
-// 				}
-// 				logger.Debugf("grpc: sending %d messages", sqLen)
-// 				for i := 0; i < sqLen; i++ {
-// 					iMsg, shutdown := sq.Get()
-// 					if shutdown {
-// 						logger.Debugf("stopping sender routine for grpc-stream-send-queue-%s", id)
-// 						return
-// 					}
-// 					eMsg, err := message.ConvertToExternalFormat(iMsg)
-// 					if err != nil {
-// 						logger.Errorf(fmt.Sprintf("error marshaling data in routine for grpc-stream-send-queue-%s: %s", id, err))
-// 					} else {
-// 						eMsgs = append(eMsgs, eMsg)
-// 					}
-// 					sq.Done(iMsg)
-// 				}
-// 				msgEnv := &seguepb.MessageEnvelope{eMsgs}
-// 				if err := stream.Send(msgEnv); err != nil {
-// 					logger.Errorf("error while sending on grpc-stream-send-queue-%s (exiting send routine): %s", id, err)
-// 					return
-// 				}
-// 			}
-// 		}
-// 	}()
-// 	logger.Debugf("grpc: starting messenger-receive routine")
-// 	for {
-// 		select {
-// 		case <-d.State.killChan:
-// 			return nil
-// 		default:
-// 			msgPBEnv, err := stream.Recv()
-// 			if err == io.EOF {
-// 				logger.Debugf("grpc: exiting Messanger() EOF recieved")
-// 				return nil
-// 			}
-// 			if err != nil {
-// 				logger.Errorf("grpc: error: %s", err)
-// 				return err
-// 			}
-// 			for _, msgPB := range msgPBEnv.Messages {
-// 				// We go through the messages in the envelope, converting them into
-// 				// the internal message format and sending them to the internal
-// 				// routing system.
-// 				msg, err := message.ConvertToInternalFormat(msgPB)
-// 				if err != nil {
-// 					logger.Errorf("grpc: messge convertion error: %s", err)
-// 				} else {
-// 					logger.Debugf("grpc: received msg %v", msg)
-// 					d.State.sndQ.Add(msg)
-// 				}
-// 			}
-// 		}
-// 	}
-// }

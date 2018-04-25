@@ -11,7 +11,7 @@
 			    "channel": 90,
 			    "address": 0,
 			    "master": true,
-			    "poll-interval": 10
+			    "poll-interval": 100
 			},
 			"subscriptions":
 			[

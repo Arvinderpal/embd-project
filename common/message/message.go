@@ -71,10 +71,19 @@ func ConvertToInternalFormat(m *seguepb.Message) (Message, error) {
 			ID:   *m.ID,
 			Data: data,
 		}, nil
+	case seguepb.MessageType_RF24NetworkNodeHeartbeat:
+		data := &seguepb.RF24NetworkNodeHeartbeatData{}
+		err := proto.Unmarshal(m.GetData(), data)
+		if err != nil {
+			return Message{}, err
+		}
+		return Message{
+			ID:   *m.ID,
+			Data: data,
+		}, nil
 	default:
 		return Message{}, fmt.Errorf("converter error: unknown message type %s", m.GetID().GetType())
 	}
-
 }
 
 // Important: this func must be updated manually every time we introduce a new message type.
@@ -121,6 +130,15 @@ func ConvertToExternalFormat(iMsg Message) (*seguepb.Message, error) {
 		}, nil
 	case seguepb.MessageType_LIRCEvent:
 		data, err := proto.Marshal(iMsg.Data.(*seguepb.LIRCEventData))
+		if err != nil {
+			return nil, err
+		}
+		return &seguepb.Message{
+			ID:   &iMsg.ID,
+			Data: data,
+		}, nil
+	case seguepb.MessageType_RF24NetworkNodeHeartbeat:
+		data, err := proto.Marshal(iMsg.Data.(*seguepb.RF24NetworkNodeHeartbeatData))
 		if err != nil {
 			return nil, err
 		}

@@ -1,11 +1,10 @@
 package rf24networknodebackend
 
-import "github.com/Arvinderpal/embd-project/common/message"
-
 const Master_Node_Address = 0x00
+const rf24NetworkReadBufferrSize = 1024
+const frameChanCapacity = 10
 
 type RF24NetworkNodeBackend interface {
 	Run() error
-	Send(message.Message) error
 	Stop() error
 }

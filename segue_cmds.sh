@@ -30,6 +30,9 @@ sudo socat -d -d pty,link=/dev/ttyS0,raw,echo=0 pty,link=/dev/ttyACM0,raw,echo=0
 ./segue daemon driver start ../scripts/configs/dualmotors-mh1.json; ./segue daemon driver start ../scripts/configs/ultrasonic-mh1.json; ./segue daemon controller start ../scripts/configs/autonomous-drive-controller-mh1.json
 
 
+### RF24Network ###
+./segue daemon controller start ../scripts/configs/raspi/rf24network-master-node-controller-mh1.json
+
 # GORT
 gort scan serial
 gort arduino upload firmata /dev/ttyACM0
