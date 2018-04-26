@@ -295,7 +295,8 @@ func (mh *Machine) startDrivers(confs []driverapi.DriverConf) error {
 		if adpt == nil {
 			return fmt.Errorf("no adapter with id %s found on machine %s", adptID, mh.MachineID)
 		}
-		// Note: queue id = driver id. we use it to remove entries from the route map when a driver is stopped.
+		// NOTE: queue id = driver id. We use it to remove entries from the route map when a driver is stopped.
+		// NOTE: both rcvQ and sndQ MUST have the same id/name. We use the id to prevent messages from being sent back to where they originated.
 		drvRcvQ := message.NewQueue(conf.GetID())
 		drvSndQ := message.NewQueue(conf.GetID())
 		drv, err := driverapi.NewDriver(conf, adpt, drvRcvQ, drvSndQ)

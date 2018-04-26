@@ -186,6 +186,11 @@ func (m *MessageRouter) AddListener(queue *Queue) {
 			m.mu.RLock()
 			set := m.RouteMap[msg.ID.Type]
 			for _, q := range set {
+				// We do not route messages back to where they came from
+				// Such a case may occur in grpc server which may subscribe to as well as generate a message of a particular type.
+				if queue.ID() == q.ID() {
+					continue
+				}
 				q.Add(msg)
 			}
 			queue.Done(msg)
@@ -212,6 +217,7 @@ func (m *MessageRouter) AddSubscriberQueue(msgType string, queue *Queue) error {
 		return fmt.Errorf("cannot add subscriber (%s) on message type %s, queue must be empty: current length: %d", queue.ID(), msgType, queue.Len())
 	}
 	for _, q := range set {
+		// Entry already exists
 		if queue.ID() == q.ID() {
 			return nil
 		}
