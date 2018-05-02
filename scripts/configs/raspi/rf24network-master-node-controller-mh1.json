@@ -16,7 +16,8 @@
 			"subscriptions":
 			[
 				"CmdDrive",
-				"UnitTest"			]
+				"UnitTest"
+			]
 		}
 	]
 }

@@ -20,7 +20,7 @@ type RF24NetworkNodeConf struct {
 	// All controller confs should define the following fields. //
 	//////////////////////////////////////////////////////
 	MachineID      string   `json:"machine-id"`
-	ID             string   `json:"id"`
+	ID             string   `json:"id"` // IMPORTANT: ID should be unique for across all nodes in the RF24Network
 	ControllerType string   `json:"controller-type"`
 	Subscriptions  []string `json:"subscriptions"` // Message Type Subscriptions.
 
@@ -100,11 +100,9 @@ type RF24NetworkNodeInternal struct {
 	sndQ     *message.Queue
 	killChan chan struct{}
 
-	backend  rf24networknodebackend.RF24NetworkNodeBackend
-	radio    RF24.RF24
-	network  RF24Network.RF24Network
-	streamQs []*message.Queue // per stream queue for outgoing messages
-	sQCount  int              // used to identify each stream queue
+	backend rf24networknodebackend.RF24NetworkNodeBackend
+	radio   RF24.RF24
+	network RF24Network.RF24Network
 }
 
 // Start: starts the controller logic.

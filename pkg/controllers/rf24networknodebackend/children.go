@@ -101,7 +101,7 @@ func (r *RF24NetworkNodeChild) heartbeat() {
 	var version uint64
 	tickChan := time.NewTicker(r.heartbeatInterval * time.Second).C
 	hbData := &seguepb.RF24NetworkNodeHeartbeatData{
-		Id:                "child-node",
+		Id:                r.id,
 		Address:           uint32(r.address),
 		Heartbeatinterval: uint64(r.heartbeatInterval),
 		Subscriptions:     r.subscriptions,
