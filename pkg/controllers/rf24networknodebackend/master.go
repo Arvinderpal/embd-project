@@ -322,50 +322,47 @@ func (c *childNode) unpause() {
 	c.condition.Broadcast()
 }
 
-// // worker: this is a per node routine. it read messages from outboud queues of the node and send it out over the rf24network
-// func (c *childNode) worker() {
-// 	logger.Debugf("starting worker for node: %v\n", c)
-// 	defer logger.Debugf("stopping worker\n")
-// 	for {
-// 		select {
-// 		case <-c.killChan:
-// 			return
-// 		case pause := <-c.pauseChan:
-// 			if pause {
-// 				logger.Debugf("pausing sends to node %v", c)
-// 			PAUSE_LOOP:
-// 				for {
-// 					select {
-// 					case pause := <-c.pauseChan:
-// 						if !pause {
-// 							break PAUSE_LOOP
-// 						}
-// 					case <-c.killChan:
-// 						return
-// 					}
-// 				}
-// 			}
-// 		default:
-// 			// read from queue and attempt to send
-// 			iMsg, shutdown := c.outQ.Get()
-// 			if shutdown {
-// 				logger.Debugf("queue shutdown called on node: %s\n", c.id)
-// 				return
-// 			}
-// 			logger.Debugf("sender (%s): sending message %v\n", c.id, iMsg)
-// 			err := rfhook.rf24NetworkSend(iMsg)
-// 			if err != nil {
-// 				// TODO: we should filter for rf related errors and only pause if there is an rf error.
-// 				logger.Errorf("error in rf24 send routine: %v", err)
-// 				c.pauseChan <- true
-// 			}
-// 			c.outQ.Done(iMsg)
-
-// 		}
-// 	}
-// }
-
 func (c *childNode) stop() {
 	c.outQ.ShutDown()
 	c.unpause() // if the worker is paused, we need to unpause it so that the routine can exit cleanly.
 }
+
+// Alternative appraoch: (NOT TESTED)
+// Here we sleep an certain amount after every failed transmission. We retry
+// X number of times. One open question is what to do after X retries have
+// failed? We could mark the node as stale so that removeStaleRoutes() can
+// later clean it up. removeStaleRoutes() may not clean up automatically if
+// it is still receiving heartbeats -- that is, the RX is functional but not TX
+
+// worker: this is a per node routine. it read messages from outboud queues of the node and send it out over the rf24network
+// func (c *childNode) worker_sleeper() {
+// 	logger.Debugf("starting worker for node: %v\n", c)
+// 	defer logger.Debugf("stopping worker\n")
+// 	for {
+// 		// read from queue and attempt to send
+// 		iMsg, shutdown := c.outQ.Get()
+// 		if shutdown {
+// 			logger.Debugf("queue shutdown called on node: %s\n", c.id)
+// 			return
+// 		}
+
+// 		const RETRIES = 3
+// 	RETRY_LOOP:
+// 		for i := 1; i < RETRIES && !c.outQ.IsShuttingDown(); i++ {
+// 			logger.Debugf("worker (%s): sending message %v\n", c.id, iMsg)
+// 			err := rfhook.rf24NetworkSend(iMsg)
+// 			if err != nil {
+// 				// TODO: we should filter for rf related errors and only pause if there is an rf error.
+// 				logger.Errorf("retry (%d/%d) failed with error in rf24 send routine: %v", i, RETRIES, err)
+// 				time.Sleep(i * (1 + rand.Intn(4)) * time.Second)
+// 			} else {
+// 				break RETRY_LOOP
+// 			}
+// 		}
+//		if i == RETRIES{
+//			// What to do here???
+// 		}
+
+// 		c.outQ.Done(iMsg)
+// 	}
+// }

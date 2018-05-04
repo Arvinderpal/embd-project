@@ -54,8 +54,10 @@ func (r *RF24NetworkHook) Receive() error {
 
 func (r *RF24NetworkHook) rf24NetworkReceive() {
 
-	ptr := (uintptr)(unsafe.Pointer(&r.tbuf[0]))
 	header := RF24Network.NewRF24NetworkHeader()
+	defer RF24Network.DeleteRF24NetworkHeader(header)
+
+	ptr := (uintptr)(unsafe.Pointer(&r.tbuf[0]))
 	tbufLen := r.network.Read(header, uintptr(ptr), uint16(rf24NetworkReadBufferrSize))
 
 	if tbufLen == 0 {
@@ -107,6 +109,8 @@ func (r *RF24NetworkHook) rf24NetworkSend(iMsg message.Message) error {
 	r.network.Update() // FIXME: how often to call this method?
 	ptr := (uintptr)(unsafe.Pointer(&payload[0]))
 	header := RF24Network.NewRF24NetworkHeader(uint16(Master_Node_Address))
+	defer RF24Network.DeleteRF24NetworkHeader(header)
+
 	ok := r.network.Write(header, uintptr(ptr), uint16(len(payload)))
 	if !ok {
 		return fmt.Errorf("write failed.\n")

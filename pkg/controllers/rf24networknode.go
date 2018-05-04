@@ -147,6 +147,11 @@ func (d *RF24NetworkNode) Stop() error {
 	d.State.sndQ.ShutDown()
 	close(d.State.killChan)
 	d.State.backend.Stop()
+
+	// We need to cleanup RF24 and RF24Network objects
+	RF24Network.DeleteRF24Network(d.State.network)
+	d.State.radio.PowerDown() // not sure if ths necessary
+	RF24.DeleteRF24(d.State.radio)
 	return nil
 }
 
