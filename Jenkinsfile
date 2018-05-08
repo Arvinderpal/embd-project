@@ -28,10 +28,7 @@ node {
                     sh 'cd src/github.com/Arvinderpal/embd-project && go list ./... | grep -v /vendor/ > projectPaths'
                     
                     // Use awk to concat `./src/` to start of every import path reported by go list and to replace newlines with spaces.
-                    //def paths = sh returnStdout: true, script: """awk '\$0="./src/"\$0' src/github.com/Arvinderpal/embd-project/projectPaths"""
-
-                    def paths = sh returnStdout: true, script: """awk '{printf "./src/%s ",\$0} END {print ""}' ./src/github.com/Arvinderpal/embd-project/projectPaths"""
-                    
+                    def paths = sh returnStdout: true, script: """awk '{printf "./src/%s ",\$0} END {print ""}' ./src/github.com/Arvinderpal/embd-project/projectPaths"""                
                   
                     echo '~~~Vetting~~~'
                     sh """go tool vet ${paths}"""

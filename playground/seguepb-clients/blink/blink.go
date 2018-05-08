@@ -141,9 +141,10 @@ func runCarControl(client seguepb.MessengerClient, keyCh chan termbox.Event, noI
 	}()
 
 	fmt.Println("Control [on: ->, s][off: <-, d][esc: escape]")
+OUTTTER_LOOP:
 	for {
 		if flg == 1 {
-			return
+			break OUTTTER_LOOP
 		}
 		select {
 		case key := <-keyCh:
@@ -151,7 +152,7 @@ func runCarControl(client seguepb.MessengerClient, keyCh chan termbox.Event, noI
 			switch {
 			case key.Key == termbox.KeyEsc || key.Key == termbox.KeyCtrlC: //exit
 				mu.Unlock()
-				return
+				break OUTTTER_LOOP
 			case key.Key == termbox.KeyArrowLeft || key.Ch == 's': //left
 				cmdCh <- ledOFF
 				break
