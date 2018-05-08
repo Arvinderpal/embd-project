@@ -99,8 +99,8 @@ type LED struct {
 }
 
 type ledInternal struct {
-	Conf     LEDConf         `json:"conf"`
-	led      *gpio.LedDriver `json:"led"`
+	Conf     LEDConf `json:"conf"`
+	led      *gpio.LedDriver
 	robot    *driverapi.Robot
 	rcvQ     *message.Queue
 	sndQ     *message.Queue

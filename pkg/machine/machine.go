@@ -35,12 +35,12 @@ const (
 // Machine contains all the details for a particular machine.
 type Machine struct {
 	mutex       sync.RWMutex
-	MachineID   string                 `json:"machine-id"`    // Machine ID.
-	Adaptors    []*AdaptorWrapper      `json:"adaptors`       // Machine adaptor for communicating with hardware.
-	Drivers     []*DriverWrapper       `json:"drivers"`       // Drivers that are part of this machine.
-	Controllers []*ControllerWrapper   `json:"controllers"`   // Controllers that are part of this machine.
-	MsgRouter   *message.MessageRouter `json:"message-router` // Route messages between drivers/controllers.
-	Opts        *option.BoolOptions    `json:"options"`       // Machine options.
+	MachineID   string                 `json:"machine-id"`     // Machine ID.
+	Adaptors    []*AdaptorWrapper      `json:"adaptors"`       // Machine adaptor for communicating with hardware.
+	Drivers     []*DriverWrapper       `json:"drivers"`        // Drivers that are part of this machine.
+	Controllers []*ControllerWrapper   `json:"controllers"`    // Controllers that are part of this machine.
+	MsgRouter   *message.MessageRouter `json:"message-router"` // Route messages between drivers/controllers.
+	Opts        *option.BoolOptions    `json:"options"`        // Machine options.
 	Status      *MachineStatus         `json:"status,omitempty"`
 }
 
@@ -127,7 +127,7 @@ func (es *MachineStatus) DeepCopy() *MachineStatus {
 	return cpy
 }
 
-func (e Machine) Validate() error {
+func (mh *Machine) Validate() error {
 	return nil
 }
 

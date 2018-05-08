@@ -34,7 +34,6 @@ func main() {
 	eMsg, err := message.ConvertToExternalFormat(*iMsg)
 	if err != nil {
 		panic(err)
-		return
 	}
 	fmt.Printf("%v\n", eMsg)
 
@@ -44,7 +43,6 @@ func main() {
 	eMsg2, err := message.ConvertToExternalFormat(*iMsg2)
 	if err != nil {
 		panic(err)
-		return
 	}
 
 	fmt.Printf("%v\n", eMsg2)
@@ -57,7 +55,6 @@ func jsonWithKnownMessageType() *message.Message {
 	defer mhFile.Close()
 	if err != nil {
 		panic(fmt.Sprintf("Error opening file: %s", err.Error()))
-		return nil
 	}
 	jsonParser := json.NewDecoder(mhFile)
 
@@ -66,7 +63,6 @@ func jsonWithKnownMessageType() *message.Message {
 	}
 	if err = jsonParser.Decode(iMsg); err != nil {
 		panic(fmt.Sprintf("Error parsing machine file: %s", err))
-		return nil
 	}
 	fmt.Printf("%v\n", iMsg)
 	return iMsg
@@ -79,7 +75,6 @@ func jsonWithUnknownMessageType() *message.Message {
 	defer mhFile.Close()
 	if err != nil {
 		panic(fmt.Sprintf("Error opening file: %s", err.Error()))
-		return nil
 	}
 	jsonParser := json.NewDecoder(mhFile)
 
@@ -98,14 +93,12 @@ func jsonWithUnknownMessageType() *message.Message {
 	}
 	if err = jsonParser.Decode(iMsg2); err != nil {
 		panic(fmt.Sprintf("Error parsing machine file: %s", err))
-		return nil
 	}
 	switch iMsg2.ID.Type {
 	case seguepb.MessageType_LEDSwitch:
 		ledData := &seguepb.LEDSwitchData{}
 		if err := json.Unmarshal(dataRaw, ledData); err != nil {
 			panic(err)
-			return nil
 		}
 		iMsg2.Data = ledData
 		fmt.Printf("%v\n", ledData)
@@ -119,11 +112,9 @@ func jsonWithUnknownMessageType() *message.Message {
 // var dataRaw json.RawMessage
 // if err := json.Unmarshal([]byte(jsonStr), &dataRaw); err != nil {
 // 	panic(err)
-// 	return
 // }
 // if err = jsonParser.Decode(&dataRaw); err != nil {
 // 	panic(fmt.Sprintf("Error parsing json file: %s", err))
-// 	return
 // }
 // err = jsonpb.Unmarshal([]byte(jsonStr), &sMsg)
 // if err != nil {
