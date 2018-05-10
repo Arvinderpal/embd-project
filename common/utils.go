@@ -54,7 +54,7 @@ func SetupLOG(logger *l.Logger, logLevel string, out io.Writer) {
 	// 		` %{level:.4s} %{id:03x} %{shortfunc} > %{message}`,
 	// )
 	fileFormat := l.MustStringFormatter(
-		`%{color}%{time:15:04:05.000}` + hostname +
+		`%{color}%{time:15:04:05.000} ` + hostname +
 			` %{longfunc} ▶ %{level:.4s} %{id:03x}%{color:reset} %{message}`,
 	)
 

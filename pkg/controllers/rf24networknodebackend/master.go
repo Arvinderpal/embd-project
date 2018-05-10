@@ -17,7 +17,7 @@ type RF24NetworkNodeMaster struct {
 	mu            sync.RWMutex
 	id            string
 	address       uint16
-	subscriptions []string
+	subscriptions []int32
 	killChan      chan struct{}
 	pollInterval  time.Duration
 
@@ -31,7 +31,7 @@ type RF24NetworkNodeMaster struct {
 
 }
 
-func NewRF24NetworkNodeMaster(id string, address uint16, subs []string, n RF24Network.RF24Network, pollInterval int, sndQ, rcvQ *message.Queue, routerWorkers int) *RF24NetworkNodeMaster {
+func NewRF24NetworkNodeMaster(id string, address uint16, subs []int32, n RF24Network.RF24Network, pollInterval int, sndQ, rcvQ *message.Queue, routerWorkers int) *RF24NetworkNodeMaster {
 
 	master := &RF24NetworkNodeMaster{
 		id:             id,
@@ -156,7 +156,7 @@ func (r *RF24NetworkNodeMaster) heartbeatHandler(msg message.Message) {
 		// TODO: if subscriptions have changed, we should remove old subs and add the new ones. This requires us to do a diff. Not sure we'll require this dynamic handling of subscriptions...
 		for _, sub := range data.Subscriptions {
 			entry := messagerouter.RouteEntry{
-				MsgType: seguepb.MessageType(seguepb.MessageType_value[sub]),
+				MsgType: seguepb.MessageType(sub),
 				NodeID:  data.Id,
 			}
 			r.router.AddRoute(entry)

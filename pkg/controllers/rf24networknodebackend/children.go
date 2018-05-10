@@ -12,7 +12,7 @@ import (
 type RF24NetworkNodeChild struct {
 	id            string
 	address       uint16
-	subscriptions []string
+	subscriptions []int32
 	// network           RF24Network.RF24Network
 	killChan          chan struct{}
 	heartbeatInterval time.Duration
@@ -24,7 +24,7 @@ type RF24NetworkNodeChild struct {
 	rfhook *RF24NetworkHook
 }
 
-func NewRF24NetworkNodeChild(id string, address uint16, subs []string, n RF24Network.RF24Network, pollInterval, hbinterval int, sndQ, rcvQ *message.Queue) *RF24NetworkNodeChild {
+func NewRF24NetworkNodeChild(id string, address uint16, subs []int32, n RF24Network.RF24Network, pollInterval, hbinterval int, sndQ, rcvQ *message.Queue) *RF24NetworkNodeChild {
 
 	child := &RF24NetworkNodeChild{
 		id:            id,
