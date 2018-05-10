@@ -85,7 +85,7 @@ func (r *RF24NetworkHook) rf24NetworkReceive() {
 	}
 }
 
-func (r *RF24NetworkHook) rf24NetworkSend(iMsg message.Message) error {
+func (r *RF24NetworkHook) rf24NetworkSend(iMsg message.Message, remoteAddress uint16) error {
 
 	eMsg, err := message.ConvertToExternalFormat(iMsg)
 	if err != nil {
@@ -108,7 +108,7 @@ func (r *RF24NetworkHook) rf24NetworkSend(iMsg message.Message) error {
 
 	r.network.Update() // FIXME: how often to call this method?
 	ptr := (uintptr)(unsafe.Pointer(&payload[0]))
-	header := RF24Network.NewRF24NetworkHeader(uint16(Master_Node_Address))
+	header := RF24Network.NewRF24NetworkHeader(remoteAddress)
 	defer RF24Network.DeleteRF24NetworkHeader(header)
 
 	ok := r.network.Write(header, uintptr(ptr), uint16(len(payload)))

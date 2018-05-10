@@ -86,7 +86,7 @@ func (r *RF24NetworkNodeChild) sender() {
 
 			logger.Debugf("sender: sending message %v\n", iMsg)
 
-			err := r.rfhook.rf24NetworkSend(iMsg)
+			err := r.rfhook.rf24NetworkSend(iMsg, uint16(Master_Node_Address))
 			if err != nil {
 				logger.Errorf("error in rf24 send routine: %v", err)
 			}
@@ -122,7 +122,7 @@ func (r *RF24NetworkNodeChild) heartbeat() {
 				Data: hbData,
 			}
 			version += 1
-			err := r.rfhook.rf24NetworkSend(msg)
+			err := r.rfhook.rf24NetworkSend(msg, uint16(Master_Node_Address))
 			if err != nil {
 				logger.Errorf("error in rf24 send routine: %v\n", err)
 			}

@@ -49,9 +49,13 @@ func FmtDefineArray(name string, array []byte) string {
 // SetupLOG sets up logger with the correct parameters
 func SetupLOG(logger *l.Logger, logLevel string, out io.Writer) {
 	hostname, _ := os.Hostname()
+	// fileFormat := l.MustStringFormatter(
+	// 	`%{time:` + RFC3339Milli + `} ` + hostname +
+	// 		` %{level:.4s} %{id:03x} %{shortfunc} > %{message}`,
+	// )
 	fileFormat := l.MustStringFormatter(
-		`%{time:` + RFC3339Milli + `} ` + hostname +
-			` %{level:.4s} %{id:03x} %{shortfunc} > %{message}`,
+		`%{color}%{time:15:04:05.000}` + hostname +
+			` %{longfunc} ▶ %{level:.4s} %{id:03x}%{color:reset} %{message}`,
 	)
 
 	level, err := l.LogLevel(logLevel)

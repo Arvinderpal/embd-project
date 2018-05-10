@@ -11,7 +11,8 @@
 			    "channel": 90,
 			    "address": 0,
 			    "master": true,
-			    "poll-interval": 100
+			    "poll-interval": 100,
+			    "router-worker-count": 2
 			},
 			"subscriptions":
 			[

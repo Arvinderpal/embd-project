@@ -3,8 +3,8 @@ package seguepb;
 
 
 message RF24NetworkNodeHeartbeatData {
-	string		id 					= 1;
-	uint32 		address				= 2;
-	uint64 		heartbeatinterval   = 3;
-	repeated string subscriptions   = 4;	
+	string		id 							= 1;
+	uint32 		address						= 2;
+	uint64 		heartbeatinterval   		= 3;
+	repeated string subscriptions		   	= 4;	
 }

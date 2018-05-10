@@ -27,13 +27,14 @@ type RF24NetworkNodeConf struct {
 	///////////////////////////////////////////////
 	// The fields below are controller specific. //
 	///////////////////////////////////////////////
-	CEPin             uint16 `json:"ce-pin"`             // CE pin on device
-	CSPin             uint16 `json:"cs-pin"`             // CS pin on device
-	Channel           byte   `json:"channel"`            // RF Channel to use [0...255]
-	Address           uint16 `json:"address"`            // Node address in Octal
-	Master            bool   `json:"master"`             // Is this a master node?
-	PollInterval      int    `json:"poll-interval"`      // We poll RF module every poll interval [units: Millisecond]
-	HeartbeatInterval int    `json:"heartbeat-interval"` // Child nodes send periodic heartbeats
+	CEPin             uint16 `json:"ce-pin"`              // CE pin on device
+	CSPin             uint16 `json:"cs-pin"`              // CS pin on device
+	Channel           byte   `json:"channel"`             // RF Channel to use [0...255]
+	Address           uint16 `json:"address"`             // Node address in Octal
+	Master            bool   `json:"master"`              // Is this a master node?
+	PollInterval      int    `json:"poll-interval"`       // We poll RF module every poll interval [units: Millisecond]
+	HeartbeatInterval int    `json:"heartbeat-interval"`  // Child nodes send periodic heartbeats
+	RouterWorkerCount int    `json:"router-worker-count"` // MASTER: number of workers to use per receive queue in the router
 }
 
 func (c RF24NetworkNodeConf) ValidateConf() error {
@@ -129,7 +130,7 @@ func (d *RF24NetworkNode) Start() error {
 
 	if d.State.Conf.Master {
 		logger.Infof("creating master node for rf24 network...\n")
-		d.State.backend = rf24networknodebackend.NewRF24NetworkNodeMaster(d.State.Conf.ID, d.State.Conf.Address, d.State.Conf.Subscriptions, d.State.network, d.State.Conf.PollInterval, d.State.sndQ, d.State.rcvQ)
+		d.State.backend = rf24networknodebackend.NewRF24NetworkNodeMaster(d.State.Conf.ID, d.State.Conf.Address, d.State.Conf.Subscriptions, d.State.network, d.State.Conf.PollInterval, d.State.sndQ, d.State.rcvQ, d.State.Conf.RouterWorkerCount)
 	} else {
 		logger.Infof("creating child node for rf24 network...\n")
 		d.State.backend = rf24networknodebackend.NewRF24NetworkNodeChild(d.State.Conf.ID, d.State.Conf.Address, d.State.Conf.Subscriptions, d.State.network, d.State.Conf.PollInterval, d.State.Conf.HeartbeatInterval, d.State.sndQ, d.State.rcvQ)
