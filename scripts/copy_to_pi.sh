@@ -10,8 +10,8 @@ cd $PROJECT_HOME/segue; make arm
 scp $PROJECT_HOME/segue/segue pi@raspberrypi:/home/pi/embd-project/segue
 scp -r $PROJECT_HOME/scripts/configs pi@raspberrypi:/home/pi/embd-project/scripts
 # pi@pi2b1
-scp $PROJECT_HOME/segue/segue pi@pi2b1:/home/pi/embd-project/segue
-scp -r $PROJECT_HOME/scripts/configs pi@pi2b1:/home/pi/embd-project/scripts
+# scp $PROJECT_HOME/segue/segue pi@pi2b1:/home/pi/embd-project/segue
+# scp -r $PROJECT_HOME/scripts/configs pi@pi2b1:/home/pi/embd-project/scripts
 
 
 ### Additional Binaries Go Here ###

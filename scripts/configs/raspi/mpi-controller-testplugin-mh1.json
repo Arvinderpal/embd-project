@@ -1,0 +1,28 @@
+{
+	"machine-id": "mh1",
+	"confs": 
+	[
+		{
+			"type": "mpi",
+			"id": "mpi-controller-testplugin-mh1",
+			"conf": {
+				"plugin-name": "testplugin",
+				"keepalive": false,
+			    "plugin-conf": {
+				    "ce-pin": 25,
+				    "cs-pin": 0,
+				    "channel": 90,
+				    "address": 0,
+				    "master": true,
+				    "poll-interval": 100,
+				    "router-worker-count": 2
+				}
+			},
+			"subscriptions":
+			[
+				"CmdDrive",
+				"UnitTest"
+			]
+		}
+	]
+}
