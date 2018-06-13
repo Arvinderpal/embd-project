@@ -39,3 +39,12 @@ type ControllersConfEnvelope struct {
 	MachineID string `json:"machine-id"`
 	Confs     []ControllerConfEnvelope
 }
+
+type GRPCConf struct {
+	HostAddress string `json:"host-address"` // IP address or just localhost
+	Port        int    `json:"port"`         // Port to listen on
+	TLSEnabled  bool   `json:"tls-enabled"`  // Will enable TLS on server
+	CertFile    string `json:"cert-file"`    // TLS certfile (optional)
+	KeyFile     string `json:"key-file"`     // TLS Key (optional)
+
+}

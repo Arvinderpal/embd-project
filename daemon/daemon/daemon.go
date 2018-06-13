@@ -23,7 +23,7 @@ type Daemon struct {
 
 func (d *Daemon) init() (err error) {
 
-	if err = os.MkdirAll(common.SeguePluginsPath, 0755); err != nil {
+	if err = os.MkdirAll(common.SeguePluginsPath, 0777); err != nil {
 		logger.Fatalf("Could not create runtime directory %s: %s", common.SeguePluginsPath, err)
 	}
 	globalsDir := filepath.Join(d.conf.RunDir, "globals")

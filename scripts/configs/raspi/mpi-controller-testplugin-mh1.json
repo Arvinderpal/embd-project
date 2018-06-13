@@ -16,7 +16,12 @@
 				    "master": true,
 				    "poll-interval": 100,
 				    "router-worker-count": 2
-				}
+				},
+				"grpc-conf": {
+			    	"host-address": "localhost",
+			    	"port": 20000,
+			    	"tls-enabled": false
+			    }
 			},
 			"subscriptions":
 			[
