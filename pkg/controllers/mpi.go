@@ -120,6 +120,16 @@ func (d *MPI) Start() error {
 	// We will start the grpc server and process messages from plugin
 	go d.work()
 
+	metaConf := controllerapi.MPIMetaConf{
+		MachineID:     d.State.Conf.MachineID,
+		ID:            d.State.Conf.ID,
+		Subscriptions: d.State.Conf.Subscriptions,
+	}
+	metaBytes, err := json.Marshal(metaConf)
+	if err != nil {
+		return err
+	}
+
 	// Write the plugin conf to a file; the file will be passed in via stdin
 	// pluginConfMap := d.State.Conf.PluginConf.(map[string]interface{})
 	confBytes, err := json.Marshal(d.State.Conf.PluginConf)
@@ -138,6 +148,13 @@ func (d *MPI) Start() error {
 		return err
 	}
 	defer f.Close()
+
+	// Confs are sent in the following order each on a separate line: meta, plugin, grpc
+	_, err = f.Write(metaBytes)
+	if err != nil {
+		return err
+	}
+	_, _ = f.WriteString("\n")
 	_, err = f.Write(confBytes)
 	if err != nil {
 		return err

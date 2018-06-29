@@ -62,17 +62,27 @@ sudo socat -d -d pty,link=/dev/ttyS0,raw,echo=0 pty,link=/dev/ttyACM0,raw,echo=0
 
 ######################## Manual Tests ############################
 
+	# MPI -- testplugn
+	sudo ./segue daemon machine join ../scripts/configs/mh-1.json
+	sudo ./segue daemon controller start ../scripts/configs/raspi/mpi-controller-testplugin-mh1.json 
+
+	# MPI -- rf24networknode
+	sudo ./segue daemon machine join ../scripts/configs/mh-1.json
+	sudo ./segue daemon controller start ../scripts/configs/raspi/mpi-controller-rf24network-master-mh1.json
+
+
+
 			### RF24Network -- LED blink on master via child ###
 	
 	# MASTER:
 		sudo ./segue daemon machine join ../scripts/configs/mh-1.json
-		sudo ./segue daemon controller start ../scripts/configs/raspi/rf24network-master-node-controller-mh1.json
+		sudo ./segue daemon controller start ../scripts/configs/raspi/mpi-controller-rf24network-master-mh1.json
 		sudo ./segue daemon adaptor attach ../scripts/configs/raspi/adaptor-raspi-mh1.json 
 		sudo ./segue daemon driver start ../scripts/configs/raspi/led-mh1.json
 
 	# SLAVE: 
 		sudo ./segue daemon machine join ../scripts/configs/mh-1.json
-		sudo ./segue daemon controller start ../scripts/configs/raspi/rf24network-1st-level-node-controller-mh1.json
+		sudo ./segue daemon controller start ../scripts/configs/raspi/mpi-controller-rf24network-node-1-mh1.json
 		sudo ./segue daemon adaptor attach ../scripts/configs/raspi/adaptor-raspi-mh1.json 
 		sudo ./segue daemon controller start ../scripts/configs/grpc-server-controller-mh1.json
 		sudo ./blink 
@@ -82,14 +92,14 @@ sudo socat -d -d pty,link=/dev/ttyS0,raw,echo=0 pty,link=/dev/ttyACM0,raw,echo=0
 
 	# MASTER:
 		sudo ./segue daemon machine join ../scripts/configs/mh-1.json
-		sudo ./segue daemon controller start ../scripts/configs/raspi/rf24network-master-node-controller-mh1.json
+		sudo ./segue daemon controller start ../scripts/configs/raspi/mpi-controller-rf24network-master-mh1.json
 		sudo ./segue daemon adaptor attach ../scripts/configs/adaptor-serial-dev-ttyACM0.json
 		sudo ./segue daemon driver start ../scripts/configs/dualmotors-mh1.json
 
 
 	# SLAVE: 
 		sudo ./segue daemon machine join ../scripts/configs/mh-1.json
-		sudo ./segue daemon controller start ../scripts/configs/raspi/rf24network-1st-level-node-controller-mh1.json
+		sudo ./segue daemon controller start ../scripts/configs/raspi/mpi-controller-rf24network-node-1-mh1.json		
 		sudo ./segue daemon adaptor attach ../scripts/configs/raspi/adaptor-raspi-mh1.json 
 		sudo ./segue daemon controller start ../scripts/configs/grpc-server-controller-mh1.json
 		sudo ./remotecar 

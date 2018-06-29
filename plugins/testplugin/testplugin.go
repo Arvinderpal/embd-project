@@ -34,11 +34,21 @@ type TestPluginConf struct {
 func main() {
 	fmt.Printf("starting testplugin\n")
 	reader := bufio.NewReader(os.Stdin)
-	text, _ := reader.ReadString('\n')
-	fmt.Printf("test plugin conf dump: %s", text)
 
+	// meta conf
+	text, _ := reader.ReadString('\n')
+	metaConf := &controllerapi.MPIMetaConf{}
+	err := json.Unmarshal([]byte(text), metaConf)
+	if err != nil {
+		fmt.Errorf("%s", err)
+		return
+	}
+	fmt.Printf("MetaConf: %v \n", metaConf)
+
+	text, _ = reader.ReadString('\n')
+	fmt.Printf("test plugin conf dump: %s", text)
 	conf := &TestPluginConf{}
-	err := json.Unmarshal([]byte(text), conf)
+	err = json.Unmarshal([]byte(text), conf)
 	if err != nil {
 		fmt.Errorf("%s", err)
 		return

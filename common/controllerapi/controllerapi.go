@@ -46,5 +46,11 @@ type GRPCConf struct {
 	TLSEnabled  bool   `json:"tls-enabled"`  // Will enable TLS on server
 	CertFile    string `json:"cert-file"`    // TLS certfile (optional)
 	KeyFile     string `json:"key-file"`     // TLS Key (optional)
+}
 
+// MPIMetaConf is passed to mpi-plugins
+type MPIMetaConf struct {
+	MachineID     string   `json:"machine-id"`
+	ID            string   `json:"id"`            // IMPORTANT: ID should be unique for across all nodes in the RF24Network
+	Subscriptions []string `json:"subscriptions"` // Message Type Subscriptions.
 }
