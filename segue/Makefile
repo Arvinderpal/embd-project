@@ -45,8 +45,9 @@ $(TARGET): $(SOURCES)
 
 arm: 
 	protoc -I=../common/seguepb --go_out=plugins=grpc:../common/seguepb ../common/seguepb/*.proto
-	# GOARM=7 GOARCH=arm GOOS=linux go build -ldflags "-X "github.com/Arvinderpal/common".Version=$(VERSION)" -o $(TARGET) ./main.go
-	CGO_CXXFLAGS="-Wall -fPIC -Ofast -mfpu=vfp -mfloat-abi=hard -mtune=arm1176jzf-s -std=c++0x -I/home/awander/go/src/github.com/raspberrypi/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/bin/../arm-linux-gnueabihf/libc/usr/local/include" CGO_LDFLAGS="-L/home/awander/go/src/github.com/Arvinderpal/embd-project/playground/rf24-swig/tmrh20/rf24 -lrf24 -L/home/awander/go/src/github.com/Arvinderpal/embd-project/playground/rf24-swig/tmrh20/rf24 -lrf24-bcm " CGO_ENABLED=1 CC=arm-linux-gnueabihf-gcc  CXX=arm-linux-gnueabihf-g++  GOOS=linux GOARCH=arm  GOARM=7  go build -x 
+	GOARM=7 GOARCH=arm GOOS=linux go build -ldflags "-X "github.com/Arvinderpal/common".Version=$(VERSION)" -o $(TARGET) ./main.go
+	
+	# CGO_CXXFLAGS="-Wall -fPIC -Ofast -mfpu=vfp -mfloat-abi=hard -mtune=arm1176jzf-s -std=c++0x -I/home/awander/go/src/github.com/raspberrypi/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/bin/../arm-linux-gnueabihf/libc/usr/local/include" CGO_LDFLAGS="-L/home/awander/go/src/github.com/Arvinderpal/embd-project/playground/rf24-swig/tmrh20/rf24 -lrf24 -L/home/awander/go/src/github.com/Arvinderpal/embd-project/playground/rf24-swig/tmrh20/rf24 -lrf24-bcm " CGO_ENABLED=1 CC=arm-linux-gnueabihf-gcc  CXX=arm-linux-gnueabihf-g++  GOOS=linux GOARCH=arm  GOARM=7  go build -x 
 	@touch main.go
 
 

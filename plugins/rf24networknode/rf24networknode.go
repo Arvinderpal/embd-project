@@ -22,7 +22,7 @@ import (
 	"github.com/Arvinderpal/embd-project/common/controllerapi"
 	"github.com/Arvinderpal/embd-project/common/message"
 	"github.com/Arvinderpal/embd-project/common/seguepb"
-	"github.com/Arvinderpal/embd-project/pkg/controllers/rf24networknodebackend"
+	"github.com/Arvinderpal/embd-project/plugins/rf24networknode/rf24networknodebackend"
 )
 
 var (
