@@ -1,0 +1,34 @@
+{
+	"machine-id": "mh1",
+	"confs": 
+	[
+		{
+			"type": "mpi",
+			"id": "mpi-controller-rf24network-node-2-mh1",
+			"conf": {
+				"plugin-name": "rf24networknode",
+				"keepalive": false,
+			    "plugin-conf": {
+				    "ce-pin": 25,
+				    "cs-pin": 0,
+				    "channel": 90,
+				    "address": 2,
+				    "master": false,
+				    "poll-interval": 100,
+				    "heartbeat-interval": 5 
+				},
+				"grpc-conf": {
+			    	"host-address": "localhost",
+			    	"port": 30000,
+			    	"tls-enabled": false
+			    }
+			},
+			"subscriptions":
+			[
+				"CmdDrive",
+				"UnitTest",
+				"CmdLEDSwitch"
+			]
+		}
+	]
+}

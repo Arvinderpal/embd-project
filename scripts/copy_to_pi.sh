@@ -3,6 +3,7 @@ set -e
 					### REMOTE HOSTS ###
 declare -a HOSTS=(	"raspberrypi" 
                 	"pi2b1"
+                	"pi3b2"
 )
 
 PROJECT_HOME="/home/awander/go/src/github.com/Arvinderpal/embd-project"

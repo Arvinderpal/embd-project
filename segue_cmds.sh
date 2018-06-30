@@ -1,6 +1,7 @@
 				### Segue Start ###
 
 sudo mkdir -p /var/run/segue ; sudo chmod 777 /var/run/segue
+sudo mkdir -p /etc/segue/plugins ; sudo chmod 777 /etc/segue/plugins
 sudo ./segue --debug daemon run --n 192.168.80.201 -dr
 
 				### Machine mh1 ###
@@ -58,9 +59,7 @@ EXEC:'"ssh modemserver.us.org socat - /dev/ttyS0,nonblock,rawer"'
 sudo socat -d -d pty,link=/dev/ttyS0,raw,echo=0 pty,link=/dev/ttyACM0,raw,echo=0
 
 
-
-
-######################## Manual Tests ############################
+######################## MPI ############################
 
 	# MPI -- testplugn
 	sudo ./segue daemon machine join ../scripts/configs/mh-1.json
@@ -72,37 +71,43 @@ sudo socat -d -d pty,link=/dev/ttyS0,raw,echo=0 pty,link=/dev/ttyACM0,raw,echo=0
 
 
 
-			### RF24Network -- LED blink on master via child ###
-	
-	# MASTER:
-		sudo ./segue daemon machine join ../scripts/configs/mh-1.json
-		sudo ./segue daemon controller start ../scripts/configs/raspi/mpi-controller-rf24network-master-mh1.json
-		sudo ./segue daemon adaptor attach ../scripts/configs/raspi/adaptor-raspi-mh1.json 
-		sudo ./segue daemon driver start ../scripts/configs/raspi/led-mh1.json
+######################## RF24 Network ############################
 
-	# SLAVE: 
-		sudo ./segue daemon machine join ../scripts/configs/mh-1.json
-		sudo ./segue daemon controller start ../scripts/configs/raspi/mpi-controller-rf24network-node-1-mh1.json
-		sudo ./segue daemon adaptor attach ../scripts/configs/raspi/adaptor-raspi-mh1.json 
-		sudo ./segue daemon controller start ../scripts/configs/grpc-server-controller-mh1.json
-		sudo ./blink 
+# Install RF24 libs: 
+# 1. Download/Clone my RF24: git clone https://github.com/Arvinderpal/RF24.git
+# 2. Install RF24: sudo make install -B 
+# 3. NOTE: RF24Network code is compiled into plugin binary.
 
+		### RF24Network -- LED blink on master via child ###
+# MASTER:
+	sudo ./segue daemon machine join ../scripts/configs/mh-1.json
+	sudo ./segue daemon controller start ../scripts/configs/raspi/mpi-controller-rf24network-master-mh1.json
+	sudo ./segue daemon adaptor attach ../scripts/configs/raspi/adaptor-raspi-mh1.json 
+	sudo ./segue daemon driver start ../scripts/configs/raspi/led-mh1.json
 
-			### RFNetwork -- control car on master via child
-
-	# MASTER:
-		sudo ./segue daemon machine join ../scripts/configs/mh-1.json
-		sudo ./segue daemon controller start ../scripts/configs/raspi/mpi-controller-rf24network-master-mh1.json
-		sudo ./segue daemon adaptor attach ../scripts/configs/adaptor-serial-dev-ttyACM0.json
-		sudo ./segue daemon driver start ../scripts/configs/dualmotors-mh1.json
+# SLAVE: 
+	sudo ./segue daemon machine join ../scripts/configs/mh-1.json
+	sudo ./segue daemon controller start ../scripts/configs/raspi/mpi-controller-rf24network-node-1-mh1.json
+	sudo ./segue daemon adaptor attach ../scripts/configs/raspi/adaptor-raspi-mh1.json 
+	sudo ./segue daemon controller start ../scripts/configs/grpc-server-controller-mh1.json
+	sudo ./blink 
 
 
-	# SLAVE: 
-		sudo ./segue daemon machine join ../scripts/configs/mh-1.json
-		sudo ./segue daemon controller start ../scripts/configs/raspi/mpi-controller-rf24network-node-1-mh1.json		
-		sudo ./segue daemon adaptor attach ../scripts/configs/raspi/adaptor-raspi-mh1.json 
-		sudo ./segue daemon controller start ../scripts/configs/grpc-server-controller-mh1.json
-		sudo ./remotecar 
+		### RFNetwork -- control car on master via child
+
+# MASTER:
+	sudo ./segue daemon machine join ../scripts/configs/mh-1.json
+	sudo ./segue daemon controller start ../scripts/configs/raspi/mpi-controller-rf24network-master-mh1.json
+	sudo ./segue daemon adaptor attach ../scripts/configs/adaptor-serial-dev-ttyACM0.json
+	sudo ./segue daemon driver start ../scripts/configs/dualmotors-mh1.json
+
+
+# SLAVE: 
+	sudo ./segue daemon machine join ../scripts/configs/mh-1.json
+	sudo ./segue daemon controller start ../scripts/configs/raspi/mpi-controller-rf24network-node-1-mh1.json		
+	sudo ./segue daemon adaptor attach ../scripts/configs/raspi/adaptor-raspi-mh1.json 
+	sudo ./segue daemon controller start ../scripts/configs/grpc-server-controller-mh1.json
+	sudo ./remotecar 
 
 
 

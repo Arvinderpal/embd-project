@@ -38,7 +38,7 @@ type RF24NetworkNodeConf struct {
 	CEPin             uint16 `json:"ce-pin"`              // CE pin on device
 	CSPin             uint16 `json:"cs-pin"`              // CS pin on device
 	Channel           byte   `json:"channel"`             // RF Channel to use [0...255]
-	Address           uint16 `json:"address"`             // Node address in Octal
+	Address           uint16 `json:"address"`             // Node address in Octal -- see: http://tmrh20.github.io/RF24Network/
 	Master            bool   `json:"master"`              // Is this a master node?
 	PollInterval      int    `json:"poll-interval"`       // We poll RF module every poll interval [units: Millisecond]
 	HeartbeatInterval int    `json:"heartbeat-interval"`  // Child nodes send periodic heartbeats
