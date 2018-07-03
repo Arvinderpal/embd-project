@@ -23,6 +23,13 @@ type Daemon struct {
 
 func (d *Daemon) init() (err error) {
 
+	if err = os.MkdirAll(common.SeguePluginsPath, 0777); err != nil {
+		logger.Fatalf("Could not create runtime directory %s: %s", common.SeguePluginsPath, err)
+	}
+	// NOTE: For some reason, the 0770 on MkdirAll does not give write permissions to group and world. Explicitly using Chmod as below works:
+	if err := os.Chmod(common.SeguePluginsPath, 0777); err != nil {
+		logger.Fatalf("Could not change permissions on plugins directory %s: %s", common.SeguePluginsPath, err)
+	}
 	globalsDir := filepath.Join(d.conf.RunDir, "globals")
 	if err = os.MkdirAll(globalsDir, 0755); err != nil {
 		logger.Fatalf("Could not create runtime directory %s: %s", globalsDir, err)

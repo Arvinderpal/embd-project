@@ -20,6 +20,7 @@ enum MessageType {
 	CmdLEDSwitch						= 3;
 	LIRCEvent							= 4;
 
+	RF24NetworkNodeHeartbeat			= 100;
 	// NOTE: Any changes here should also be reflected in message.go
 }
 

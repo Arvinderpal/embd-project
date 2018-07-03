@@ -31,6 +31,7 @@ type GRPCMessageServerConf struct {
 	////////////////////////////////////////////
 	LogFilePathname string `json:"log-file-path-name"` // logs will be wirten to this file.
 
+	// FIXME: replace this with controllerapi.GRPCConf
 	HostAddress string `json:"host-address"` // IP address or just localhost
 	Port        int    `json:"port"`         // Port to listen on
 

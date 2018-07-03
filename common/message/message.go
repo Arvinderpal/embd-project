@@ -71,10 +71,19 @@ func ConvertToInternalFormat(m *seguepb.Message) (Message, error) {
 			ID:   *m.ID,
 			Data: data,
 		}, nil
+	case seguepb.MessageType_RF24NetworkNodeHeartbeat:
+		data := &seguepb.RF24NetworkNodeHeartbeatData{}
+		err := proto.Unmarshal(m.GetData(), data)
+		if err != nil {
+			return Message{}, err
+		}
+		return Message{
+			ID:   *m.ID,
+			Data: data,
+		}, nil
 	default:
 		return Message{}, fmt.Errorf("converter error: unknown message type %s", m.GetID().GetType())
 	}
-
 }
 
 // Important: this func must be updated manually every time we introduce a new message type.
@@ -128,6 +137,15 @@ func ConvertToExternalFormat(iMsg Message) (*seguepb.Message, error) {
 			ID:   &iMsg.ID,
 			Data: data,
 		}, nil
+	case seguepb.MessageType_RF24NetworkNodeHeartbeat:
+		data, err := proto.Marshal(iMsg.Data.(*seguepb.RF24NetworkNodeHeartbeatData))
+		if err != nil {
+			return nil, err
+		}
+		return &seguepb.Message{
+			ID:   &iMsg.ID,
+			Data: data,
+		}, nil
 	default:
 		return nil, fmt.Errorf("converter error: unknown message type %s", iMsg.ID.GetType())
 	}
@@ -168,6 +186,11 @@ func (m *MessageRouter) AddListener(queue *Queue) {
 			m.mu.RLock()
 			set := m.RouteMap[msg.ID.Type]
 			for _, q := range set {
+				// We do not route messages back to where they came from
+				// Such a case may occur in grpc server which may subscribe to as well as generate a message of a particular type.
+				if queue.ID() == q.ID() {
+					continue
+				}
 				q.Add(msg)
 			}
 			queue.Done(msg)
@@ -194,6 +217,7 @@ func (m *MessageRouter) AddSubscriberQueue(msgType string, queue *Queue) error {
 		return fmt.Errorf("cannot add subscriber (%s) on message type %s, queue must be empty: current length: %d", queue.ID(), msgType, queue.Len())
 	}
 	for _, q := range set {
+		// Entry already exists
 		if queue.ID() == q.ID() {
 			return nil
 		}

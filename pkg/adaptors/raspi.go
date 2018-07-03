@@ -10,7 +10,7 @@ import (
 	"gobot.io/x/gobot/platforms/raspi"
 )
 
-// RaspiConf implements programapi.ProgramConf interface
+// RaspiConf implements adaptorapi.Adaptorconf interface
 type RaspiConf struct {
 	//////////////////////////////////////////////////////
 	// All adaptor confs should define the following fields. //

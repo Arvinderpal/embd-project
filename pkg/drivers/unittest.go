@@ -127,6 +127,7 @@ func (d *UnitTest) Stop() error {
 // work: Runs periodically and generates messages/events.
 func (d *UnitTest) work() {
 
+	logger.Debugf("unittest-driver work() started..")
 	version := 0
 	tickChan := time.NewTicker(d.State.Conf.MessageSendInterval * time.Millisecond).C
 	for {

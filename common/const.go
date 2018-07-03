@@ -10,7 +10,8 @@ const (
 	SeguePath     = "/var/run/segue"
 	DefaultLibDir = "/usr/lib/segue"
 	// SegueSock is the socket for the communication between the daemon and client.
-	SegueSock = SeguePath + "/segue.sock"
+	SegueSock        = SeguePath + "/segue.sock"
+	SeguePluginsPath = "/etc/segue/plugins"
 
 	// GroupFilePath is the unix group file path.
 	GroupFilePath = "/etc/group"
