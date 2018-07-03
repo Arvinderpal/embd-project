@@ -17,7 +17,11 @@ import (
 	"github.com/Arvinderpal/embd-project/common/controllerapi"
 	"github.com/Arvinderpal/embd-project/common/message"
 	"github.com/Arvinderpal/embd-project/common/seguepb"
-	"github.com/prometheus/common/log"
+	logging "github.com/op/go-logging"
+)
+
+var (
+	logger = logging.MustGetLogger("plugin-testplugin")
 )
 
 type TestPluginConf struct {
@@ -122,13 +126,13 @@ func sendReceiveTestMessages(client seguepb.MessengerClient) {
 			if err != nil {
 				panic(fmt.Sprintf("Failed to receive a message : %v", err))
 			}
-			log.Infof("Got %d messages", len(msgEnv.Messages))
+			logger.Infof("Got %d messages", len(msgEnv.Messages))
 			for i, eMsg := range msgEnv.Messages {
 				iMsg, err := message.ConvertToInternalFormat(eMsg)
 				if err != nil {
-					log.Errorf("grpc: messge convertion error: %s", err)
+					logger.Errorf("grpc: messge convertion error: %s", err)
 				}
-				log.Infof("%d: %v", i+1, iMsg)
+				logger.Infof("%d: %v", i+1, iMsg)
 			}
 		}
 	}()
